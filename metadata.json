@@ -1,6 +1,6 @@
 {
   "name": "Farsi-Joon",
-  "description": "Persian language learning app for 2nd and 3rd generation Iranian diaspora featuring 20 curated lessons, Leitner flashcard review, bilingual audio stories, a daily-limited Persian AI chat tutor, and camera object identification.",
+  "description": "Persian language learning app for 2nd and 3rd generation Iranian diaspora featuring 20 curated offline lessons, Leitner flashcard review, bilingual audio stories, and a daily-limited Persian AI chat tutor.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

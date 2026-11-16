@@ -1,0 +1,147 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global safety net: default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidTimestamp(ts) {
+      return ts is timestamp && ts <= request.time;
+    }
+
+    function isValidUserProfile(data, userId) {
+      return data.userId is string && data.userId == userId &&
+             data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 80 &&
+             data.totalStars is int && data.totalStars >= 0 && data.totalStars <= 60 &&
+             data.completedLessonsCount is int && data.completedLessonsCount >= 0 && data.completedLessonsCount <= 20;
+    }
+
+    function isValidLessonProgress(data, userId) {
+      return data.userId is string && data.userId == userId &&
+             data.lessonId is int && data.lessonId >= 1 && data.lessonId <= 20 &&
+             data.completed is bool &&
+             data.stars is int && data.stars >= 0 && data.stars <= 3 &&
+             data.bestScore is int && data.bestScore >= 0 && data.bestScore <= 20 &&
+             data.totalQuestions is int && data.totalQuestions >= 1 && data.totalQuestions <= 20;
+    }
+
+    function isValidDailyUsage(data, userId) {
+      return data.userId is string && data.userId == userId &&
+             data.dateKey is string && data.dateKey.size() == 10 && data.dateKey.matches('^\\d{4}-\\d{2}-\\d{2}$') &&
+             data.messageCount is int && data.messageCount >= 0 && data.messageCount <= 10;
+    }
+
+    function isValidChatReport(data, userId) {
+      return data.userId is string && data.userId == userId &&
+             data.promptText is string && data.promptText.size() <= 500 &&
+             data.responseText is string && data.responseText.size() >= 1 && data.responseText.size() <= 2000 &&
+             data.reason is string && data.reason.size() >= 1 && data.reason.size() <= 200;
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId) && isValidId(userId);
+      allow list: if false;
+
+      allow create: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       incoming().keys().hasAll(['userId', 'displayName', 'totalStars', 'completedLessonsCount', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly(['userId', 'displayName', 'totalStars', 'completedLessonsCount', 'createdAt', 'updatedAt']) &&
+                       isValidTimestamp(incoming().createdAt) &&
+                       isValidTimestamp(incoming().updatedAt) &&
+                       isValidUserProfile(incoming(), userId);
+
+      allow update: if isOwner(userId) &&
+                       isValidId(userId) &&
+                       isValidUserProfile(incoming(), userId) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       isValidTimestamp(incoming().updatedAt) &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'totalStars', 'completedLessonsCount', 'updatedAt']);
+
+      allow delete: if isOwner(userId) && isValidId(userId);
+
+      match /lesson_progress/{lessonDocId} {
+        allow get: if isOwner(userId) && isValidId(lessonDocId);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(lessonDocId) &&
+                         incoming().keys().hasAll(['userId', 'lessonId', 'completed', 'stars', 'bestScore', 'totalQuestions', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['userId', 'lessonId', 'completed', 'stars', 'bestScore', 'totalQuestions', 'updatedAt']) &&
+                         isValidTimestamp(incoming().updatedAt) &&
+                         isValidLessonProgress(incoming(), userId);
+
+        allow update: if isOwner(userId) &&
+                         isValidId(lessonDocId) &&
+                         isValidLessonProgress(incoming(), userId) &&
+                         incoming().userId == existing().userId &&
+                         incoming().lessonId == existing().lessonId &&
+                         isValidTimestamp(incoming().updatedAt) &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['completed', 'stars', 'bestScore', 'totalQuestions', 'updatedAt']);
+
+        allow delete: if isOwner(userId) && isValidId(lessonDocId);
+      }
+
+      match /daily_usage/{dateKey} {
+        allow get: if isOwner(userId) && isValidId(dateKey);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(dateKey) &&
+                         incoming().keys().hasAll(['userId', 'dateKey', 'messageCount', 'updatedAt']) &&
+                         incoming().keys().hasOnly(['userId', 'dateKey', 'messageCount', 'updatedAt']) &&
+                         isValidTimestamp(incoming().updatedAt) &&
+                         isValidDailyUsage(incoming(), userId);
+
+        allow update: if isOwner(userId) &&
+                         isValidId(dateKey) &&
+                         isValidDailyUsage(incoming(), userId) &&
+                         incoming().userId == existing().userId &&
+                         incoming().dateKey == existing().dateKey &&
+                         incoming().messageCount >= existing().messageCount &&
+                         isValidTimestamp(incoming().updatedAt) &&
+                         incoming().diff(existing()).affectedKeys().hasOnly(['messageCount', 'updatedAt']);
+
+        allow delete: if isOwner(userId) && isValidId(dateKey);
+      }
+
+      match /chat_reports/{reportId} {
+        allow get: if isOwner(userId) && isValidId(reportId);
+        allow list: if isOwner(userId);
+
+        allow create: if isOwner(userId) &&
+                         isValidId(reportId) &&
+                         incoming().keys().hasAll(['userId', 'promptText', 'responseText', 'reason', 'createdAt']) &&
+                         incoming().keys().hasOnly(['userId', 'promptText', 'responseText', 'reason', 'createdAt']) &&
+                         isValidTimestamp(incoming().createdAt) &&
+                         isValidChatReport(incoming(), userId);
+
+        allow update: if false;
+        allow delete: if isOwner(userId) && isValidId(reportId);
+      }
+    }
+  }
+}

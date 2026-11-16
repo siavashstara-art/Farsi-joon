@@ -1,0 +1,244 @@
+{
+  "stories": [
+    {
+      "id": "story_nowruz",
+      "title": "Spring at the Haft-Sin Table",
+      "farsiTitle": "بهار پای سفرهٔ هفت‌سین",
+      "level": "Beginner • Lessons 1–15",
+      "durationLabel": "2 min listen",
+      "imageName": "img_story_nowruz",
+      "hasTwoVoices": false,
+      "culturalNote": "Nowruz marks the first day of spring. Families gather around the Haft-Sin table as the new year arrives.",
+      "sentences": [
+        {
+          "id": "sn_1",
+          "speaker": "NARRATOR",
+          "speakerLabel": "Narrator",
+          "farsi": "امروز روز اول بهار و نوروز است.",
+          "finglish": "emruz ruz-e avval-e bahâr o Nowruz-e.",
+          "english": "Today is the first day of spring and Nowruz."
+        },
+        {
+          "id": "sn_2",
+          "speaker": "NARRATOR",
+          "speakerLabel": "Narrator",
+          "farsi": "همهٔ خانواده در خانهٔ مادربزرگ جمع شدند.",
+          "finglish": "hame-ye khânevâde tu-ye khune-ye mâdarbozorg jam' shodan.",
+          "english": "The whole family gathered at Grandma's house."
+        },
+        {
+          "id": "sn_3",
+          "speaker": "NARRATOR",
+          "speakerLabel": "Narrator",
+          "farsi": "روی میز، سبزه و سیب قرمز و سکه هست.",
+          "finglish": "ru-ye miz, sabze o sib-e ghermez o sekke hast.",
+          "english": "On the table, there are sprouted greens, red apples, and coins."
+        },
+        {
+          "id": "sn_4",
+          "speaker": "NARRATOR",
+          "speakerLabel": "Narrator",
+          "farsi": "یک ماهی قرمز هم توی تنگ آب شنا می‌کنه.",
+          "finglish": "yek mâhi-ye ghermez ham tu-ye tong-e âb shenâ mikone.",
+          "english": "A little red goldfish also swims in the glass bowl of water."
+        },
+        {
+          "id": "sn_5",
+          "speaker": "NARRATOR",
+          "speakerLabel": "Narrator",
+          "farsi": "بابابزرگ لبخند می‌زند و می‌گوید: عیدتون مبارک!",
+          "finglish": "bâbâbozorg labkhand mizane o mige: Eydetun mobârak!",
+          "english": "Grandpa smiles and says: Happy New Year!"
+        },
+        {
+          "id": "sn_6",
+          "speaker": "NARRATOR",
+          "speakerLabel": "Narrator",
+          "farsi": "ما با هم چای و شیرینی می‌خوریم و خیلی خوشحالیم.",
+          "finglish": "mâ bâ ham chây o shirini mikhorim o kheli khoshhâlim.",
+          "english": "Together we have tea and pastries, and we are very happy."
+        }
+      ]
+    },
+    {
+      "id": "story_yalda",
+      "title": "Candlelight on Yaldâ Night",
+      "farsiTitle": "نور شمع در شب یلدا",
+      "level": "Intermediate • Lessons 8–16",
+      "durationLabel": "2 min listen",
+      "imageName": "img_story_yalda",
+      "hasTwoVoices": false,
+      "culturalNote": "On Shab-e Yaldâ, Iranians stay up sharing stories, ruby pomegranates, and poetry from Hâfez.",
+      "sentences": [
+        {
+          "id": "sy_1",
+          "speaker": "NARRATOR",
+          "speakerLabel": "Narrator",
+          "farsi": "امشب شب یلدا است، بلندترین شب سال.",
+          "finglish": "emshab shab-e Yaldâ-st, bolandtarin shab-e sâl.",
+          "english": "Tonight is Yaldâ Night, the longest night of the year."
+        },
+        {
+          "id": "sy_2",
+          "speaker": "NARRATOR",
+          "speakerLabel": "Narrator",
+          "farsi": "بیرون سرد است ولی توی اتاق خیلی گرم و روشن است.",
+          "finglish": "birun sard-e vali tu-ye otâgh kheli garm o roshan-e.",
+          "english": "Outside it is cold, but inside the room it is very warm and bright."
+        },
+        {
+          "id": "sy_3",
+          "speaker": "NARRATOR",
+          "speakerLabel": "Narrator",
+          "farsi": "مامان انارهای قرمز و هندوانهٔ شیرین آورد.",
+          "finglish": "mâmân anârhâ-ye ghermez o hendune-ye shirin âvord.",
+          "english": "Mom brought ruby-red pomegranates and sweet watermelon."
+        },
+        {
+          "id": "sy_4",
+          "speaker": "NARRATOR",
+          "speakerLabel": "Narrator",
+          "farsi": "روی فرش کنار هم نشستیم و آجیل خوردیم.",
+          "finglish": "ru-ye farsh kenâr-e ham neshastim o âjil khordim.",
+          "english": "We sat together on the Persian rug and ate roasted nuts."
+        },
+        {
+          "id": "sy_5",
+          "speaker": "NARRATOR",
+          "speakerLabel": "Narrator",
+          "farsi": "پدربزرگ کتاب حافظ را باز کرد و یک شعر زیبا خواند.",
+          "finglish": "pedarbozorg ketâb-e Hâfez ro bâz kard o yek she'r-e zibâ khund.",
+          "english": "Grandpa opened the book of Hâfez and read a beautiful poem."
+        },
+        {
+          "id": "sy_6",
+          "speaker": "NARRATOR",
+          "speakerLabel": "Narrator",
+          "farsi": "همه گفتند: دستت درد نکنه، شب خیلی قشنگی بود!",
+          "finglish": "hame goftan: dastet dard nakone, shab-e kheli ghashangi bud!",
+          "english": "Everyone said: thank you, it was such a lovely night!"
+        }
+      ]
+    },
+    {
+      "id": "story_grandma_call",
+      "title": "Calling Mâmânbozorg (Two Voices)",
+      "farsiTitle": "تلفن به مامان‌بزرگ",
+      "level": "Conversational • Lesson 19",
+      "durationLabel": "2 min dialogue",
+      "imageName": "img_story_grandma_call",
+      "hasTwoVoices": true,
+      "culturalNote": "Listen to the two voices: Nima speaks in an upbeat younger voice, while Mâmânbozorg replies in a warm, gentle voice.",
+      "sentences": [
+        {
+          "id": "sg_1",
+          "speaker": "NIMA",
+          "speakerLabel": "Nima",
+          "farsi": "الو، سلام مامان‌بزرگ! من نیما هستم.",
+          "finglish": "alo, salâm mâmânbozorg! man Nimâ hastam.",
+          "english": "Hello, hi Grandma! It's Nima."
+        },
+        {
+          "id": "sg_2",
+          "speaker": "GRANDMA",
+          "speakerLabel": "Mâmânbozorg",
+          "farsi": "سلام عزیز دلم! قربون صدات برم، حالت چطوره؟",
+          "finglish": "salâm aziz-e delam! ghorbun-e sedât beram, hâlet chetore?",
+          "english": "Hello, sweetheart! How lovely to hear your voice, how are you?"
+        },
+        {
+          "id": "sg_3",
+          "speaker": "NIMA",
+          "speakerLabel": "Nima",
+          "farsi": "من خوبم، مرسی. شما چطورید؟ چیکار می‌کنید؟",
+          "finglish": "man khubam, mersi. shomâ chetorid? chikâr mikonid?",
+          "english": "I'm good, thanks. How are you? What are you up to?"
+        },
+        {
+          "id": "sg_4",
+          "speaker": "GRANDMA",
+          "speakerLabel": "Mâmânbozorg",
+          "farsi": "داشتم چای می‌خوردم و به یادت بودم، پسرم.",
+          "finglish": "dâshtam chây mikhordam o be yâdet budam, pesaram.",
+          "english": "I was having tea and thinking of you, my dear boy."
+        },
+        {
+          "id": "sg_5",
+          "speaker": "NIMA",
+          "speakerLabel": "Nima",
+          "farsi": "مامان‌بزرگ، دلم براتون خیلی تنگ شده. جمعه میام پیشتون!",
+          "finglish": "mâmânbozorg, delam barâtun kheli tang shode. jom'e miyâm pishetun!",
+          "english": "Grandma, I miss you so much. I'm coming to see you on Friday!"
+        },
+        {
+          "id": "sg_6",
+          "speaker": "GRANDMA",
+          "speakerLabel": "Mâmânbozorg",
+          "farsi": "قدمت رو چشم! به مامان و بابا سلام برسون. خداحافظ.",
+          "finglish": "ghadamet ru cheshm! be mâmân o bâbâ salâm beresun. khodâ hâfez.",
+          "english": "You're always welcome! Say hi to Mom and Dad. Goodbye."
+        },
+        {
+          "id": "sg_7",
+          "speaker": "NIMA",
+          "speakerLabel": "Nima",
+          "farsi": "خداحافظ مامان‌بزرگ، مراقب خودتون باشید!",
+          "finglish": "khodâ hâfez mâmânbozorg, morâgheb-e khodetun bâshid!",
+          "english": "Goodbye Grandma, take good care of yourself!"
+        }
+      ]
+    },
+    {
+      "id": "story_bazaar",
+      "title": "Tea & Saffron at the Bazaar",
+      "farsiTitle": "چای و زعفران در بازار",
+      "level": "Everyday • Lessons 5–14",
+      "durationLabel": "2 min listen",
+      "imageName": "img_onboarding_welcome",
+      "hasTwoVoices": true,
+      "culturalNote": "At a traditional Persian bazaar, friendly ta'ârof and warm small talk go hand in hand with shopping.",
+      "sentences": [
+        {
+          "id": "sb_1",
+          "speaker": "NIMA",
+          "speakerLabel": "Shopper",
+          "farsi": "سلام آقا، ببخشید، این چای ایرانی چنده؟",
+          "finglish": "salâm âghâ, bebakhshid, in chây-e irâni chand-e?",
+          "english": "Hello sir, excuse me, how much is this Persian tea?"
+        },
+        {
+          "id": "sb_2",
+          "speaker": "GRANDMA",
+          "speakerLabel": "Shopkeeper",
+          "farsi": "سلام، خوش آمدید! قابل شما رو نداره، پنجاه تومنه.",
+          "finglish": "salâm, khosh umadid! ghâbel-e shomâ ro nadâre, panjâh toman-e.",
+          "english": "Hello, welcome! Please take it as a gift—it's 50 toman."
+        },
+        {
+          "id": "sb_3",
+          "speaker": "NIMA",
+          "speakerLabel": "Shopper",
+          "farsi": "لطف دارید! خیلی خوب و ارزونه. دو بسته می‌خوام.",
+          "finglish": "lotf dârid! kheli khub o arzun-e. do baste mikhâm.",
+          "english": "That's kind of you! It's very good and affordable. I'd like two packs."
+        },
+        {
+          "id": "sb_4",
+          "speaker": "GRANDMA",
+          "speakerLabel": "Shopkeeper",
+          "farsi": "چشم، بفرمایید! نوش جان!",
+          "finglish": "cheshm, befarmâyid! nush-e jân!",
+          "english": "Of course, here you go! Enjoy!"
+        },
+        {
+          "id": "sb_5",
+          "speaker": "NIMA",
+          "speakerLabel": "Shopper",
+          "farsi": "خیلی ممنون، دستتون درد نکنه. خداحافظ!",
+          "finglish": "kheli mamnun, dastetun dard nakone. khodâ hâfez!",
+          "english": "Thank you very much, appreciate it. Goodbye!"
+        }
+      ]
+    }
+  ]
+}

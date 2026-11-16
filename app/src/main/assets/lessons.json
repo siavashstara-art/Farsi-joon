@@ -1,0 +1,738 @@
+{
+  "lessons": [
+    {
+      "id": 1,
+      "title": "Greetings & Hello",
+      "farsiTitle": "سلام و احوالپرسی",
+      "subtitle": "Warm everyday hellos with family and friends",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Spoken: خوبم (khubam) & چطوری (chetori) | Formal: حال شما چطور است؟ (hâl-e shomâ chetor ast?)",
+      "words": [
+        { "id": "l1_w1", "farsi": "سلام", "finglish": "salâm", "english": "Hello / Peace", "note": "Used anytime, day or night" },
+        { "id": "l1_w2", "farsi": "خداحافظ", "finglish": "khodâ hâfez", "english": "Goodbye", "note": "Literally 'May God protect you'" },
+        { "id": "l1_w3", "farsi": "چطوری", "finglish": "chetori", "english": "How are you?", "note": "Informal; formal is chetorid" },
+        { "id": "l1_w4", "farsi": "خوبم", "finglish": "khubam", "english": "I am good", "note": "Spoken short for من خوب هستم" },
+        { "id": "l1_w5", "farsi": "مرسی", "finglish": "mersi", "english": "Thank you", "note": "Everyday spoken favorite" },
+        { "id": "l1_w6", "farsi": "ممنون", "finglish": "mamnun", "english": "Grateful / Thanks", "note": "Warm and polite" },
+        { "id": "l1_w7", "farsi": "خوشبختم", "finglish": "khoshbakhtam", "english": "Nice to meet you", "note": "Literally 'I am fortunate'" },
+        { "id": "l1_w8", "farsi": "اسمت چیه", "finglish": "esmet chie?", "english": "What is your name?", "note": "Formal: esm-e shomâ chist?" }
+      ],
+      "phrases": [
+        { "id": "l1_p1", "farsi": "سلام عزیز دلم", "finglish": "salâm aziz-e delam", "english": "Hello, dear to my heart (family greeting)" },
+        { "id": "l1_p2", "farsi": "خیلی ممنون", "finglish": "kheli mamnun", "english": "Thank you very much" }
+      ],
+      "sentences": [
+        { "id": "l1_s1", "farsi": "سلام! چطوری؟", "finglish": "salâm! chetori?", "english": "Hello! How are you?", "speaker": "A" },
+        { "id": "l1_s2", "farsi": "مرسی، من خوبم.", "finglish": "mersi, man khubam.", "english": "Thanks, I am good.", "speaker": "B" },
+        { "id": "l1_s3", "farsi": "خداحافظ، فردا می‌بینمت!", "finglish": "khodâ hâfez, fardâ mibinamet!", "english": "Goodbye, see you tomorrow!", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l1_q1", "type": "multiple_choice", "prompt": "What does 'سلام' mean?", "promptFarsi": "سلام", "promptFinglish": "salâm", "options": ["Hello", "Goodbye", "Thank you", "I am good"], "correctIndex": 0, "explanation": "'salâm' is the universal Persian greeting for hello." },
+        { "id": "l1_q2", "type": "multiple_choice", "prompt": "How do you ask a friend 'How are you?' casually?", "promptFarsi": "چطوری؟", "promptFinglish": "", "options": ["khodâ hâfez", "chetori?", "khubam", "mamnun"], "correctIndex": 1, "explanation": "'chetori?' is the warm, everyday way to ask how someone is." },
+        { "id": "l1_q3", "type": "fill_blank", "prompt": "Complete: Salâm! Chetori? — ____, man khubam.", "promptFarsi": "سلام! چطوری؟ — ____، من خوبم.", "promptFinglish": "", "options": ["Mersi", "Khodâ hâfez", "Esmet chie", "Khoshbakhtam"], "correctIndex": 0, "explanation": "'Mersi' (Thank you) naturally opens your reply." },
+        { "id": "l1_q4", "type": "multiple_choice", "prompt": "Which word means 'Goodbye'?", "promptFarsi": "خداحافظ", "promptFinglish": "khodâ hâfez", "options": ["mamnun", "khoshbakhtam", "khodâ hâfez", "salâm"], "correctIndex": 2, "explanation": "'khodâ hâfez' means goodbye." }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Family & Loved Ones",
+      "farsiTitle": "خانواده ۱",
+      "subtitle": "Talk about parents, siblings, and grandparents",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Spoken: مامان (mâmân) & بابا (bâbâ) | Formal: مادر (mâdar) & پدر (pedar)",
+      "words": [
+        { "id": "l2_w1", "farsi": "مامان", "finglish": "mâmân", "english": "Mom", "note": "Formal: مادر (mâdar)" },
+        { "id": "l2_w2", "farsi": "بابا", "finglish": "bâbâ", "english": "Dad", "note": "Formal: پدر (pedar)" },
+        { "id": "l2_w3", "farsi": "خواهر", "finglish": "khâhar", "english": "Sister", "note": "Silent 'v' in خوا" },
+        { "id": "l2_w4", "farsi": "برادر", "finglish": "barâdar", "english": "Brother", "note": "Often داداش (dâdâsh) casually" },
+        { "id": "l2_w5", "farsi": "پسر", "finglish": "pesar", "english": "Son / Boy", "note": "Also 'guy' in casual speech" },
+        { "id": "l2_w6", "farsi": "دختر", "finglish": "dokhtar", "english": "Daughter / Girl", "note": "Notice the 'kh' sound" },
+        { "id": "l2_w7", "farsi": "مادربزرگ", "finglish": "mâdarbozorg", "english": "Grandmother", "note": "Affectionately مامان‌بزرگ" },
+        { "id": "l2_w8", "farsi": "پدربزرگ", "finglish": "pedarbozorg", "english": "Grandfather", "note": "Affectionately بابابزرگ" }
+      ],
+      "phrases": [
+        { "id": "l2_p1", "farsi": "خانواده‌ات چطورن؟", "finglish": "khânevâdat chetoran?", "english": "How is your family?" },
+        { "id": "l2_p2", "farsi": "به مامان سلام برسون", "finglish": "be mâmân salâm beresun", "english": "Say hello to Mom for me" }
+      ],
+      "sentences": [
+        { "id": "l2_s1", "farsi": "مامان و بابا خوبن.", "finglish": "mâmân o bâbâ khuban.", "english": "Mom and Dad are doing well.", "speaker": "A" },
+        { "id": "l2_s2", "farsi": "من یک خواهر و یک برادر دارم.", "finglish": "man yek khâhar o yek barâdar dâram.", "english": "I have one sister and one brother.", "speaker": "A" },
+        { "id": "l2_s3", "farsi": "مادربزرگ خیلی مهربون است.", "finglish": "mâdarbozorg kheli mehrabun-e.", "english": "Grandma is very kind.", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l2_q1", "type": "multiple_choice", "prompt": "What does 'خواهر' mean?", "promptFarsi": "خواهر", "promptFinglish": "khâhar", "options": ["Brother", "Sister", "Mother", "Daughter"], "correctIndex": 1, "explanation": "'khâhar' means sister." },
+        { "id": "l2_q2", "type": "multiple_choice", "prompt": "How do you say 'Grandmother'?", "promptFarsi": "مادربزرگ", "promptFinglish": "", "options": ["pedarbozorg", "mâdarbozorg", "dokhtar", "mâmân"], "correctIndex": 1, "explanation": "'mâdar' (mother) + 'bozorg' (big/grand) = mâdarbozorg." },
+        { "id": "l2_q3", "type": "fill_blank", "prompt": "Complete: Man yek ____ va yek barâdar dâram. (sister)", "promptFarsi": "من یک ____ و یک برادر دارم.", "promptFinglish": "", "options": ["pesar", "khâhar", "bâbâ", "mâmân"], "correctIndex": 1, "explanation": "'khâhar' means sister." },
+        { "id": "l2_q4", "type": "multiple_choice", "prompt": "Which pair means 'Son' and 'Daughter'?", "promptFarsi": "پسر و دختر", "promptFinglish": "", "options": ["mâmân o bâbâ", "pesar o dokhtar", "khâhar o barâdar", "mâdarbozorg o pedarbozorg"], "correctIndex": 1, "explanation": "'pesar' is son/boy and 'dokhtar' is daughter/girl." }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Alphabet 1: Alef to Se",
+      "farsiTitle": "الفبا ۱ (ا ب پ ت ث)",
+      "subtitle": "Your first 5 Persian letters & reading real words",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": true,
+      "colloquialNote": "Persian reads Right-to-Left (RTL). Notice how 'ا' (alef) never connects to the letter after it!",
+      "words": [
+        { "id": "l3_w1", "farsi": "آب", "finglish": "âb", "english": "Water", "note": "آ (long â) + ب (b)" },
+        { "id": "l3_w2", "farsi": "بابا", "finglish": "bâbâ", "english": "Dad", "note": "ب + ا + ب + ا" },
+        { "id": "l3_w3", "farsi": "پا", "finglish": "pâ", "english": "Foot / Leg", "note": "پ (3 dots under!) + ا" },
+        { "id": "l3_w4", "farsi": "تاب", "finglish": "tâb", "english": "Swing", "note": "ت (2 dots on top) + ا + ب" },
+        { "id": "l3_w5", "farsi": "تپه", "finglish": "tappe", "english": "Hill", "note": "Starts with تـ then ـپـ" },
+        { "id": "l3_w6", "farsi": "باب", "finglish": "bâb", "english": "Chapter / Suitable", "note": "Notice initial بـ vs final ب" },
+        { "id": "l3_w7", "farsi": "پت", "finglish": "pat", "english": "Tap / Fluffy", "note": "پـ + ـت" },
+        { "id": "l3_w8", "farsi": "ثابت", "finglish": "sâbet", "english": "Steady / Fixed", "note": "ث sounds like 's' in Persian" }
+      ],
+      "phrases": [
+        { "id": "l3_p1", "farsi": "بابا آب داد", "finglish": "bâbâ âb dâd", "english": "Dad gave water (classic first Persian sentence!)" }
+      ],
+      "sentences": [
+        { "id": "l3_s1", "farsi": "بابا آب داد.", "finglish": "bâbâ âb dâd.", "english": "Dad gave water.", "speaker": "A" },
+        { "id": "l3_s2", "farsi": "پاپا تاب دارد.", "finglish": "bâbâ tâb dârad.", "english": "Dad has a swing.", "speaker": "A" },
+        { "id": "l3_s3", "farsi": "آب پاک است.", "finglish": "âb pâk ast.", "english": "The water is clean.", "speaker": "A" }
+      ],
+      "letters": [
+        { "letter": "ا / آ", "name": "Alef", "sound": "â / a", "isolated": "ا", "initial": "ا", "medial": "ـا", "final": "ـا", "exampleFarsi": "آب", "exampleFinglish": "âb", "exampleEnglish": "Water" },
+        { "letter": "ب", "name": "Be", "sound": "b", "isolated": "ب", "initial": "بـ", "medial": "ـبـ", "final": "ـب", "exampleFarsi": "بابا", "exampleFinglish": "bâbâ", "exampleEnglish": "Dad" },
+        { "letter": "پ", "name": "Pe", "sound": "p", "isolated": "پ", "initial": "پـ", "medial": "ـپـ", "final": "ـپ", "exampleFarsi": "پا", "exampleFinglish": "pâ", "exampleEnglish": "Foot" },
+        { "letter": "ت", "name": "Te", "sound": "t", "isolated": "ت", "initial": "تـ", "medial": "ـتـ", "final": "ـت", "exampleFarsi": "تاب", "exampleFinglish": "tâb", "exampleEnglish": "Swing" },
+        { "letter": "ث", "name": "Se", "sound": "s", "isolated": "ث", "initial": "ثـ", "medial": "ـثـ", "final": "ـث", "exampleFarsi": "ثابت", "exampleFinglish": "sâbet", "exampleEnglish": "Steady" }
+      ],
+      "quiz": [
+        { "id": "l3_q1", "type": "multiple_choice", "prompt": "Which letter has 3 dots underneath and makes the 'p' sound?", "promptFarsi": "پ", "promptFinglish": "pe", "options": ["ب", "پ", "ت", "ث"], "correctIndex": 1, "explanation": "پ (Pe) has three dots underneath and sounds like 'p'." },
+        { "id": "l3_q2", "type": "multiple_choice", "prompt": "Read this Persian word: 'آب'", "promptFarsi": "آب", "promptFinglish": "", "options": ["bâbâ", "pâ", "âb", "tâb"], "correctIndex": 2, "explanation": "آ (â) + ب (b) = âb (water)." },
+        { "id": "l3_q3", "type": "multiple_choice", "prompt": "How is 'بابا' read?", "promptFarsi": "بابا", "promptFinglish": "", "options": ["pâ", "âb", "bâbâ", "sâbet"], "correctIndex": 2, "explanation": "ب + ا + ب + ا spells bâbâ (Dad)." },
+        { "id": "l3_q4", "type": "multiple_choice", "prompt": "Which form is the initial (starting) form of ت?", "promptFarsi": "ت", "promptFinglish": "te", "options": ["ـت", "تـ", "ـتـ", "ت"], "correctIndex": 1, "explanation": "تـ connects to the left to start a word." }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Numbers 1 to 10",
+      "farsiTitle": "اعداد ۱ تا ۱۰",
+      "subtitle": "Count from 1 to 10 in spoken Persian",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Note Persian digits: ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹ ۱۰",
+      "words": [
+        { "id": "l4_w1", "farsi": "یک", "finglish": "yek", "english": "One (۱)", "note": "Often 'ye' before a noun" },
+        { "id": "l4_w2", "farsi": "دو", "finglish": "do", "english": "Two (۲)", "note": "Rhymes with 'go' short" },
+        { "id": "l4_w3", "farsi": "سه", "finglish": "se", "english": "Three (۳)", "note": "Pronounced 'se'" },
+        { "id": "l4_w4", "farsi": "چهار", "finglish": "chahâr", "english": "Four (۴)", "note": "Spoken quickly as châr" },
+        { "id": "l4_w5", "farsi": "پنج", "finglish": "panj", "english": "Five (۵)", "note": "Hard 'j' at the end" },
+        { "id": "l4_w6", "farsi": "شش", "finglish": "shish", "english": "Six (۶)", "note": "Written شش, spoken shish" },
+        { "id": "l4_w7", "farsi": "هفت", "finglish": "haft", "english": "Seven (۷)", "note": "Key number for Haft-Sin!" },
+        { "id": "l4_w8", "farsi": "هشت", "finglish": "hasht", "english": "Eight (۸)", "note": "" },
+        { "id": "l4_w9", "farsi": "نه", "finglish": "noh", "english": "Nine (۹)", "note": "Pronounced 'noh' (unlike 'na' = no)" },
+        { "id": "l4_w10", "farsi": "ده", "finglish": "dah", "english": "Ten (۱۰)", "note": "" }
+      ],
+      "phrases": [
+        { "id": "l4_p1", "farsi": "یه لحظه صبر کن", "finglish": "ye lahze sabr kon", "english": "Wait a moment (using 'ye' = one/a)" },
+        { "id": "l4_p2", "farsi": "ساعت ده", "finglish": "sâ'at-e dah", "english": "Ten o'clock" }
+      ],
+      "sentences": [
+        { "id": "l4_s1", "farsi": "من دو تا چای می‌خوام.", "finglish": "man do tâ chây mikhâm.", "english": "I want two teas.", "speaker": "A" },
+        { "id": "l4_s2", "farsi": "پنج دقیقه دیگه میام.", "finglish": "panj daghighe dige miyâm.", "english": "I'll come in five minutes.", "speaker": "A" },
+        { "id": "l4_s3", "farsi": "هفت‌سین هفت تا چیز داره.", "finglish": "Haft-Sin haft tâ chiz dâre.", "english": "Haft-Sin has seven things.", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l4_q1", "type": "multiple_choice", "prompt": "Which number is 'هفت' (haft)?", "promptFarsi": "هفت", "promptFinglish": "haft", "options": ["5", "6", "7", "8"], "correctIndex": 2, "explanation": "'haft' means seven." },
+        { "id": "l4_q2", "type": "multiple_choice", "prompt": "How is '۶' (Six) pronounced in everyday Persian?", "promptFarsi": "شش", "promptFinglish": "", "options": ["shish", "panj", "noh", "se"], "correctIndex": 0, "explanation": "Six is spelled شش and spoken 'shish'." },
+        { "id": "l4_q3", "type": "fill_blank", "prompt": "Complete: yek, do, se, ____, panj", "promptFarsi": "یک، دو، سه، ____، پنج", "promptFinglish": "", "options": ["chahâr", "haft", "dah", "noh"], "correctIndex": 0, "explanation": "'chahâr' is four." },
+        { "id": "l4_q4", "type": "multiple_choice", "prompt": "What number is 'ده'?", "promptFarsi": "ده", "promptFinglish": "dah", "options": ["2", "8", "9", "10"], "correctIndex": 3, "explanation": "'dah' means ten." }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Food, Tea & Gratitude",
+      "farsiTitle": "غذا و نوشیدنی",
+      "subtitle": "Order family staples and thank the cook like a pro",
+      "isCheckpointAfter": true,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Spoken: نون (nun) vs Formal: نان (nân) | Spoken: دستت درد نکنه (dastet dard nakone)",
+      "words": [
+        { "id": "l5_w1", "farsi": "نان", "finglish": "nân / nun", "english": "Bread", "note": "Spoken 'nun', written 'نان'" },
+        { "id": "l5_w2", "farsi": "آب", "finglish": "âb", "english": "Water", "note": "Essential word!" },
+        { "id": "l5_w3", "farsi": "چای", "finglish": "chây", "english": "Tea", "note": "Often 'châyi' in casual speech" },
+        { "id": "l5_w4", "farsi": "برنج", "finglish": "berenj", "english": "Rice", "note": "Cooked rice is پلو (polo)" },
+        { "id": "l5_w5", "farsi": "میوه", "finglish": "mive", "english": "Fruit", "note": "Always served for guests!" },
+        { "id": "l5_w6", "farsi": "غذا", "finglish": "ghazâ", "english": "Food / Meal", "note": "" },
+        { "id": "l5_w7", "farsi": "ماست", "finglish": "mâst", "english": "Yogurt", "note": "Great with برنج" },
+        { "id": "l5_w8", "farsi": "شیرینی", "finglish": "shirini", "english": "Sweets / Pastry", "note": "From شیرین (sweet)" }
+      ],
+      "phrases": [
+        { "id": "l5_p1", "farsi": "دستت درد نکنه", "finglish": "dastet dard nakone", "english": "Thank you for cooking / making this! (Lit: May your hand not hurt)" },
+        { "id": "l5_p2", "farsi": "خیلی خوشمزه بود", "finglish": "kheli khoshmaze bud", "english": "It was very delicious" }
+      ],
+      "sentences": [
+        { "id": "l5_s1", "farsi": "یه لیوان آب می‌خوام، مرسی.", "finglish": "ye livân âb mikhâm, mersi.", "english": "I'd like a glass of water, thanks.", "speaker": "A" },
+        { "id": "l5_s2", "farsi": "چای و شیرینی بفرمایید.", "finglish": "chây o shirini befarmâyid.", "english": "Please help yourself to tea and sweets.", "speaker": "B" },
+        { "id": "l5_s3", "farsi": "مامان، دستت درد نکنه، غذا عالی بود!", "finglish": "mâmân, dastet dard nakone, ghazâ âli bud!", "english": "Mom, thank you for cooking, the food was great!", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l5_q1", "type": "multiple_choice", "prompt": "What do you say to thank someone who cooked a meal?", "promptFarsi": "دستت درد نکنه", "promptFinglish": "", "options": ["khodâ hâfez", "dastet dard nakone", "chetori", "esmet chie"], "correctIndex": 1, "explanation": "'dastet dard nakone' literally means 'may your hand not hurt' — the classic Persian thank-you for effort/cooking." },
+        { "id": "l5_q2", "type": "multiple_choice", "prompt": "What is 'برنج'?", "promptFarsi": "برنج", "promptFinglish": "berenj", "options": ["Tea", "Fruit", "Rice", "Bread"], "correctIndex": 2, "explanation": "'berenj' means rice." },
+        { "id": "l5_q3", "type": "fill_blank", "prompt": "Checkpoint 1: Complete 'Man ____ o barâdar dâram.' (sister)", "promptFarsi": "من ____ و برادر دارم.", "promptFinglish": "", "options": ["khâhar", "chây", "mive", "panj"], "correctIndex": 0, "explanation": "'khâhar' means sister." },
+        { "id": "l5_q4", "type": "multiple_choice", "prompt": "Checkpoint 1: Which sentence means 'Dad gave water'?", "promptFarsi": "بابا آب داد", "promptFinglish": "", "options": ["bâbâ nân dâd", "bâbâ âb dâd", "mâmân chây dâd", "pesar shirini dâd"], "correctIndex": 1, "explanation": "بابا (bâbâ) آب (âb) داد (dâd)." }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Ta'ârof & Hospitality",
+      "farsiTitle": "تعارف و مهمانی",
+      "subtitle": "Warm Persian politeness when hosting or visiting",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Ta'ârof is warm Persian generosity — refusing politely once before accepting is part of the dance!",
+      "words": [
+        { "id": "l6_w1", "farsi": "بفرمایید", "finglish": "befarmâyid", "english": "Please go ahead / Here you go", "note": "Most versatile polite word" },
+        { "id": "l6_w2", "farsi": "خوش آمدید", "finglish": "khosh âmadid", "english": "Welcome!", "note": "Spoken: khosh umadid" },
+        { "id": "l6_w3", "farsi": "تعارف", "finglish": "ta'ârof", "english": "Polite hospitality / etiquette", "note": "Cultural pillar" },
+        { "id": "l6_w4", "farsi": "قربانت برم", "finglish": "ghorbânet beram", "english": "I adore you / You're so sweet", "note": "Warm family affection" },
+        { "id": "l6_w5", "farsi": "نوش جان", "finglish": "nush-e jân", "english": "Enjoy your meal / Bless you", "note": "Said to someone eating" },
+        { "id": "l6_w6", "farsi": "خواهش می‌کنم", "finglish": "khâhesh mikonam", "english": "You're welcome / Please", "note": "Reply to mersi/mamnun" },
+        { "id": "l6_w7", "farsi": "ببخشید", "finglish": "bebakhshid", "english": "Excuse me / Sorry", "note": "Polite attention-getter too" },
+        { "id": "l6_w8", "farsi": "مهمان", "finglish": "mehmun", "english": "Guest", "note": "Formal: مهمان (mehmân)" }
+      ],
+      "phrases": [
+        { "id": "l6_p1", "farsi": "تعارف نکن، خونهٔ خودته!", "finglish": "ta'ârof nakon, khune-ye khodet-e!", "english": "Don't hold back, make yourself at home!" },
+        { "id": "l6_p2", "farsi": "زحمت نکشید", "finglish": "zahmat nakeshid", "english": "Please don't go to any trouble" }
+      ],
+      "sentences": [
+        { "id": "l6_s1", "farsi": "خیلی خوش آمدید! بفرمایید تو.", "finglish": "kheli khosh umadid! befarmâyid tu.", "english": "Welcome! Please come inside.", "speaker": "A" },
+        { "id": "l6_s2", "farsi": "تعارف نکنید، میوه بردارید.", "finglish": "ta'ârof nakonid, mive bardârid.", "english": "Don't be shy, take some fruit.", "speaker": "A" },
+        { "id": "l6_s3", "farsi": "مرسی، دستتون درد نکنه! — خواهش می‌کنم، نوش جان.", "finglish": "mersi, dastetun dard nakone! — khâhesh mikonam, nush-e jân.", "english": "Thanks! — You're welcome, enjoy!", "speaker": "B" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l6_q1", "type": "multiple_choice", "prompt": "What do you say when someone enters your home?", "promptFarsi": "خوش آمدید", "promptFinglish": "", "options": ["khosh umadid", "nush-e jân", "khodâ hâfez", "bebakhshid"], "correctIndex": 0, "explanation": "'khosh âmadid' (spoken khosh umadid) means Welcome!" },
+        { "id": "l6_q2", "type": "multiple_choice", "prompt": "How do you say 'You're welcome' after someone says 'mersi'?", "promptFarsi": "خواهش می‌کنم", "promptFinglish": "", "options": ["ta'ârof nakon", "khâhesh mikonam", "salâm", "mehmun"], "correctIndex": 1, "explanation": "'khâhesh mikonam' means You're welcome." },
+        { "id": "l6_q3", "type": "fill_blank", "prompt": "Host says while serving tea: '____!' (Here you go / Please)", "promptFarsi": "____!", "promptFinglish": "", "options": ["Befarmâyid", "Bebakhshid", "Khodâ hâfez", "Mehmun"], "correctIndex": 0, "explanation": "'Befarmâyid' invites someone to sit, enter, eat, or go first." },
+        { "id": "l6_q4", "type": "multiple_choice", "prompt": "What does 'نوش جان' mean?", "promptFarsi": "نوش جان", "promptFinglish": "nush-e jân", "options": ["Excuse me", "Enjoy your meal", "Good morning", "Don't mention it"], "correctIndex": 1, "explanation": "'nush-e jân' literally means 'nourishment to your soul' (Enjoy!)." }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Alphabet 2: Jim to Zhe",
+      "farsiTitle": "الفبا ۲ (ج چ ح خ د ذ ر ز ژ)",
+      "subtitle": "Nine new letters including non-connectors د ذ ر ز ژ",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": true,
+      "colloquialNote": "Remember: د ذ ر ز ژ connect on the right (before them), never on the left (after them)!",
+      "words": [
+        { "id": "l7_w1", "farsi": "چای", "finglish": "chây", "english": "Tea", "note": "Starts with چـ (3 dots below)" },
+        { "id": "l7_w2", "farsi": "در", "finglish": "dar", "english": "Door", "note": "د + ر (neither connects left)" },
+        { "id": "l7_w3", "farsi": "پدر", "finglish": "pedar", "english": "Father", "note": "پـ + ـد + ر" },
+        { "id": "l7_w4", "farsi": "زرد", "finglish": "zard", "english": "Yellow", "note": "ز + ر + د" },
+        { "id": "l7_w5", "farsi": "جاده", "finglish": "jâdde", "english": "Road", "note": "Starts with جـ (1 dot inside)" },
+        { "id": "l7_w6", "farsi": "خانه", "finglish": "khâne", "english": "House / Home", "note": "Starts with خـ (1 dot above)" },
+        { "id": "l7_w7", "farsi": "باران", "finglish": "bârân", "english": "Rain", "note": "Spoken: bârun" },
+        { "id": "l7_w8", "farsi": "ژاله", "finglish": "zhâle", "english": "Dew / Zhaleh (name)", "note": "ژ sounds like 's' in treasure" }
+      ],
+      "phrases": [
+        { "id": "l7_p1", "farsi": "باران آمد", "finglish": "bârân âmad", "english": "The rain came" }
+      ],
+      "sentences": [
+        { "id": "l7_s1", "farsi": "پدر در خانه است.", "finglish": "pedar dar khâne ast.", "english": "Father is at home.", "speaker": "A" },
+        { "id": "l7_s2", "farsi": "در زرد باز است.", "finglish": "dar-e zard bâz ast.", "english": "The yellow door is open.", "speaker": "A" },
+        { "id": "l7_s3", "farsi": "باران تند بارید.", "finglish": "bârân-e tond bârid.", "english": "Heavy rain fell.", "speaker": "A" }
+      ],
+      "letters": [
+        { "letter": "ج", "name": "Jim", "sound": "j", "isolated": "ج", "initial": "جـ", "medial": "ـجـ", "final": "ـج", "exampleFarsi": "جاده", "exampleFinglish": "jâdde", "exampleEnglish": "Road" },
+        { "letter": "چ", "name": "Che", "sound": "ch", "isolated": "چ", "initial": "چـ", "medial": "ـچـ", "final": "ـچ", "exampleFarsi": "چای", "exampleFinglish": "chây", "exampleEnglish": "Tea" },
+        { "letter": "ح", "name": "He (jimi)", "sound": "h", "isolated": "ح", "initial": "حـ", "medial": "ـحـ", "final": "ـح", "exampleFarsi": "حافظ", "exampleFinglish": "Hâfez", "exampleEnglish": "Hafez" },
+        { "letter": "خ", "name": "Khe", "sound": "kh", "isolated": "خ", "initial": "خـ", "medial": "ـخـ", "final": "ـخ", "exampleFarsi": "خانه", "exampleFinglish": "khâne", "exampleEnglish": "Home" },
+        { "letter": "د", "name": "Dâl", "sound": "d", "isolated": "د", "initial": "د", "medial": "ـد", "final": "ـد", "exampleFarsi": "در", "exampleFinglish": "dar", "exampleEnglish": "Door" },
+        { "letter": "ذ", "name": "Zâl", "sound": "z", "isolated": "ذ", "initial": "ذ", "medial": "ـذ", "final": "ـذ", "exampleFarsi": "لذت", "exampleFinglish": "lezzat", "exampleEnglish": "Joy" },
+        { "letter": "ر", "name": "Re", "sound": "r", "isolated": "ر", "initial": "ر", "medial": "ـر", "final": "ـر", "exampleFarsi": "پدر", "exampleFinglish": "pedar", "exampleEnglish": "Father" },
+        { "letter": "ز", "name": "Ze", "sound": "z", "isolated": "ز", "initial": "ز", "medial": "ـز", "final": "ـز", "exampleFarsi": "زرد", "exampleFinglish": "zard", "exampleEnglish": "Yellow" },
+        { "letter": "ژ", "name": "Zhe", "sound": "zh", "isolated": "ژ", "initial": "ژ", "medial": "ـژ", "final": "ـژ", "exampleFarsi": "ژاله", "exampleFinglish": "zhâle", "exampleEnglish": "Dew" }
+      ],
+      "quiz": [
+        { "id": "l7_q1", "type": "multiple_choice", "prompt": "Which letter makes the 'kh' sound (like in khâne)?", "promptFarsi": "خ", "promptFinglish": "", "options": ["ج", "چ", "ح", "خ"], "correctIndex": 3, "explanation": "خ (Khe) has one dot on top." },
+        { "id": "l7_q2", "type": "multiple_choice", "prompt": "Read the word: 'در'", "promptFarsi": "در", "promptFinglish": "", "options": ["zard", "dar", "pedar", "chây"], "correctIndex": 1, "explanation": "د (d) + ر (r) = dar (door / in)." },
+        { "id": "l7_q3", "type": "multiple_choice", "prompt": "Which letter sounds like 'zh' (measure)?", "promptFarsi": "ژ", "promptFinglish": "", "options": ["ز", "ذ", "ژ", "ر"], "correctIndex": 2, "explanation": "ژ (Zhe) has 3 dots above and sounds like 'zh'." },
+        { "id": "l7_q4", "type": "multiple_choice", "prompt": "Read the word: 'پدر'", "promptFarsi": "پدر", "promptFinglish": "", "options": ["pesar", "pedar", "bâbâ", "barâdar"], "correctIndex": 1, "explanation": "پـ + ـد + ر = pedar (father)." }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Parts of the Body",
+      "farsiTitle": "اعضای بدن",
+      "subtitle": "From head to toe — plus soulful expressions with 'del'",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "'چشم (cheshm)' also means 'Sure / You got it!' in polite Persian.",
+      "words": [
+        { "id": "l8_w1", "farsi": "سر", "finglish": "sar", "english": "Head", "note": "" },
+        { "id": "l8_w2", "farsi": "دست", "finglish": "dast", "english": "Hand / Arm", "note": "Used in dastet dard nakone" },
+        { "id": "l8_w3", "farsi": "پا", "finglish": "pâ", "english": "Foot / Leg", "note": "" },
+        { "id": "l8_w4", "farsi": "چشم", "finglish": "cheshm", "english": "Eye", "note": "Also means 'Of course!'" },
+        { "id": "l8_w5", "farsi": "گوش", "finglish": "gush", "english": "Ear", "note": "گوش کردن = to listen" },
+        { "id": "l8_w6", "farsi": "دهان", "finglish": "dahân / dahan", "english": "Mouth", "note": "" },
+        { "id": "l8_w7", "farsi": "مو", "finglish": "mu", "english": "Hair", "note": "" },
+        { "id": "l8_w8", "farsi": "دل", "finglish": "del", "english": "Heart / Soul", "note": "Emotional heart in Persian" }
+      ],
+      "phrases": [
+        { "id": "l8_p1", "farsi": "چشم!", "finglish": "cheshm!", "english": "Of course! / Consider it done! (Lit: On my eye)" },
+        { "id": "l8_p2", "farsi": "سرم درد می‌کنه", "finglish": "saram dard mikone", "english": "My head hurts" }
+      ],
+      "sentences": [
+        { "id": "l8_s1", "farsi": "چشماش خیلی قشنگه.", "finglish": "cheshmâsh kheli ghashang-e.", "english": "Their eyes are very pretty.", "speaker": "A" },
+        { "id": "l8_s2", "farsi": "دستاتو بشور، غذا حاضره.", "finglish": "dastâto beshur, ghazâ hâzer-e.", "english": "Wash your hands, food is ready.", "speaker": "A" },
+        { "id": "l8_s3", "farsi": "گوش بده، یه داستان قشنگه!", "finglish": "gush bede, ye dâstân-e ghashang-e!", "english": "Listen, it's a lovely story!", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l8_q1", "type": "multiple_choice", "prompt": "What does 'چشم' mean literally — and as a polite reply?", "promptFarsi": "چشم", "promptFinglish": "cheshm", "options": ["Hand / Wait", "Eye / Sure!", "Ear / Listen", "Head / Okay"], "correctIndex": 1, "explanation": "'cheshm' means eye, and saying 'Cheshm!' means 'Sure / Gladly!'." },
+        { "id": "l8_q2", "type": "multiple_choice", "prompt": "Which word means 'Ear'?", "promptFarsi": "گوش", "promptFinglish": "", "options": ["dahan", "sar", "gush", "mu"], "correctIndex": 2, "explanation": "'gush' means ear." },
+        { "id": "l8_q3", "type": "fill_blank", "prompt": "Complete: ____ dard mikone (My head hurts)", "promptFarsi": "____ درد می‌کنه", "promptFinglish": "", "options": ["Saram", "Gusham", "Mu-m", "Delam"], "correctIndex": 0, "explanation": "'sar' (head) + '-am' (my) = saram." },
+        { "id": "l8_q4", "type": "multiple_choice", "prompt": "Which word means 'Hand'?", "promptFarsi": "دست", "promptFinglish": "", "options": ["pâ", "dast", "del", "cheshm"], "correctIndex": 1, "explanation": "'dast' means hand." }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Colors Around Us",
+      "farsiTitle": "رنگ‌ها",
+      "subtitle": "Describe Persian tiles, saffron, and pomegranates",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Everyday spoken Persian uses قرمز (ghermez) for red; literary Persian often uses سرخ (sorkh).",
+      "words": [
+        { "id": "l9_w1", "farsi": "قرمز / سرخ", "finglish": "ghermez / sorkh", "english": "Red", "note": "ghermez in speech; sorkh in poetry" },
+        { "id": "l9_w2", "farsi": "آبی", "finglish": "âbi", "english": "Blue", "note": "From آب (water) + ی" },
+        { "id": "l9_w3", "farsi": "سبز", "finglish": "sabz", "english": "Green", "note": "Like سبزه (sabze)!" },
+        { "id": "l9_w4", "farsi": "زرد", "finglish": "zard", "english": "Yellow", "note": "Like saffron gold" },
+        { "id": "l9_w5", "farsi": "سفید", "finglish": "sefid", "english": "White", "note": "" },
+        { "id": "l9_w6", "farsi": "سیاه", "finglish": "siyâh", "english": "Black", "note": "Also مشکی (meshki) for black clothes" },
+        { "id": "l9_w7", "farsi": "نارنجی", "finglish": "nârenji", "english": "Orange", "note": "From نارنج (bitter orange)" },
+        { "id": "l9_w8", "farsi": "فیروزه‌ای", "finglish": "firuze-i", "english": "Turquoise", "note": "Classic Persian tile color!" }
+      ],
+      "phrases": [
+        { "id": "l9_p1", "farsi": "چه رنگ قشنگی!", "finglish": "che rang-e ghashangi!", "english": "What a pretty color!" },
+        { "id": "l9_p2", "farsi": "آبی آسمونی", "finglish": "âbi-ye âsemuni", "english": "Sky blue" }
+      ],
+      "sentences": [
+        { "id": "l9_s1", "farsi": "آسمان آبی است.", "finglish": "âsemân âbi-ye.", "english": "The sky is blue.", "speaker": "A" },
+        { "id": "l9_s2", "farsi": "این سیب قرمز خیلی شیرینه.", "finglish": "in sib-e ghermez kheli shirin-e.", "english": "This red apple is very sweet.", "speaker": "A" },
+        { "id": "l9_s3", "farsi": "چای زعفرانی رنگ زرد داره.", "finglish": "chây-e za'ferâni rang-e zard dâre.", "english": "Saffron tea has a yellow color.", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l9_q1", "type": "multiple_choice", "prompt": "Which color word means 'Blue'?", "promptFarsi": "آبی", "promptFinglish": "", "options": ["sabz", "âbi", "zard", "sefid"], "correctIndex": 1, "explanation": "'âbi' means blue (literally water-colored)." },
+        { "id": "l9_q2", "type": "multiple_choice", "prompt": "What is 'قرمز' (ghermez)?", "promptFarsi": "قرمز", "promptFinglish": "ghermez", "options": ["White", "Black", "Red", "Green"], "correctIndex": 2, "explanation": "'ghermez' is the everyday word for red." },
+        { "id": "l9_q3", "type": "fill_blank", "prompt": "Complete: In sib-e ____ kheli shirin-e. (red)", "promptFarsi": "این سیب ____ خیلی شیرینه.", "promptFinglish": "", "options": ["ghermez", "siyâh", "âbi", "sefid"], "correctIndex": 0, "explanation": "'ghermez' means red." },
+        { "id": "l9_q4", "type": "multiple_choice", "prompt": "Which color means 'Green'?", "promptFarsi": "سبز", "promptFinglish": "", "options": ["zard", "sabz", "sefid", "siyâh"], "correctIndex": 1, "explanation": "'sabz' means green." }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Home & Everyday Objects",
+      "farsiTitle": "خانه و اشیا",
+      "subtitle": "Name the rooms and things inside a Persian home",
+      "isCheckpointAfter": true,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Spoken: خونه (khune) | Formal: خانه (khâne)",
+      "words": [
+        { "id": "l10_w1", "farsi": "خانه", "finglish": "khâne / khune", "english": "House / Home", "note": "Everyday spoken: khune" },
+        { "id": "l10_w2", "farsi": "اتاق", "finglish": "otâgh", "english": "Room", "note": "" },
+        { "id": "l10_w3", "farsi": "کتاب", "finglish": "ketâb", "english": "Book", "note": "" },
+        { "id": "l10_w4", "farsi": "میز", "finglish": "miz", "english": "Table / Desk", "note": "" },
+        { "id": "l10_w5", "farsi": "صندلی", "finglish": "sandali", "english": "Chair", "note": "" },
+        { "id": "l10_w6", "farsi": "در", "finglish": "dar", "english": "Door / In / At", "note": "Context tells you which!" },
+        { "id": "l10_w7", "farsi": "پنجره", "finglish": "panjere", "english": "Window", "note": "" },
+        { "id": "l10_w8", "farsi": "فرش", "finglish": "farsh", "english": "Rug / Carpet", "note": "Persian carpet!" }
+      ],
+      "phrases": [
+        { "id": "l10_p1", "farsi": "خونهٔ ما", "finglish": "khune-ye mâ", "english": "Our home" },
+        { "id": "l10_p2", "farsi": "روی میز", "finglish": "ru-ye miz", "english": "On the table" }
+      ],
+      "sentences": [
+        { "id": "l10_s1", "farsi": "کتاب روی میز است.", "finglish": "ketâb ru-ye miz-e.", "english": "The book is on the table.", "speaker": "A" },
+        { "id": "l10_s2", "farsi": "در اتاق دو تا صندلی هست.", "finglish": "tu-ye otâgh do tâ sandali hast.", "english": "There are two chairs in the room.", "speaker": "A" },
+        { "id": "l10_s3", "farsi": "فرش این خانه قرمز است.", "finglish": "farsh-e in khune ghermez-e.", "english": "The rug in this house is red.", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l10_q1", "type": "multiple_choice", "prompt": "What does 'کتاب' mean?", "promptFarsi": "کتاب", "promptFinglish": "ketâb", "options": ["Chair", "Table", "Book", "Window"], "correctIndex": 2, "explanation": "'ketâb' means book." },
+        { "id": "l10_q2", "type": "multiple_choice", "prompt": "How do people usually pronounce 'خانه' in spoken Persian?", "promptFarsi": "خانه", "promptFinglish": "", "options": ["khune", "otâgh", "farsh", "sandali"], "correctIndex": 0, "explanation": "Written 'khâne', spoken 'khune'." },
+        { "id": "l10_q3", "type": "fill_blank", "prompt": "Checkpoint 2: Ketâb ru-ye ____ ast. (on the table)", "promptFarsi": "کتاب روی ____ است.", "promptFinglish": "", "options": ["miz", "gush", "cheshm", "sabz"], "correctIndex": 0, "explanation": "'miz' means table." },
+        { "id": "l10_q4", "type": "multiple_choice", "prompt": "Checkpoint 2: What does 'فرش این خانه قرمز است' mean?", "promptFarsi": "فرش این خانه قرمز است", "promptFinglish": "", "options": ["The door is yellow", "The rug of this house is red", "The book is blue", "My room is white"], "correctIndex": 1, "explanation": "farsh (rug) + khâne (house) + ghermez (red)." }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Simple Sentences",
+      "farsiTitle": "جمله‌های ساده",
+      "subtitle": "Introduce yourself and ask questions naturally",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Note: 'تو چی؟ (to chi?)' means 'And you?' / 'What about you?' — super handy in conversation!",
+      "words": [
+        { "id": "l11_w1", "farsi": "من ... هستم", "finglish": "man ... hastam", "english": "I am ...", "note": "Verb always goes at the end!" },
+        { "id": "l11_w2", "farsi": "اسم من ...", "finglish": "esm-e man ...", "english": "My name is ...", "note": "Or spoken: esmam ...-e" },
+        { "id": "l11_w3", "farsi": "تو چی؟", "finglish": "to chi?", "english": "And you? / What about you?", "note": "Polite plural: شما چی؟ (shomâ chi?)" },
+        { "id": "l11_w4", "farsi": "این چیه؟", "finglish": "in chie?", "english": "What is this?", "note": "Formal: این چیست؟ (in chist?)" },
+        { "id": "l11_w5", "farsi": "اون کیه؟", "finglish": "un kie?", "english": "Who is that?", "note": "Formal: آن کیست؟" },
+        { "id": "l11_w6", "farsi": "بله", "finglish": "bale", "english": "Yes (polite)", "note": "Casual with friends: آره (âre)" },
+        { "id": "l11_w7", "farsi": "نه", "finglish": "na", "english": "No", "note": "" },
+        { "id": "l11_w8", "farsi": "خیلی خوبه", "finglish": "kheli khub-e", "english": "It's very good", "note": "Formal: خیلی خوب است" }
+      ],
+      "phrases": [
+        { "id": "l11_p1", "farsi": "من ایرانی هستم", "finglish": "man irâni hastam", "english": "I am Iranian" },
+        { "id": "l11_p2", "farsi": "من دارم فارسی یاد می‌گیرم", "finglish": "man dâram Fârsi yâd migiram", "english": "I am learning Farsi" }
+      ],
+      "sentences": [
+        { "id": "l11_s1", "farsi": "سلام، اسم من دارا است. تو چی؟", "finglish": "salâm, esm-e man Dârâ-st. to chi?", "english": "Hi, my name is Dara. And you?", "speaker": "A" },
+        { "id": "l11_s2", "farsi": "اسم من مینا است. من خیلی خوشحالم.", "finglish": "esm-e man Minâ-st. man kheli khoshhâlam.", "english": "My name is Mina. I am very happy.", "speaker": "B" },
+        { "id": "l11_s3", "farsi": "این چیه؟ — این کتاب فارسی من است.", "finglish": "in chie? — in ketâb-e Fârsi-ye man-e.", "english": "What is this? — This is my Farsi book.", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l11_q1", "type": "multiple_choice", "prompt": "What does 'تو چی؟' (to chi?) mean?", "promptFarsi": "تو چی؟", "promptFinglish": "to chi?", "options": ["Who is that?", "And you?", "What is this?", "Where are you?"], "correctIndex": 1, "explanation": "'to chi?' means 'And you?' / 'What about you?'." },
+        { "id": "l11_q2", "type": "multiple_choice", "prompt": "How do you say 'My name is...'?", "promptFarsi": "اسم من", "promptFinglish": "", "options": ["esm-e man ...", "in chie?", "man khubam", "un kie?"], "correctIndex": 0, "explanation": "'esm-e man' means my name." },
+        { "id": "l11_q3", "type": "fill_blank", "prompt": "Complete: Man irâni ____. (I am Iranian)", "promptFarsi": "من ایرانی ____.", "promptFinglish": "", "options": ["hastam", "chi", "kie", "na"], "correctIndex": 0, "explanation": "In Persian, 'hastam' (I am) comes at the end of the sentence." },
+        { "id": "l11_q4", "type": "multiple_choice", "prompt": "What is the casual spoken form of 'بله' (Yes) with friends?", "promptFarsi": "آره", "promptFinglish": "", "options": ["na", "âre", "kie", "khub"], "correctIndex": 1, "explanation": "'bale' is polite yes; 'âre' is casual yes." }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Alphabet 3: Complete the Script",
+      "farsiTitle": "الفبا ۳ (س تا ی)",
+      "subtitle": "Master the remaining 18 Persian letters & read full sentences",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": true,
+      "colloquialNote": "Congratulations! After this lesson, you know all 32 Persian letters. Notice how 'و' never connects left!",
+      "words": [
+        { "id": "l12_w1", "farsi": "سلام", "finglish": "salâm", "english": "Hello", "note": "س + ل + ا + م" },
+        { "id": "l12_w2", "farsi": "شب", "finglish": "shab", "english": "Night", "note": "شـ + ـب" },
+        { "id": "l12_w3", "farsi": "گل", "finglish": "gol", "english": "Flower", "note": "گـ (two top strokes) + ـل" },
+        { "id": "l12_w4", "farsi": "کلاه", "finglish": "kolâh", "english": "Hat", "note": "کـ + ـل + ا + ه" },
+        { "id": "l12_w5", "farsi": "نان", "finglish": "nân", "english": "Bread", "note": "نـ + ـا + ن" },
+        { "id": "l12_w6", "farsi": "میز", "finglish": "miz", "english": "Table", "note": "مـ + ـیـ + ـز" },
+        { "id": "l12_w7", "farsi": "هوا", "finglish": "havâ", "english": "Weather / Air", "note": "هـ + ـو + ا" },
+        { "id": "l12_w8", "farsi": "عشق", "finglish": "eshgh", "english": "Love", "note": "عـ + ـشـ + ـق" }
+      ],
+      "phrases": [
+        { "id": "l12_p1", "farsi": "من فارسی می‌خوانم", "finglish": "man Fârsi mikhânam", "english": "I read Persian!" }
+      ],
+      "sentences": [
+        { "id": "l12_s1", "farsi": "شب خوش، فردا می‌بینمت.", "finglish": "shab khosh, fardâ mibinamet.", "english": "Good night, see you tomorrow.", "speaker": "A" },
+        { "id": "l12_s2", "farsi": "هوای امروز خیلی خوب است.", "finglish": "havâ-ye emruz kheli khub ast.", "english": "Today's weather is very good.", "speaker": "A" },
+        { "id": "l12_s3", "farsi": "گل سرخ روی میز است.", "finglish": "gol-e sorkh ru-ye miz ast.", "english": "The red flower is on the table.", "speaker": "A" }
+      ],
+      "letters": [
+        { "letter": "س", "name": "Sin", "sound": "s", "isolated": "س", "initial": "سـ", "medial": "ـسـ", "final": "ـس", "exampleFarsi": "سلام", "exampleFinglish": "salâm", "exampleEnglish": "Hello" },
+        { "letter": "ش", "name": "Shin", "sound": "sh", "isolated": "ش", "initial": "شـ", "medial": "ـشـ", "final": "ـش", "exampleFarsi": "شب", "exampleFinglish": "shab", "exampleEnglish": "Night" },
+        { "letter": "ص / ض", "name": "Sâd / Zâd", "sound": "s / z", "isolated": "ص", "initial": "صـ", "medial": "ـصـ", "final": "ـص", "exampleFarsi": "صبر", "exampleFinglish": "sabr", "exampleEnglish": "Patience" },
+        { "letter": "ط / ظ", "name": "Tâ / Zâ", "sound": "t / z", "isolated": "ط", "initial": "طـ", "medial": "ـطـ", "final": "ـط", "exampleFarsi": "طلا", "exampleFinglish": "talâ", "exampleEnglish": "Gold" },
+        { "letter": "ع / غ", "name": "Eyn / Gheyn", "sound": "a/e / gh", "isolated": "ع", "initial": "عـ", "medial": "ـعـ", "final": "ـع", "exampleFarsi": "عشق", "exampleFinglish": "eshgh", "exampleEnglish": "Love" },
+        { "letter": "ف", "name": "Fe", "sound": "f", "isolated": "ف", "initial": "فـ", "medial": "ـفـ", "final": "ـف", "exampleFarsi": "فرش", "exampleFinglish": "farsh", "exampleEnglish": "Rug" },
+        { "letter": "ق", "name": "Ghâf", "sound": "gh", "isolated": "ق", "initial": "قـ", "medial": "ـقـ", "final": "ـق", "exampleFarsi": "قشنگ", "exampleFinglish": "ghashang", "exampleEnglish": "Pretty" },
+        { "letter": "ک", "name": "Kâf", "sound": "k", "isolated": "ک", "initial": "کـ", "medial": "ـکـ", "final": "ـک", "exampleFarsi": "کتاب", "exampleFinglish": "ketâb", "exampleEnglish": "Book" },
+        { "letter": "گ", "name": "Gâf", "sound": "g", "isolated": "گ", "initial": "گـ", "medial": "ـگـ", "final": "ـگ", "exampleFarsi": "گل", "exampleFinglish": "gol", "exampleEnglish": "Flower" },
+        { "letter": "ل", "name": "Lâm", "sound": "l", "isolated": "ل", "initial": "لـ", "medial": "ـلـ", "final": "ـل", "exampleFarsi": "لب", "exampleFinglish": "lab", "exampleEnglish": "Lip" },
+        { "letter": "م", "name": "Mim", "sound": "m", "isolated": "م", "initial": "مـ", "medial": "ـمـ", "final": "ـم", "exampleFarsi": "میز", "exampleFinglish": "miz", "exampleEnglish": "Table" },
+        { "letter": "ن", "name": "Nun", "sound": "n", "isolated": "ن", "initial": "نـ", "medial": "ـنـ", "final": "ـن", "exampleFarsi": "نان", "exampleFinglish": "nân", "exampleEnglish": "Bread" },
+        { "letter": "و", "name": "Vâv", "sound": "v / u / o", "isolated": "و", "initial": "و", "medial": "ـو", "final": "ـو", "exampleFarsi": "نوروز", "exampleFinglish": "Nowruz", "exampleEnglish": "New Day" },
+        { "letter": "ه", "name": "He", "sound": "h / e", "isolated": "ه", "initial": "هـ", "medial": "ـهـ", "final": "ـه", "exampleFarsi": "هوا", "exampleFinglish": "havâ", "exampleEnglish": "Weather" },
+        { "letter": "ی", "name": "Ye", "sound": "y / i", "isolated": "ی", "initial": "یـ", "medial": "ـیـ", "final": "ـی", "exampleFarsi": "یک", "exampleFinglish": "yek", "exampleEnglish": "One" }
+      ],
+      "quiz": [
+        { "id": "l12_q1", "type": "multiple_choice", "prompt": "Read this word: 'شب'", "promptFarsi": "شب", "promptFinglish": "", "options": ["salâm", "shab", "gol", "miz"], "correctIndex": 1, "explanation": "شـ (sh) + ـب (b) = shab (night)." },
+        { "id": "l12_q2", "type": "multiple_choice", "prompt": "How is 'ک' (k) different from 'گ' (g)?", "promptFarsi": "ک / گ", "promptFinglish": "", "options": ["گ has an extra top stroke", "گ has 3 dots", "ک is taller", "They are identical"], "correctIndex": 0, "explanation": "گ (gâf) adds a second slanted stroke above ک (kâf)." },
+        { "id": "l12_q3", "type": "multiple_choice", "prompt": "Read this short phrase: 'گل سرخ'", "promptFarsi": "گل سرخ", "promptFinglish": "", "options": ["White bread", "Red flower", "Blue sky", "Good night"], "correctIndex": 1, "explanation": "گل (gol = flower) + سرخ (sorkh = red)." },
+        { "id": "l12_q4", "type": "multiple_choice", "prompt": "Which letter in 'میز' makes the long 'i' (ee) sound?", "promptFarsi": "میز", "promptFinglish": "miz", "options": ["م", "ی", "ز", "None"], "correctIndex": 1, "explanation": "ـیـ in the middle makes the 'ee' sound." }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Days of the Week & Time",
+      "farsiTitle": "روزهای هفته و زمان",
+      "subtitle": "Plan family dinners from Shanbe to Jom'e",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "From Lesson 13 onward, Finglish is gently dimmed so your eyes naturally read Persian script first! Toggle it anytime.",
+      "words": [
+        { "id": "l13_w1", "farsi": "شنبه", "finglish": "shanbe", "english": "Saturday", "note": "First day of the Iranian week" },
+        { "id": "l13_w2", "farsi": "یکشنبه", "finglish": "yekshanbe", "english": "Sunday", "note": "yek (1) + shanbe" },
+        { "id": "l13_w3", "farsi": "دوشنبه", "finglish": "doshanbe", "english": "Monday", "note": "do (2) + shanbe" },
+        { "id": "l13_w4", "farsi": "سه‌شنبه", "finglish": "seshanbe", "english": "Tuesday", "note": "se (3) + shanbe" },
+        { "id": "l13_w5", "farsi": "چهارشنبه", "finglish": "chahârshanbe", "english": "Wednesday", "note": "chahâr (4) + shanbe" },
+        { "id": "l13_w6", "farsi": "پنجشنبه", "finglish": "panjshanbe", "english": "Thursday", "note": "panj (5) + shanbe" },
+        { "id": "l13_w7", "farsi": "جمعه", "finglish": "jom'e", "english": "Friday", "note": "Traditional family gathering day" },
+        { "id": "l13_w8", "farsi": "امروز", "finglish": "emruz", "english": "Today", "note": "روز = day" },
+        { "id": "l13_w9", "farsi": "فردا", "finglish": "fardâ", "english": "Tomorrow", "note": "" },
+        { "id": "l13_w10", "farsi": "دیروز", "finglish": "diruz", "english": "Yesterday", "note": "" }
+      ],
+      "phrases": [
+        { "id": "l13_p1", "farsi": "امروز چندشنبه‌ست؟", "finglish": "emruz chandshanbe-st?", "english": "What day of the week is today?" },
+        { "id": "l13_p2", "farsi": "آخر هفته", "finglish": "âkhar-e hafte", "english": "The weekend" }
+      ],
+      "sentences": [
+        { "id": "l13_s1", "farsi": "امروز شنبه‌ست، فردا یکشنبه.", "finglish": "emruz shanbe-st, fardâ yekshanbe.", "english": "Today is Saturday, tomorrow is Sunday.", "speaker": "A" },
+        { "id": "l13_s2", "farsi": "جمعه خونهٔ مادربزرگ می‌ریم.", "finglish": "jom'e khune-ye mâdarbozorg mirim.", "english": "On Friday we're going to Grandma's house.", "speaker": "A" },
+        { "id": "l13_s3", "farsi": "دیروز هوا بارانی بود.", "finglish": "diruz havâ bâruni bud.", "english": "Yesterday the weather was rainy.", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l13_q1", "type": "multiple_choice", "prompt": "What day is 'دوشنبه'?", "promptFarsi": "دوشنبه", "promptFinglish": "", "options": ["Saturday", "Sunday", "Monday", "Thursday"], "correctIndex": 2, "explanation": "do (2) + shanbe = Monday." },
+        { "id": "l13_q2", "type": "multiple_choice", "prompt": "What does 'امروز' mean?", "promptFarsi": "امروز", "promptFinglish": "", "options": ["Yesterday", "Today", "Tomorrow", "Friday"], "correctIndex": 1, "explanation": "'emruz' means today." },
+        { "id": "l13_q3", "type": "fill_blank", "prompt": "Complete: ____ khune-ye mâdarbozorg mirim. (On Friday)", "promptFarsi": "____ خونهٔ مادربزرگ می‌ریم.", "promptFinglish": "", "options": ["Jom'e", "Diruz", "Shanbe", "Fardâ"], "correctIndex": 0, "explanation": "'jom'e' is Friday." },
+        { "id": "l13_q4", "type": "multiple_choice", "prompt": "Which word means 'Tomorrow'?", "promptFarsi": "فردا", "promptFinglish": "", "options": ["diruz", "emruz", "fardâ", "jom'e"], "correctIndex": 2, "explanation": "'fardâ' means tomorrow." }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Bazaar & Shopping",
+      "farsiTitle": "بازار و خرید",
+      "subtitle": "Ask prices, compare values, and count up to 100",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Notice colloquial pronunciation: گرون (gerun) instead of گران (gerân), ارزون (arzun) instead of ارزان (arzân).",
+      "words": [
+        { "id": "l14_w1", "farsi": "چنده؟", "finglish": "chand-e?", "english": "How much is it?", "note": "Formal: قیمتش چقدر است؟" },
+        { "id": "l14_w2", "farsi": "خوب", "finglish": "khub", "english": "Good", "note": "" },
+        { "id": "l14_w3", "farsi": "گرون", "finglish": "gerun", "english": "Expensive", "note": "Written: گران (gerân)" },
+        { "id": "l14_w4", "farsi": "ارزون", "finglish": "arzun", "english": "Cheap / Affordable", "note": "Written: ارزان (arzân)" },
+        { "id": "l14_w5", "farsi": "پول", "finglish": "pul", "english": "Money", "note": "" },
+        { "id": "l14_w6", "farsi": "بیست", "finglish": "bist", "english": "Twenty (۲۰)", "note": "" },
+        { "id": "l14_w7", "farsi": "پنجاه", "finglish": "panjâh", "english": "Fifty (۵۰)", "note": "" },
+        { "id": "l14_w8", "farsi": "صد", "finglish": "sad", "english": "One hundred (۱۰۰)", "note": "" }
+      ],
+      "phrases": [
+        { "id": "l14_p1", "farsi": "تخفیف داره؟", "finglish": "takhfif dâre?", "english": "Is there a discount?" },
+        { "id": "l14_p2", "farsi": "قابل شما رو نداره", "finglish": "ghâbel-e shomâ ro nadâre", "english": "It's yours for free! (Classic bazaar ta'ârof — still pay!)" }
+      ],
+      "sentences": [
+        { "id": "l14_s1", "farsi": "ببخشید، این انارها چنده؟", "finglish": "bebakhshid, in anârhâ chand-e?", "english": "Excuse me, how much are these pomegranates?", "speaker": "A" },
+        { "id": "l14_s2", "farsi": "خیلی گرون نیست، ارزونه!", "finglish": "kheli gerun nist, arzun-e!", "english": "It's not very expensive, it's affordable!", "speaker": "B" },
+        { "id": "l14_s3", "farsi": "لطفاً صد گرم زعفران بدید.", "finglish": "lotfan sad geram za'ferân bedid.", "english": "Please give me 100 grams of saffron.", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l14_q1", "type": "multiple_choice", "prompt": "How do you ask 'How much is it?' at a shop?", "promptFarsi": "چنده؟", "promptFinglish": "", "options": ["to chi?", "chand-e?", "chetori?", "kie?"], "correctIndex": 1, "explanation": "'chand-e?' is the natural way to ask the price." },
+        { "id": "l14_q2", "type": "multiple_choice", "prompt": "What is the spoken opposite of 'گرون' (gerun = expensive)?", "promptFarsi": "ارزون", "promptFinglish": "", "options": ["arzun", "bist", "pul", "sad"], "correctIndex": 0, "explanation": "'arzun' (written ارزان) means cheap/affordable." },
+        { "id": "l14_q3", "type": "fill_blank", "prompt": "Complete: Bist, ____, sad (20, 50, 100)", "promptFarsi": "بیست، ____، صد", "promptFinglish": "", "options": ["panjâh", "panj", "dah", "haft"], "correctIndex": 0, "explanation": "'panjâh' is fifty." },
+        { "id": "l14_q4", "type": "multiple_choice", "prompt": "If a shopkeeper says 'Ghâbel-e shomâ ro nadâre', what should you do?", "promptFarsi": "قابل شما رو نداره", "promptFinglish": "", "options": ["Walk away without paying", "Smile, say mersi, and still pay", "Say goodbye immediately", "Say it's too small"], "correctIndex": 1, "explanation": "It's polite ta'ârof — always thank them and insist on paying!" }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Nowruz & Haft-Sin",
+      "farsiTitle": "نوروز و هفت‌سین",
+      "subtitle": "Celebrate Persian New Year and the 7 S's",
+      "isCheckpointAfter": true,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Nowruz literally means 'New Day' (نو + روز) and begins on the exact moment of the spring equinox!",
+      "words": [
+        { "id": "l15_w1", "farsi": "نوروز", "finglish": "Nowruz", "english": "Persian New Year", "note": "نو (new) + روز (day)" },
+        { "id": "l15_w2", "farsi": "سیب", "finglish": "sib", "english": "Apple", "note": "Symbol of health & beauty" },
+        { "id": "l15_w3", "farsi": "سبزه", "finglish": "sabze", "english": "Sprouted greens", "note": "Symbol of rebirth" },
+        { "id": "l15_w4", "farsi": "سکه", "finglish": "sekke", "english": "Coin", "note": "Symbol of prosperity" },
+        { "id": "l15_w5", "farsi": "سمنو", "finglish": "samanu", "english": "Sweet wheat pudding", "note": "Symbol of sweetness & strength" },
+        { "id": "l15_w6", "farsi": "سماق", "finglish": "somâgh", "english": "Sumac", "note": "Symbol of sunrise" },
+        { "id": "l15_w7", "farsi": "سرکه", "finglish": "serke", "english": "Vinegar", "note": "Symbol of patience & age" },
+        { "id": "l15_w8", "farsi": "ماهی", "finglish": "mâhi", "english": "Fish (Goldfish)", "note": "Symbol of life on the table" }
+      ],
+      "phrases": [
+        { "id": "l15_p1", "farsi": "عیدتون مبارک!", "finglish": "Eydetun mobârak!", "english": "Happy New Year! / Happy Eid!" },
+        { "id": "l15_p2", "farsi": "سال نو مبارک!", "finglish": "Sâl-e no mobârak!", "english": "Happy New Year!" }
+      ],
+      "sentences": [
+        { "id": "l15_s1", "farsi": "نوروز مبارک! صد سال به این سال‌ها.", "finglish": "Nowruz mobârak! sad sâl be in sâlhâ.", "english": "Happy Nowruz! Wishing you a hundred more years like this.", "speaker": "A" },
+        { "id": "l15_s2", "farsi": "سفرهٔ هفت‌سین خیلی قشنگه.", "finglish": "sofre-ye Haft-Sin kheli ghashang-e.", "english": "The Haft-Sin table is very pretty.", "speaker": "B" },
+        { "id": "l15_s3", "farsi": "سیب و سبزه و سکه روی میز هستند.", "finglish": "sib o sabze o sekke ru-ye miz hastand.", "english": "Apples, greens, and coins are on the table.", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l15_q1", "type": "multiple_choice", "prompt": "What does 'نوروز' literally mean?", "promptFarsi": "نوروز", "promptFinglish": "", "options": ["Spring", "New Day", "Red Apple", "Happy Family"], "correctIndex": 1, "explanation": "نو (no = new) + روز (ruz = day)." },
+        { "id": "l15_q2", "type": "multiple_choice", "prompt": "Which Haft-Sin item symbolizes rebirth and nature?", "promptFarsi": "سبزه", "promptFinglish": "", "options": ["sekke", "serke", "sabze", "somâgh"], "correctIndex": 2, "explanation": "'sabze' (sprouted greens) represents rebirth." },
+        { "id": "l15_q3", "type": "fill_blank", "prompt": "Checkpoint 3: Complete the holiday greeting: '____ mobârak!'", "promptFarsi": "____ مبارک!", "promptFinglish": "", "options": ["Eydetun", "Chand-e", "Diruz", "Gerun"], "correctIndex": 0, "explanation": "'Eydetun mobârak!' is the warm holiday greeting." },
+        { "id": "l15_q4", "type": "multiple_choice", "prompt": "Checkpoint 3: 'سیب' means...", "promptFarsi": "سیب", "promptFinglish": "", "options": ["Coin", "Vinegar", "Apple", "Fish"], "correctIndex": 2, "explanation": "'sib' means apple." }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Yaldâ Night",
+      "farsiTitle": "شب یلدا",
+      "subtitle": "Pomegranates, watermelon, and Hâfez poetry on the longest night",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Shab-e Yaldâ (December 21st) celebrates the winter solstice with family, red fruits, and reading Hâfez.",
+      "words": [
+        { "id": "l16_w1", "farsi": "شب یلدا", "finglish": "shab-e Yaldâ", "english": "Yalda Night (Winter Solstice)", "note": "Longest night of the year" },
+        { "id": "l16_w2", "farsi": "هندوانه", "finglish": "hendevâne / hendune", "english": "Watermelon", "note": "Spoken: hendune" },
+        { "id": "l16_w3", "farsi": "انار", "finglish": "anâr", "english": "Pomegranate", "note": "Ruby symbol of life" },
+        { "id": "l16_w4", "farsi": "حافظ", "finglish": "Hâfez", "english": "Hafez (classic poet)", "note": "Every family has a copy!" },
+        { "id": "l16_w5", "farsi": "آجیل", "finglish": "âjil", "english": "Trail mix / Roasted nuts", "note": "Pistachios, almonds & more" },
+        { "id": "l16_w6", "farsi": "شعر", "finglish": "she'r", "english": "Poem / Poetry", "note": "" },
+        { "id": "l16_w7", "farsi": "شمع", "finglish": "sham'", "english": "Candle", "note": "" },
+        { "id": "l16_w8", "farsi": "شیرین", "finglish": "shirin", "english": "Sweet", "note": "" }
+      ],
+      "phrases": [
+        { "id": "l16_p1", "farsi": "یلداتون مبارک!", "finglish": "Yaldâtun mobârak!", "english": "Happy Yalda Night!" },
+        { "id": "l16_p2", "farsi": "فال حافظ بگیریم", "finglish": "fâl-e Hâfez begirim", "english": "Let's read a Hafez fortune poem" }
+      ],
+      "sentences": [
+        { "id": "l16_s1", "farsi": "شب یلدا بلندترین شب سال است.", "finglish": "shab-e Yaldâ bolandtarin shab-e sâl ast.", "english": "Yalda Night is the longest night of the year.", "speaker": "A" },
+        { "id": "l16_s2", "farsi": "مادربزرگ انار و هندوانه آورد.", "finglish": "mâdarbozorg anâr o hendune âvord.", "english": "Grandma brought pomegranates and watermelon.", "speaker": "A" },
+        { "id": "l16_s3", "farsi": "بیا با هم شعر حافظ بخوانیم.", "finglish": "biyâ bâ ham she'r-e Hâfez bekhunim.", "english": "Come read Hafez poetry together.", "speaker": "B" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l16_q1", "type": "multiple_choice", "prompt": "What is 'انار'?", "promptFarsi": "انار", "promptFinglish": "", "options": ["Watermelon", "Pomegranate", "Pistachio", "Candle"], "correctIndex": 1, "explanation": "'anâr' means pomegranate." },
+        { "id": "l16_q2", "type": "multiple_choice", "prompt": "How is 'هندوانه' commonly pronounced in spoken Persian?", "promptFarsi": "هندوانه", "promptFinglish": "", "options": ["hendune", "âjil", "sham'", "shirin"], "correctIndex": 0, "explanation": "Written hendevâne, spoken hendune." },
+        { "id": "l16_q3", "type": "fill_blank", "prompt": "Complete: Biyâ bâ ham she'r-e ____ bekhunim.", "promptFarsi": "بیا با هم شعر ____ بخوانیم.", "promptFinglish": "", "options": ["Hâfez", "Shanbe", "Sekke", "Bâzâr"], "correctIndex": 0, "explanation": "Reading Hâfez poetry is a beloved Yalda tradition." },
+        { "id": "l16_q4", "type": "multiple_choice", "prompt": "What does 'شیرین' mean?", "promptFarsi": "شیرین", "promptFinglish": "", "options": ["Long", "Sweet", "Cold", "Expensive"], "correctIndex": 1, "explanation": "'shirin' means sweet." }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Everyday Verbs",
+      "farsiTitle": "فعل‌های پرکاربرد",
+      "subtitle": "Learn each verb with its infinitive + spoken present form",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Spoken vs Formal: میرم (miram) vs می‌روم (miravam) | میگم (migam) vs می‌گویم (miguyam)",
+      "words": [
+        { "id": "l17_w1", "farsi": "رفتن / میرم", "finglish": "raftan / miram", "english": "To go / I go", "note": "Formal: می‌روم (miravam)" },
+        { "id": "l17_w2", "farsi": "آمدن / میام", "finglish": "âmadan / miyâm", "english": "To come / I come", "note": "Formal: می‌آیم (miâyam)" },
+        { "id": "l17_w3", "farsi": "خوردن / می‌خورم", "finglish": "khordan / mikhoram", "english": "To eat (or drink) / I eat", "note": "Used for both food & tea/water!" },
+        { "id": "l17_w4", "farsi": "داشتن / دارم", "finglish": "dâshtan / dâram", "english": "To have / I have", "note": "Also used for 'I am doing...'" },
+        { "id": "l17_w5", "farsi": "خواستن / می‌خوام", "finglish": "khâstan / mikhâm", "english": "To want / I want", "note": "Formal: می‌خواهم (mikhâham)" },
+        { "id": "l17_w6", "farsi": "گفتن / میگم", "finglish": "goftan / migam", "english": "To say / I say", "note": "Formal: می‌گویم (miguyam)" },
+        { "id": "l17_w7", "farsi": "دیدن / می‌بینم", "finglish": "didan / mibinam", "english": "To see / I see", "note": "می‌بینمت = See you!" },
+        { "id": "l17_w8", "farsi": "کردن / می‌کنم", "finglish": "kardan / mikonam", "english": "To do / I do", "note": "Forms dozens of compound verbs" }
+      ],
+      "phrases": [
+        { "id": "l17_p1", "farsi": "دارم میام!", "finglish": "dâram miyâm!", "english": "I'm on my way! / Coming!" },
+        { "id": "l17_p2", "farsi": "یه چیزی بگم؟", "finglish": "ye chizi begam?", "english": "Can I tell you something?" }
+      ],
+      "sentences": [
+        { "id": "l17_s1", "farsi": "من فردا به خانهٔ مادربزرگ میرم.", "finglish": "man fardâ khune-ye mâdarbozorg miram.", "english": "Tomorrow I am going to Grandma's house.", "speaker": "A" },
+        { "id": "l17_s2", "farsi": "چای می‌خوام، تو چی؟", "finglish": "chây mikhâm, to chi?", "english": "I want tea, how about you?", "speaker": "A" },
+        { "id": "l17_s3", "farsi": "بیا ناهار بخوریم!", "finglish": "biyâ nâhâr bekhorim!", "english": "Come let's eat lunch!", "speaker": "B" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l17_q1", "type": "multiple_choice", "prompt": "What is the spoken 'I go' from 'رفتن' (raftan)?", "promptFarsi": "رفتن / میرم", "promptFinglish": "", "options": ["miyâm", "miram", "migam", "mikhâm"], "correctIndex": 1, "explanation": "raftan -> miram (formal: miravam)." },
+        { "id": "l17_q2", "type": "multiple_choice", "prompt": "What does 'می‌خوام' (mikhâm) mean?", "promptFarsi": "می‌خوام", "promptFinglish": "", "options": ["I want", "I say", "I see", "I go"], "correctIndex": 0, "explanation": "From خواستن (khâstan), spoken 'I want' is mikhâm." },
+        { "id": "l17_q3", "type": "fill_blank", "prompt": "Complete: Dâram ____! (I'm coming!)", "promptFarsi": "دارم ____!", "promptFinglish": "", "options": ["miyâm", "goftan", "raftan", "dâshtan"], "correctIndex": 0, "explanation": "'dâram miyâm' means I'm coming right now!" },
+        { "id": "l17_q4", "type": "multiple_choice", "prompt": "Which verb is used for both eating food and drinking water/tea?", "promptFarsi": "خوردن", "promptFinglish": "", "options": ["didan", "goftan", "khordan", "kardan"], "correctIndex": 2, "explanation": "'khordan' (e.g. âb mikhoram, ghazâ mikhoram) covers both." }
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Feelings & Heart",
+      "farsiTitle": "احساسات",
+      "subtitle": "Express joy, tiredness, hunger, and missing someone",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "'دلم برات تنگ شده' literally translates to 'My heart has grown tight/narrow for you' — 'I miss you!'",
+      "words": [
+        { "id": "l18_w1", "farsi": "خوشحال", "finglish": "khoshhâl", "english": "Happy / Glad", "note": "" },
+        { "id": "l18_w2", "farsi": "ناراحت", "finglish": "nârâhat", "english": "Sad / Upset", "note": "Also 'uncomfortable'" },
+        { "id": "l18_w3", "farsi": "خسته", "finglish": "khaste", "english": "Tired", "note": "خسته نباشید = Good work!" },
+        { "id": "l18_w4", "farsi": "گرسنه", "finglish": "gorosne / goshne", "english": "Hungry", "note": "Spoken: گشنه (goshne)" },
+        { "id": "l18_w5", "farsi": "تشنه", "finglish": "teshne", "english": "Thirsty", "note": "" },
+        { "id": "l18_w6", "farsi": "عصبانی", "finglish": "asabâni", "english": "Angry", "note": "" },
+        { "id": "l18_w7", "farsi": "دلم برات تنگ شده", "finglish": "delam barât tang shode", "english": "I miss you", "note": "Polite: دلم براتون تنگ شده" },
+        { "id": "l18_w8", "farsi": "دوستت دارم", "finglish": "duset dâram", "english": "I love you", "note": "Written: دوستت دارم (dustet)" }
+      ],
+      "phrases": [
+        { "id": "l18_p1", "farsi": "خسته نباشید!", "finglish": "khaste nabâshid!", "english": "Thank you for your hard work! (Lit: May you not be tired)" },
+        { "id": "l18_p2", "farsi": "ناراحت نباش", "finglish": "nârâhat nabâsh", "english": "Don't be sad / Don't worry" }
+      ],
+      "sentences": [
+        { "id": "l18_s1", "farsi": "خیلی خوشحالم که صداتو می‌شنوم.", "finglish": "kheli khoshhâlam ke sedâto mishnavam.", "english": "I'm so happy to hear your voice.", "speaker": "A" },
+        { "id": "l18_s2", "farsi": "خیلی گرسنه‌ام، شام چیه؟", "finglish": "kheli goshnam-e, shâm chie?", "english": "I'm really hungry, what's for dinner?", "speaker": "A" },
+        { "id": "l18_s3", "farsi": "مامان‌بزرگ، دلم برات خیلی تنگ شده!", "finglish": "mâmânbozorg, delam barât kheli tang shode!", "english": "Grandma, I miss you so much!", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l18_q1", "type": "multiple_choice", "prompt": "What does 'دلم برات تنگ شده' mean?", "promptFarsi": "دلم برات تنگ شده", "promptFinglish": "", "options": ["I am tired", "I miss you", "I am hungry", "I am happy"], "correctIndex": 1, "explanation": "'delam barât tang shode' means I miss you." },
+        { "id": "l18_q2", "type": "multiple_choice", "prompt": "How do you say 'I'm tired'?", "promptFarsi": "خسته‌ام", "promptFinglish": "", "options": ["khoshhâlam", "khastam", "teshnam", "nârâhatam"], "correctIndex": 1, "explanation": "'khaste' means tired; 'khastam' = I'm tired." },
+        { "id": "l18_q3", "type": "fill_blank", "prompt": "Complete: ____ nabâshid! (Great job / May you not be tired)", "promptFarsi": "____ نباشید!", "promptFinglish": "", "options": ["Khaste", "Goshne", "Nârâhat", "Asabâni"], "correctIndex": 0, "explanation": "'khaste nabâshid' is the beloved Persian expression for someone working hard." },
+        { "id": "l18_q4", "type": "multiple_choice", "prompt": "What is the spoken pronunciation of 'گرسنه' (hungry)?", "promptFarsi": "گرسنه", "promptFinglish": "", "options": ["goshne", "teshne", "khaste", "shirin"], "correctIndex": 0, "explanation": "Written gorosne, commonly spoken as goshne." }
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Calling Grandma",
+      "farsiTitle": "تلفن به مادربزرگ",
+      "subtitle": "A full real-world family phone call with two voices",
+      "isCheckpointAfter": false,
+      "isAlphabetLesson": false,
+      "colloquialNote": "Use plural '-un' endings like حالتون (hâletun) and براتون (barâtun) to show extra warmth & respect to elders!",
+      "words": [
+        { "id": "l19_w1", "farsi": "تلفن", "finglish": "telefon", "english": "Telephone / Call", "note": "تلفن زدن = to call" },
+        { "id": "l19_w2", "farsi": "حالتون چطوره؟", "finglish": "hâletun chetore?", "english": "How are you? (respectful)", "note": "Use with elders!" },
+        { "id": "l19_w3", "farsi": "چیکار می‌کنی؟", "finglish": "chikâr mikoni?", "english": "What are you up to?", "note": "Spoken contraction of چه کار" },
+        { "id": "l19_w4", "farsi": "صدا", "finglish": "sedâ", "english": "Voice / Sound", "note": "" },
+        { "id": "l19_w5", "farsi": "به زودی", "finglish": "be zudi", "english": "Soon", "note": "" },
+        { "id": "l19_w6", "farsi": "سلام برسون", "finglish": "salâm beresun", "english": "Send my regards / Say hi", "note": "Formal: سلام برسانید" },
+        { "id": "l19_w7", "farsi": "به یادتم", "finglish": "be yâdetam", "english": "I'm thinking of you", "note": "From یاد (memory)" },
+        { "id": "l19_w8", "farsi": "مراقب خودت باش", "finglish": "morâgheb-e khodet bâsh", "english": "Take care of yourself", "note": "Respectful: خودتون باشید" }
+      ],
+      "phrases": [
+        { "id": "l19_p1", "farsi": "قربون صدات برم!", "finglish": "ghorbun-e sedât beram!", "english": "How wonderful to hear your voice! (Grandma's classic line)" },
+        { "id": "l19_p2", "farsi": "به مامان و بابا سلام برسون", "finglish": "be mâmân o bâbâ salâm beresun", "english": "Say hello to Mom and Dad for me" }
+      ],
+      "sentences": [
+        { "id": "l19_s1", "farsi": "الو، سلام مامان‌بزرگ! حالتون چطوره؟", "finglish": "alo, salâm mâmânbozorg! hâletun chetore?", "english": "Hello, Grandma! How are you?", "speaker": "NIMA" },
+        { "id": "l19_s2", "farsi": "سلام عزیز دلم! قربون صدات برم، خوبم، تو چطوری؟", "finglish": "salâm aziz-e delam! ghorbun-e sedât beram, khubam, to chetori?", "english": "Hello sweetheart! So good to hear your voice, I'm well, how are you?", "speaker": "GRANDMA" },
+        { "id": "l19_s3", "farsi": "منم خوبم. دلم براتون تنگ شده، به زودی می‌بینمتون!", "finglish": "manam khubam. delam barâtun tang shode, be zudi mibinametun!", "english": "I'm good too. I miss you, see you soon!", "speaker": "NIMA" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l19_q1", "type": "multiple_choice", "prompt": "How do you respectfully ask an elder 'How are you?'", "promptFarsi": "حالتون چطوره؟", "promptFinglish": "", "options": ["hâletun chetore?", "chikâr mikoni?", "to chi?", "esmet chie?"], "correctIndex": 0, "explanation": "Adding '-tun' (حالتون) shows warmth and respect for elders." },
+        { "id": "l19_q2", "type": "multiple_choice", "prompt": "What does 'مراقب خودت باش' mean?", "promptFarsi": "مراقب خودت باش", "promptFinglish": "", "options": ["Call me tomorrow", "Take care of yourself", "Wait a moment", "Come inside"], "correctIndex": 1, "explanation": "'morâgheb-e khodet bâsh' means Take care of yourself." },
+        { "id": "l19_q3", "type": "fill_blank", "prompt": "Complete: Be mâmân ____! (Say hello to Mom)", "promptFarsi": "به مامان ____!", "promptFinglish": "", "options": ["salâm beresun", "ta'ârof nakon", "dastet dard nakone", "nush-e jân"], "correctIndex": 0, "explanation": "'salâm beresun' means send my hello/regards." },
+        { "id": "l19_q4", "type": "multiple_choice", "prompt": "What does 'به زودی' mean?", "promptFarsi": "به زودی", "promptFinglish": "", "options": ["Yesterday", "Soon", "Expensive", "Tired"], "correctIndex": 1, "explanation": "'be zudi' means soon." }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Grand Review & Mastery",
+      "farsiTitle": "مرور و داستان کوتاه + آزمون",
+      "subtitle": "Bring together conversation, reading, and Persian culture",
+      "isCheckpointAfter": true,
+      "isAlphabetLesson": false,
+      "colloquialNote": "آفرین (âfarin) — Bravo! You have completed all 20 lessons of Farsi-Joon!",
+      "words": [
+        { "id": "l20_w1", "farsi": "آفرین", "finglish": "âfarin", "english": "Bravo / Well done!", "note": "" },
+        { "id": "l20_w2", "farsi": "داستان", "finglish": "dâstân", "english": "Story", "note": "" },
+        { "id": "l20_w3", "farsi": "فرهنگ", "finglish": "farhang", "english": "Culture", "note": "" },
+        { "id": "l20_w4", "farsi": "ایران", "finglish": "Irân", "english": "Iran", "note": "" },
+        { "id": "l20_w5", "farsi": "فارسی", "finglish": "Fârsi", "english": "Persian language", "note": "" },
+        { "id": "l20_w6", "farsi": "امید", "finglish": "omid", "english": "Hope", "note": "" },
+        { "id": "l20_w7", "farsi": "دوست", "finglish": "dust", "english": "Friend", "note": "" },
+        { "id": "l20_w8", "farsi": "همیشه", "finglish": "hamishe", "english": "Always", "note": "" }
+      ],
+      "phrases": [
+        { "id": "l20_p1", "farsi": "آفرین به تو!", "finglish": "âfarin be to!", "english": "Way to go! / Proud of you!" },
+        { "id": "l20_p2", "farsi": "فارسی خیلی شیرینه", "finglish": "Fârsi kheli shirin-e", "english": "Persian is so sweet!" }
+      ],
+      "sentences": [
+        { "id": "l20_s1", "farsi": "من الان فارسی می‌خوانم و حرف می‌زنم.", "finglish": "man alân Fârsi mikhunam o harf mizanam.", "english": "Now I read and speak Persian.", "speaker": "A" },
+        { "id": "l20_s2", "farsi": "جمعه همهٔ خانواده دور هم جمع می‌شیم.", "finglish": "jom'e hame-ye khânevâde dor-e ham jam' mishim.", "english": "On Friday the whole family gathers together.", "speaker": "A" },
+        { "id": "l20_s3", "farsi": "به امید دیدار به زودی!", "finglish": "be omid-e didâr be zudi!", "english": "Hope to see you again soon!", "speaker": "A" }
+      ],
+      "letters": [],
+      "quiz": [
+        { "id": "l20_q1", "type": "multiple_choice", "prompt": "Final Checkpoint: Read 'من فارسی می‌خوانم'", "promptFarsi": "من فارسی می‌خوانم", "promptFinglish": "", "options": ["I am going home", "I read Persian", "I drink tea", "I miss you"], "correctIndex": 1, "explanation": "می‌خوانم (mikhânam) means I read." },
+        { "id": "l20_q2", "type": "multiple_choice", "prompt": "Final Checkpoint: What does 'دستت درد نکنه' express?", "promptFarsi": "دستت درد نکنه", "promptFinglish": "", "options": ["Saying goodbye", "Asking the price", "Thanking someone for cooking/effort", "Welcoming a guest"], "correctIndex": 2, "explanation": "It's the warmest thank-you for someone's effort or cooking." },
+        { "id": "l20_q3", "type": "fill_blank", "prompt": "Final Checkpoint: 'Hâletun ____?' — 'Khubam, ____ chi?'", "promptFarsi": "حالتون چطوره؟ — خوبم، ____ چی؟", "promptFinglish": "", "options": ["shomâ", "chand", "key", "che"], "correctIndex": 0, "explanation": "'shomâ chi?' (or 'to chi?') asks 'And you?'." },
+        { "id": "l20_q4", "type": "multiple_choice", "prompt": "Final Checkpoint: What does 'آفرین' mean?", "promptFarsi": "آفرین", "promptFinglish": "", "options": ["Goodbye", "Bravo / Well done", "Tomorrow", "Yesterday"], "correctIndex": 1, "explanation": "'âfarin' means bravo / well done!" },
+        { "id": "l20_q5", "type": "multiple_choice", "prompt": "Final Checkpoint: Which phrase means 'I miss you'?", "promptFarsi": "دلم برات تنگ شده", "promptFinglish": "", "options": ["nush-e jân", "delam barât tang shode", "khaste nabâshid", "befarmâyid"], "correctIndex": 1, "explanation": "'delam barât tang shode' means I miss you." }
+      ]
+    }
+  ]
+}
