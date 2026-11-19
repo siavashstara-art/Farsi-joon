@@ -10,14 +10,17 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -60,11 +63,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.R
 import com.example.audio.PersianAudioPlayer
 import com.example.audio.VoiceProfile
 import com.example.model.Story
 import com.example.ui.components.FarsiText
+import com.example.ui.components.PersianTtsFallbackBanner
 
 private fun storyDrawable(name: String): Int = when (name) {
   "img_story_nowruz" -> R.drawable.img_story_nowruz
@@ -189,6 +194,7 @@ fun StoryReaderScreen(
   var isAutoPlaying by remember(story.id) { mutableStateOf(false) }
   var showFinglish by remember { mutableStateOf(true) }
   var showEnglish by remember { mutableStateOf(true) }
+  val persianVoiceAvailable by audioPlayer.persianVoiceAvailable.collectAsStateWithLifecycle()
 
   BackHandler {
     audioPlayer.stop()
@@ -202,7 +208,10 @@ fun StoryReaderScreen(
   }
 
   fun playSentenceAt(index: Int, autoAdvance: Boolean) {
-    val sentence = story.sentences.getOrNull(index) ?: return
+    val sentence = story.sentences.getOrNull(index) ?: run {
+      isAutoPlaying = false
+      return
+    }
     activeSentenceIdx = index
     val profile = when (sentence.speaker.uppercase()) {
       "GRANDMA" -> VoiceProfile.GRANDMA
@@ -219,6 +228,9 @@ fun StoryReaderScreen(
         } else {
           isAutoPlaying = false
         }
+      },
+      onError = {
+        isAutoPlaying = false
       }
     )
   }
@@ -248,6 +260,7 @@ fun StoryReaderScreen(
         Row(
           modifier = Modifier
             .fillMaxWidth()
+            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom))
             .padding(horizontal = 16.dp, vertical = 12.dp),
           horizontalArrangement = Arrangement.Center,
           verticalAlignment = Alignment.CenterVertically
@@ -344,6 +357,10 @@ fun StoryReaderScreen(
               onClick = { showEnglish = !showEnglish },
               label = { Text("English") }
             )
+          }
+          if (!persianVoiceAvailable) {
+            Spacer(modifier = Modifier.height(10.dp))
+            PersianTtsFallbackBanner(onRecheckVoice = { audioPlayer.recheckVoiceAvailability() })
           }
         }
       }

@@ -15,9 +15,11 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
@@ -26,8 +28,10 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.VolumeUp
@@ -54,8 +58,10 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
@@ -77,10 +83,12 @@ import com.example.audio.LocalVoiceRecorder
 import com.example.model.AlphabetLetter
 import com.example.model.Lesson
 import com.example.ui.components.FarsiText
+import com.example.ui.components.PersianTtsFallbackBanner
 import com.example.ui.components.ThreeFormWordCard
 import com.example.ui.theme.EmeraldSuccess
 import com.example.ui.theme.EmeraldSuccessContainer
 import com.example.ui.theme.StarGold
+import kotlinx.coroutines.delay
 
 enum class LessonStep(val label: String, val index: Int) {
   LISTEN("1. Listen", 0),
@@ -96,8 +104,10 @@ enum class LessonStep(val label: String, val index: Int) {
 fun LessonPlayerScreen(
   lesson: Lesson,
   hideFinglishAfter12: Boolean,
+  persianVoiceAvailable: Boolean = true,
   voiceRecorder: LocalVoiceRecorder,
   onSpeak: (String, String) -> Unit,
+  onRecheckTts: () -> Unit = {},
   onToggleHideFinglish: (Boolean) -> Unit,
   onLessonCompleted: (score: Int, total: Int) -> Unit,
   onBack: () -> Unit
@@ -157,7 +167,7 @@ fun LessonPlayerScreen(
           Row(
             modifier = Modifier
               .fillMaxWidth()
-              .windowInsetsPadding(WindowInsets.safeDrawing)
+              .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom))
               .padding(horizontal = 16.dp, vertical = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
           ) {
@@ -205,7 +215,7 @@ fun LessonPlayerScreen(
       )
 
       when (currentStep) {
-        LessonStep.LISTEN -> ListenStepContent(lesson, onSpeak)
+        LessonStep.LISTEN -> ListenStepContent(lesson, persianVoiceAvailable, onRecheckTts, onSpeak)
         LessonStep.UNDERSTAND -> UnderstandStepContent(
           lesson = lesson,
           hideFinglishAfter12 = hideFinglishAfter12,
@@ -213,7 +223,7 @@ fun LessonPlayerScreen(
           onSpeak = onSpeak
         )
         LessonStep.READ -> ReadStepContent(lesson, onSpeak)
-        LessonStep.SPEAK -> SpeakStepContent(lesson, voiceRecorder, onSpeak)
+        LessonStep.SPEAK -> SpeakStepContent(lesson, persianVoiceAvailable, voiceRecorder, onRecheckTts, onSpeak)
         LessonStep.PRACTICE -> PracticeStepContent(
           lesson = lesson,
           onQuizFinished = { score, total ->
@@ -236,6 +246,8 @@ fun LessonPlayerScreen(
 @Composable
 private fun ListenStepContent(
   lesson: Lesson,
+  persianVoiceAvailable: Boolean,
+  onRecheckTts: () -> Unit,
   onSpeak: (String, String) -> Unit
 ) {
   val revealedIds = remember(lesson.id) { mutableStateMapOf<String, Boolean>() }
@@ -247,6 +259,12 @@ private fun ListenStepContent(
     contentPadding = PaddingValues(16.dp),
     verticalArrangement = Arrangement.spacedBy(12.dp)
   ) {
+    if (!persianVoiceAvailable) {
+      item {
+        PersianTtsFallbackBanner(onRecheckVoice = onRecheckTts)
+      }
+    }
+
     item {
       Surface(
         color = MaterialTheme.colorScheme.primaryContainer,
@@ -307,15 +325,20 @@ private fun ListenStepContent(
                 text = "Tap eye to peek script",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.clickable { revealedIds[word.id] = true }
+                modifier = Modifier
+                  .minimumInteractiveComponentSize()
+                  .clickable { revealedIds[word.id] = true }
               )
             }
           }
           Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            IconButton(onClick = { revealedIds[word.id] = !revealed }) {
+            IconButton(
+              onClick = { revealedIds[word.id] = !revealed },
+              modifier = Modifier.minimumInteractiveComponentSize()
+            ) {
               Icon(
                 imageVector = Icons.Rounded.Visibility,
-                contentDescription = "Toggle Persian script"
+                contentDescription = if (revealed) "Hide Persian script for ${word.english}" else "Show Persian script for ${word.english}"
               )
             }
             FilledTonalIconButton(
@@ -468,9 +491,16 @@ private fun UnderstandStepContent(
             verticalAlignment = Alignment.CenterVertically
           ) {
             Column(modifier = Modifier.weight(1f)) {
-              if (sentence.speaker == "GRANDMA" || sentence.speaker == "NIMA") {
+              val speakerDisplay = when (sentence.speaker.uppercase()) {
+                "GRANDMA" -> "Mâmânbozorg"
+                "NIMA" -> "Nima"
+                "B" -> "Speaker B"
+                "A" -> if (lesson.sentences.any { it.speaker.equals("B", ignoreCase = true) }) "Speaker A" else null
+                else -> null
+              }
+              if (speakerDisplay != null) {
                 Text(
-                  text = if (sentence.speaker == "GRANDMA") "Mâmânbozorg" else "Nima",
+                  text = speakerDisplay,
                   style = MaterialTheme.typography.labelMedium,
                   color = MaterialTheme.colorScheme.primary
                 )
@@ -653,15 +683,31 @@ private fun AlphabetFourFormCard(
 @Composable
 private fun SpeakStepContent(
   lesson: Lesson,
+  persianVoiceAvailable: Boolean,
   voiceRecorder: LocalVoiceRecorder,
+  onRecheckTts: () -> Unit,
   onSpeak: (String, String) -> Unit
 ) {
   val context = LocalContext.current
   val isRecording by voiceRecorder.isRecording.collectAsStateWithLifecycle()
   val isPlayingRecording by voiceRecorder.isPlayingRecording.collectAsStateWithLifecycle()
   val hasRecording by voiceRecorder.hasRecording.collectAsStateWithLifecycle()
+  val recordingError by voiceRecorder.recordingError.collectAsStateWithLifecycle()
   var selectedIdx by remember(lesson.id) { mutableIntStateOf(0) }
   var permissionDenied by remember { mutableStateOf(false) }
+  var recordingSeconds by remember { mutableIntStateOf(0) }
+
+  LaunchedEffect(isRecording) {
+    if (isRecording) {
+      recordingSeconds = 0
+      while (true) {
+        delay(1000L)
+        recordingSeconds++
+      }
+    } else {
+      recordingSeconds = 0
+    }
+  }
 
   val targetSentence = lesson.sentences.getOrNull(selectedIdx)
   val targetFarsi = targetSentence?.farsi ?: lesson.words.firstOrNull()?.farsi.orEmpty()
@@ -683,9 +729,14 @@ private fun SpeakStepContent(
     modifier = Modifier
       .fillMaxSize()
       .widthIn(max = 600.dp)
+      .verticalScroll(rememberScrollState())
       .padding(16.dp),
     verticalArrangement = Arrangement.spacedBy(14.dp)
   ) {
+    if (!persianVoiceAvailable) {
+      PersianTtsFallbackBanner(onRecheckVoice = onRecheckTts)
+    }
+
     Surface(
       color = MaterialTheme.colorScheme.surfaceVariant,
       shape = RoundedCornerShape(14.dp),
@@ -810,12 +861,24 @@ private fun SpeakStepContent(
             contentDescription = null
           )
           Spacer(modifier = Modifier.width(8.dp))
-          Text(if (isRecording) "Stop Recording" else "2. Record Yourself")
+          Text(
+            if (isRecording) "Stop Recording (00:${recordingSeconds.toString().padStart(2, '0')})"
+            else "2. Record Yourself"
+          )
         }
 
         if (permissionDenied) {
           Text(
             text = "Microphone permission wasn't granted. You can still skip ahead or tap Record again to allow.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.tertiary,
+            textAlign = TextAlign.Center
+          )
+        }
+
+        if (recordingError != null) {
+          Text(
+            text = recordingError.orEmpty(),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.tertiary,
             textAlign = TextAlign.Center
@@ -840,6 +903,19 @@ private fun SpeakStepContent(
             Spacer(modifier = Modifier.width(8.dp))
             Text(if (isPlayingRecording) "Stop Playback" else "3. Play Your Recording & Compare")
           }
+
+          Surface(
+            color = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(14.dp),
+            modifier = Modifier.fillMaxWidth()
+          ) {
+            Text(
+              text = "Self-Check Guide: Compare your recording with the sample — check stress on the final syllable, long vowels (â, u, i), and natural spoken rhythm.",
+              style = MaterialTheme.typography.bodySmall,
+              color = MaterialTheme.colorScheme.onSurfaceVariant,
+              modifier = Modifier.padding(12.dp)
+            )
+          }
         }
       }
     }
@@ -856,10 +932,13 @@ private fun PracticeStepContent(
   var score by remember(lesson.id) { mutableIntStateOf(0) }
 
   val questions = lesson.quiz
-  if (questions.isEmpty()) {
-    onQuizFinished(1, 1)
-    return
+  LaunchedEffect(lesson.id, questions.isEmpty()) {
+    if (questions.isEmpty()) {
+      onQuizFinished(1, 1)
+    }
   }
+  if (questions.isEmpty()) return
+
   val q = questions[qIndex]
   val answered = selectedOption != null
 
@@ -867,6 +946,7 @@ private fun PracticeStepContent(
     modifier = Modifier
       .fillMaxSize()
       .widthIn(max = 600.dp)
+      .verticalScroll(rememberScrollState())
       .padding(16.dp),
     verticalArrangement = Arrangement.spacedBy(12.dp)
   ) {
@@ -933,9 +1013,11 @@ private fun PracticeStepContent(
           Text(
             text = optionText,
             style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Medium
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier.weight(1f)
           )
           if (answered && isCorrect) {
+            Spacer(modifier = Modifier.width(8.dp))
             Icon(Icons.Rounded.CheckCircle, contentDescription = "Correct", tint = EmeraldSuccess)
           }
         }
@@ -954,7 +1036,7 @@ private fun PracticeStepContent(
           modifier = Modifier.padding(14.dp)
         )
       }
-      Spacer(modifier = Modifier.weight(1f))
+      Spacer(modifier = Modifier.height(8.dp))
       Button(
         onClick = {
           if (qIndex < questions.lastIndex) {

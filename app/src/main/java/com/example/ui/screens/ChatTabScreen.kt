@@ -455,11 +455,11 @@ private fun ChatBubble(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically
           ) {
-            IconButton(onClick = onSpeak, modifier = Modifier.size(36.dp)) {
+            IconButton(onClick = onSpeak, modifier = Modifier.size(48.dp)) {
               Icon(
                 imageVector = Icons.AutoMirrored.Rounded.VolumeUp,
-                contentDescription = "Listen",
-                modifier = Modifier.size(18.dp)
+                contentDescription = "Listen to message",
+                modifier = Modifier.size(20.dp)
               )
             }
             if (!item.isReported) {

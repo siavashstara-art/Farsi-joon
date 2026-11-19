@@ -1,24 +1,14 @@
-name: Build Android App Bundle (AAB)
+name: Debug Testing AAB
 
 on:
   workflow_dispatch:
-    inputs:
-      build_type:
-        description: "AAB build type (auto uses release if keystore secrets exist, else debug)"
-        required: true
-        default: "auto"
-        type: choice
-        options:
-          - auto
-          - release
-          - debug
   push:
     branches:
       - main
       - master
 
 jobs:
-  build-aab:
+  build-debug-aab:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -41,68 +31,27 @@ jobs:
             base64 -d debug.keystore.base64 > debug.keystore
           fi
 
-      - name: Decide build mode
-        id: mode
-        env:
-          INPUT_TYPE: ${{ github.event.inputs.build_type || 'auto' }}
-          KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
-          STORE_PASS: ${{ secrets.STORE_PASSWORD }}
-          KEY_PASS: ${{ secrets.KEY_PASSWORD }}
-        run: |
-          if [ "$INPUT_TYPE" = "release" ]; then
-            if [ -z "$KEYSTORE_B64" ] || [ -z "$STORE_PASS" ] || [ -z "$KEY_PASS" ]; then
-              echo "ERROR: Missing KEYSTORE_BASE64, STORE_PASSWORD, or KEY_PASSWORD secrets for release AAB."
-              exit 1
-            fi
-            echo "target=release" >> "$GITHUB_OUTPUT"
-          elif [ "$INPUT_TYPE" = "debug" ]; then
-            echo "target=debug" >> "$GITHUB_OUTPUT"
-          else
-            if [ -n "$KEYSTORE_B64" ] && [ -n "$STORE_PASS" ] && [ -n "$KEY_PASS" ]; then
-              echo "target=release" >> "$GITHUB_OUTPUT"
-            else
-              echo "Release signing secrets not configured yet; building debug AAB."
-              echo "target=debug" >> "$GITHUB_OUTPUT"
-            fi
-          fi
-
       - name: Accept Android SDK licenses if available
         run: |
           if [ -n "$ANDROID_HOME" ] && [ -x "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
             yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
           fi
 
-      - name: Decode release upload keystore
-        if: steps.mode.outputs.target == 'release'
-        env:
-          KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
+      - name: Run offline and Robolectric unit tests
         run: |
-          printf '%s' "$KEYSTORE_B64" | tr -d '[:space:]' | base64 -d > "${{ github.workspace }}/my-upload-key.jks"
+          gradle :app:testDebugUnitTest \
+            --tests "com.example.ExampleUnitTest" \
+            --tests "com.example.ExampleRobolectricTest" \
+            --tests "com.example.LearningCoreRobolectricTest" \
+            --tests "com.example.LearningAudioRobolectricTest" \
+            --no-daemon
 
-      - name: Build signed Release AAB (for Google Play)
-        if: steps.mode.outputs.target == 'release'
-        env:
-          KEYSTORE_PATH: ${{ github.workspace }}/my-upload-key.jks
-          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: gradle :app:bundleRelease --no-daemon
-
-      - name: Upload Release AAB artifact
-        if: steps.mode.outputs.target == 'release'
-        uses: actions/upload-artifact@v4
-        with:
-          name: farsi-joon-release-aab
-          path: app/build/outputs/bundle/release/*.aab
-          if-no-files-found: error
-
-      - name: Build Debug AAB (when release secrets are not set)
-        if: steps.mode.outputs.target == 'debug'
+      - name: Build Debug AAB (testing only - never for Google Play production)
         run: gradle :app:bundleDebug --no-daemon
 
-      - name: Upload Debug AAB artifact
-        if: steps.mode.outputs.target == 'debug'
+      - name: Upload Debug Testing AAB artifact
         uses: actions/upload-artifact@v4
         with:
-          name: farsi-joon-debug-aab
+          name: farsi-joon-debug-testing-aab
           path: app/build/outputs/bundle/debug/*.aab
           if-no-files-found: error

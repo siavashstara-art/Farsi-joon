@@ -1,0 +1,155 @@
+name: Production Release AAB
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_release:
+        description: "Type RELEASE to confirm signed Google Play production AAB build"
+        required: true
+        type: string
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-production-release-aab:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify release trigger confirmation
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          if [ "${{ github.event.inputs.confirm_release }}" != "RELEASE" ]; then
+            echo "ERROR: Production build aborted. confirm_release must equal RELEASE."
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify Gradle wrapper config (no gradlew binary in repo)
+        run: |
+          test -f gradle/wrapper/gradle-wrapper.properties
+          grep -q "gradle-9.3.1-bin.zip" gradle/wrapper/gradle-wrapper.properties
+
+      - name: Fail closed if required signing secrets are missing
+        shell: bash
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
+          STORE_PASS: ${{ secrets.STORE_PASSWORD }}
+          KEY_PASS: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          set +x
+          if [ -z "$KEYSTORE_B64" ] || [ -z "$STORE_PASS" ] || [ -z "$KEY_PASS" ]; then
+            echo "ERROR: Missing required release signing secrets (KEYSTORE_BASE64, STORE_PASSWORD, or KEY_PASSWORD). Production builds never fall back to Debug."
+            exit 1
+          fi
+
+      - name: Validate Android applicationId, versionCode, versionName, and google-services.json parity
+        run: |
+          python3 - <<'PY'
+          import json
+          import re
+          import sys
+
+          with open("app/build.gradle.kts", "r", encoding="utf-8") as f:
+              gradle_src = f.read()
+
+          app_id_match = re.search(r'applicationId\s*=\s*"([^"]+)"', gradle_src)
+          vc_match = re.search(r'versionCode\s*=\s*(\d+)', gradle_src)
+          vn_match = re.search(r'versionName\s*=\s*"([^"]+)"', gradle_src)
+
+          if not app_id_match or not vc_match or not vn_match:
+              print("ERROR: Could not parse applicationId, versionCode, or versionName from app/build.gradle.kts")
+              sys.exit(1)
+
+          app_id = app_id_match.group(1).strip()
+          version_code = int(vc_match.group(1))
+          version_name = vn_match.group(1).strip()
+
+          if not app_id or version_code < 1 or not version_name:
+              print(f"ERROR: Invalid release metadata (applicationId={app_id}, versionCode={version_code}, versionName={version_name})")
+              sys.exit(1)
+
+          with open("app/google-services.json", "r", encoding="utf-8") as f:
+              gs = json.load(f)
+
+          registered_packages = [
+              c.get("client_info", {}).get("android_client_info", {}).get("package_name")
+              for c in gs.get("client", [])
+          ]
+          if app_id not in registered_packages:
+              print(f"ERROR: applicationId '{app_id}' does not match any package_name in app/google-services.json: {registered_packages}")
+              sys.exit(1)
+
+          print(f"Validated metadata: applicationId={app_id}, versionCode={version_code}, versionName={version_name}")
+          PY
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Decode and validate upload keystore and alias
+        shell: bash
+        env:
+          KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          set +x
+          KEYSTORE_FILE="${{ runner.temp }}/my-upload-key.jks"
+          printf '%s' "$KEYSTORE_B64" | tr -d '[:space:]' | base64 -d > "$KEYSTORE_FILE"
+          test -s "$KEYSTORE_FILE"
+          keytool -list -keystore "$KEYSTORE_FILE" -storepass:env STORE_PASSWORD -alias upload > /dev/null
+          echo "Upload keystore and 'upload' alias validated."
+
+      - name: Set up Gradle 9.3.1
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.3.1"
+
+      - name: Accept Android SDK licenses if available
+        run: |
+          if [ -n "$ANDROID_HOME" ] && [ -x "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
+            yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
+          fi
+
+      - name: Run offline and Robolectric unit tests
+        run: |
+          gradle :app:testDebugUnitTest \
+            --tests "com.example.ExampleUnitTest" \
+            --tests "com.example.ExampleRobolectricTest" \
+            --tests "com.example.LearningCoreRobolectricTest" \
+            --tests "com.example.LearningAudioRobolectricTest" \
+            --no-daemon
+
+      - name: Run Android Lint (Release)
+        run: gradle :app:lintRelease --no-daemon
+
+      - name: Build signed Production Release AAB
+        env:
+          KEYSTORE_PATH: ${{ runner.temp }}/my-upload-key.jks
+          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: gradle :app:bundleRelease --no-daemon
+
+      - name: Verify signed AAB integrity and certificate metadata
+        run: |
+          AAB_PATH="app/build/outputs/bundle/release/app-release.aab"
+          test -s "$AAB_PATH"
+          ls -lh "$AAB_PATH"
+          unzip -l "$AAB_PATH" | grep -q "base/manifest/AndroidManifest.xml"
+          jarsigner -verify "$AAB_PATH" | tail -n 5
+          keytool -printcert -jarfile "$AAB_PATH" | grep -E "Owner:|SHA1:|SHA256:"
+
+      - name: Clean up temporary keystore from runner
+        if: always()
+        run: rm -f "${{ runner.temp }}/my-upload-key.jks"
+
+      - name: Upload Production Release AAB artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: farsi-joon-production-release-aab
+          path: app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error

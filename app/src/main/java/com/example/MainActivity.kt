@@ -107,6 +107,7 @@ fun FarsiJoonApp() {
   )
 
   val uiState by learningViewModel.uiState.collectAsStateWithLifecycle()
+  val persianVoiceAvailable by learningViewModel.audioPlayer.persianVoiceAvailable.collectAsStateWithLifecycle()
   val currentUser by Firebase.auth.authStateFlow().collectAsStateWithLifecycle(
     initialValue = Firebase.auth.currentUser
   )
@@ -145,8 +146,10 @@ fun FarsiJoonApp() {
         LessonPlayerScreen(
           lesson = selectedLesson,
           hideFinglishAfter12 = uiState.preferences.hideFinglishAfter12,
+          persianVoiceAvailable = persianVoiceAvailable,
           voiceRecorder = learningViewModel.voiceRecorder,
           onSpeak = { text, speaker -> learningViewModel.speakFarsi(text, speaker) },
+          onRecheckTts = { learningViewModel.recheckTtsVoice() },
           onToggleHideFinglish = { learningViewModel.setHideFinglishAfter12(it) },
           onLessonCompleted = { score, total ->
             learningViewModel.completeLesson(selectedLesson.id, score, total)

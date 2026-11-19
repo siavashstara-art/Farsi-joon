@@ -67,8 +67,8 @@ fun ReviewTabScreen(
   var sessionIndex by remember { mutableIntStateOf(0) }
   var isFlipped by remember { mutableStateOf(false) }
 
-  val now = System.currentTimeMillis()
-  val dueCards = remember(uiState.leitnerCards, now) {
+  val dueCards = remember(uiState.leitnerCards) {
+    val now = System.currentTimeMillis()
     uiState.leitnerCards.filter { it.card.nextReviewAt <= now }
   }
 

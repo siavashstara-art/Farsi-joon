@@ -1,5 +1,8 @@
 package com.example.ui.components
 
+import android.content.Intent
+import android.provider.Settings
+import android.speech.tts.TextToSpeech
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.rounded.VolumeOff
 import androidx.compose.material.icons.automirrored.rounded.VolumeUp
 import androidx.compose.material.icons.rounded.Visibility
 import androidx.compose.material.icons.rounded.VisibilityOff
@@ -22,6 +26,7 @@ import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
@@ -228,6 +233,82 @@ fun GoogleSignInButton(
         text = label,
         style = MaterialTheme.typography.labelLarge
       )
+    }
+  }
+}
+
+@Composable
+fun PersianTtsFallbackBanner(
+  onRecheckVoice: () -> Unit,
+  modifier: Modifier = Modifier
+) {
+  val context = LocalContext.current
+  var launchNotice by remember { mutableStateOf<String?>(null) }
+
+  Surface(
+    color = MaterialTheme.colorScheme.secondaryContainer,
+    shape = RoundedCornerShape(16.dp),
+    modifier = modifier
+      .fillMaxWidth()
+      .testTag("tts_fallback_banner")
+  ) {
+    Column(modifier = Modifier.padding(14.dp)) {
+      Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+      ) {
+        Icon(
+          imageVector = Icons.AutoMirrored.Rounded.VolumeOff,
+          contentDescription = null,
+          tint = MaterialTheme.colorScheme.onSecondaryContainer,
+          modifier = Modifier.size(20.dp)
+        )
+        Text(
+          text = "Persian Device Voice Not Installed",
+          style = MaterialTheme.typography.titleMedium,
+          color = MaterialTheme.colorScheme.onSecondaryContainer
+        )
+      }
+      Spacer(modifier = Modifier.height(4.dp))
+      Text(
+        text = "Your device lacks an offline Persian (fa-IR) voice pack. You can read using the Finglish pronunciation guide below or install Persian voice data in Android TTS settings.",
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.onSecondaryContainer
+      )
+      Spacer(modifier = Modifier.height(10.dp))
+      Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        OutlinedButton(
+          onClick = {
+            val installed = runCatching {
+              context.startActivity(Intent(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA))
+            }.isSuccess || runCatching {
+              context.startActivity(Intent("com.android.settings.TTS_SETTINGS"))
+            }.isSuccess || runCatching {
+              context.startActivity(Intent(Settings.ACTION_SETTINGS))
+            }.isSuccess
+            if (!installed) {
+              launchNotice = "Open Android Settings > Accessibility > Text-to-speech to add Persian."
+            }
+          },
+          modifier = Modifier.minimumInteractiveComponentSize()
+        ) {
+          Text("Install Persian Voice")
+        }
+        OutlinedButton(
+          onClick = onRecheckVoice,
+          modifier = Modifier.minimumInteractiveComponentSize()
+        ) {
+          Text("Recheck")
+        }
+      }
+      if (launchNotice != null) {
+        Spacer(modifier = Modifier.height(6.dp))
+        Text(
+          text = launchNotice.orEmpty(),
+          style = MaterialTheme.typography.labelMedium,
+          color = MaterialTheme.colorScheme.onSecondaryContainer
+        )
+      }
     }
   }
 }

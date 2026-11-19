@@ -214,10 +214,14 @@ class LearningViewModel(
   fun speakFarsi(text: String, speaker: String = "STANDARD") {
     val profile = when (speaker.uppercase()) {
       "GRANDMA" -> VoiceProfile.GRANDMA
-      "NIMA" -> VoiceProfile.NIMA
+      "NIMA", "B" -> VoiceProfile.NIMA
       else -> VoiceProfile.STANDARD
     }
     audioPlayer.speak(text, profile)
+  }
+
+  fun recheckTtsVoice() {
+    audioPlayer.recheckVoiceAvailability()
   }
 
   fun clearAccountMessage() {
