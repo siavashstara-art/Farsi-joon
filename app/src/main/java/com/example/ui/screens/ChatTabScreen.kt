@@ -341,7 +341,8 @@ private fun ChatAuthenticatedScreen(
       ) {
         items(starterPrompts) { (faPrompt, label) ->
           SuggestionChip(
-            onClick = { if (!uiState.isSending) viewModel.sendMessage(faPrompt) },
+            enabled = !uiState.isSending && !uiState.isLoadingQuota,
+            onClick = { viewModel.sendMessage(faPrompt) },
             label = { Text(label) }
           )
         }

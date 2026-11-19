@@ -4,12 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.AutoStories
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
@@ -30,8 +32,11 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -108,12 +113,23 @@ fun FarsiJoonApp() {
 
   val uiState by learningViewModel.uiState.collectAsStateWithLifecycle()
   val persianVoiceAvailable by learningViewModel.audioPlayer.persianVoiceAvailable.collectAsStateWithLifecycle()
+  val ttsError by learningViewModel.audioPlayer.ttsError.collectAsStateWithLifecycle()
   val currentUser by Firebase.auth.authStateFlow().collectAsStateWithLifecycle(
     initialValue = Firebase.auth.currentUser
   )
 
   val context = LocalContext.current
   val scope = rememberCoroutineScope()
+  val snackbarHostState = remember { SnackbarHostState() }
+
+  LaunchedEffect(ttsError) {
+    val msg = ttsError
+    if (!msg.isNullOrBlank()) {
+      snackbarHostState.showSnackbar(msg)
+      learningViewModel.audioPlayer.clearError()
+    }
+  }
+
   LaunchedEffect(Unit) {
     val credentialManager = CredentialManager.create(context)
     attemptAutoSignIn(
@@ -132,44 +148,39 @@ fun FarsiJoonApp() {
 
   FarsiJoonTheme(themeMode = uiState.preferences.themeMode) {
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+      Box(modifier = Modifier.fillMaxSize()) {
       if (!uiState.isLoading && !uiState.preferences.onboardingCompleted) {
         OnboardingScreen(
           onFinish = { learningViewModel.completeOnboarding() }
         )
-        return@Surface
-      }
-
-      val selectedLesson = activeLessonId?.let { id ->
-        uiState.lessons.firstOrNull { it.id == id }
-      }
-      if (selectedLesson != null) {
-        LessonPlayerScreen(
-          lesson = selectedLesson,
-          hideFinglishAfter12 = uiState.preferences.hideFinglishAfter12,
-          persianVoiceAvailable = persianVoiceAvailable,
-          voiceRecorder = learningViewModel.voiceRecorder,
-          onSpeak = { text, speaker -> learningViewModel.speakFarsi(text, speaker) },
-          onRecheckTts = { learningViewModel.recheckTtsVoice() },
-          onToggleHideFinglish = { learningViewModel.setHideFinglishAfter12(it) },
-          onLessonCompleted = { score, total ->
-            learningViewModel.completeLesson(selectedLesson.id, score, total)
-          },
-          onBack = { activeLessonId = null }
-        )
-        return@Surface
-      }
-
-      val selectedStory = activeStoryId?.let { id ->
-        uiState.stories.firstOrNull { it.id == id }
-      }
-      if (selectedStory != null) {
-        StoryReaderScreen(
-          story = selectedStory,
-          audioPlayer = learningViewModel.audioPlayer,
-          onBack = { activeStoryId = null }
-        )
-        return@Surface
-      }
+      } else {
+        val selectedLesson = activeLessonId?.let { id ->
+          uiState.lessons.firstOrNull { it.id == id }
+        }
+        val selectedStory = activeStoryId?.let { id ->
+          uiState.stories.firstOrNull { it.id == id }
+        }
+        if (selectedLesson != null) {
+          LessonPlayerScreen(
+            lesson = selectedLesson,
+            hideFinglishAfter12 = uiState.preferences.hideFinglishAfter12,
+            persianVoiceAvailable = persianVoiceAvailable,
+            voiceRecorder = learningViewModel.voiceRecorder,
+            onSpeak = { text, speaker -> learningViewModel.speakFarsi(text, speaker) },
+            onRecheckTts = { learningViewModel.recheckTtsVoice() },
+            onToggleHideFinglish = { learningViewModel.setHideFinglishAfter12(it) },
+            onLessonCompleted = { score, total ->
+              learningViewModel.completeLesson(selectedLesson.id, score, total)
+            },
+            onBack = { activeLessonId = null }
+          )
+        } else if (selectedStory != null) {
+          StoryReaderScreen(
+            story = selectedStory,
+            audioPlayer = learningViewModel.audioPlayer,
+            onBack = { activeStoryId = null }
+          )
+        } else {
 
       BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val useNavigationRail = maxWidth >= 700.dp
@@ -279,6 +290,8 @@ fun FarsiJoonApp() {
           }
         }
       }
+        }
+      }
 
       if (showSettingsSheet) {
         SettingsBottomSheet(
@@ -289,8 +302,18 @@ fun FarsiJoonApp() {
           onToggleDailyReminder = { learningViewModel.setDailyReminder(it) },
           onSignedInSync = { learningViewModel.syncAllLocalProgressOnSignIn() },
           onClearLocalProgress = { learningViewModel.resetLocalProgressOnly() },
+          onAccountDeletedCleanup = { learningViewModel.clearLocalDataForAccountDeletion() },
           onDismiss = { showSettingsSheet = false }
         )
+      }
+
+      SnackbarHost(
+        hostState = snackbarHostState,
+        modifier = Modifier
+          .align(Alignment.BottomCenter)
+          .windowInsetsPadding(WindowInsets.safeDrawing)
+          .padding(bottom = 16.dp)
+      )
       }
     }
   }

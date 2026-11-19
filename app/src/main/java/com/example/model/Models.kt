@@ -1,5 +1,6 @@
 package com.example.model
 
+import androidx.annotation.Keep
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.IgnoreExtraProperties
@@ -109,6 +110,7 @@ data class StorySentence(
 
 // Firestore Cloud Models
 
+@Keep
 @IgnoreExtraProperties
 data class UserProfile(
   @DocumentId val id: String = "",
@@ -120,6 +122,7 @@ data class UserProfile(
   @ServerTimestamp val updatedAt: Timestamp? = null
 )
 
+@Keep
 @IgnoreExtraProperties
 data class CloudLessonProgress(
   @DocumentId val id: String = "",
@@ -132,6 +135,7 @@ data class CloudLessonProgress(
   @ServerTimestamp val updatedAt: Timestamp? = null
 )
 
+@Keep
 @IgnoreExtraProperties
 data class DailyChatUsage(
   @DocumentId val id: String = "",
@@ -141,6 +145,7 @@ data class DailyChatUsage(
   @ServerTimestamp val updatedAt: Timestamp? = null
 )
 
+@Keep
 @IgnoreExtraProperties
 data class ChatReport(
   @DocumentId val id: String = "",

@@ -4,7 +4,6 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestoreException
 import kotlinx.coroutines.CancellationException
-import org.json.JSONArray
 import org.json.JSONObject
 
 enum class OperationType(val value: String) {
@@ -28,25 +27,16 @@ fun handleFirestoreError(
     ?: exception
 
   val currentUser = auth.currentUser
-  val providerInfoList = currentUser?.providerData?.map { provider ->
-    JSONObject().apply {
-      put("providerId", provider.providerId)
-      put("email", provider.email)
-    }
-  } ?: emptyList()
-
+  val redactedPath = path?.replace(Regex("users/[^/]+"), "users/[redacted]")
   val authInfoJson = JSONObject().apply {
-    put("userId", currentUser?.uid)
-    put("email", currentUser?.email)
+    put("isSignedIn", currentUser != null)
     put("emailVerified", currentUser?.isEmailVerified)
-    put("tenantId", currentUser?.tenantId)
-    put("providerInfo", JSONArray(providerInfoList))
   }
 
   val errorInfoJson = JSONObject().apply {
     put("error", rootError.message ?: rootError.toString())
     put("operationType", operationType.value)
-    put("path", path)
+    put("path", redactedPath)
     put("authInfo", authInfoJson)
   }
 

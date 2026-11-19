@@ -42,12 +42,17 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
+import com.example.BuildConfig
+import com.example.audio.LocalVoiceRecorder
 import com.example.data.firebase.CloudSyncRepository
 import com.example.data.firebase.signOut
+import com.example.data.local.FarsiDatabase
+import com.example.data.local.PreferencesRepository
 import com.example.data.local.ThemeMode
 import com.example.data.local.UserPreferences
 import com.example.ui.components.GoogleSignInButton
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.NonCancellable
@@ -65,6 +70,7 @@ fun SettingsBottomSheet(
   onToggleDailyReminder: (Boolean) -> Unit,
   onSignedInSync: () -> Unit,
   onClearLocalProgress: () -> Unit,
+  onAccountDeletedCleanup: () -> Unit = onClearLocalProgress,
   onDismiss: () -> Unit
 ) {
   val context = LocalContext.current
@@ -258,6 +264,12 @@ fun SettingsBottomSheet(
         }
       }
 
+      Text(
+        text = "Farsi-Joon v${BuildConfig.VERSION_NAME} • Support: siavashstara@gmail.com",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+      )
+
       Spacer(modifier = Modifier.height(16.dp))
     }
   }
@@ -278,14 +290,53 @@ fun SettingsBottomSheet(
             scope.launch {
               withContext(NonCancellable) {
                 try {
+                  val user = Firebase.auth.currentUser
+                  if (user == null) {
+                    statusMessage = "Please sign in first to delete your account."
+                    return@withContext
+                  }
+                  val lastSignInMs = user.metadata?.lastSignInTimestamp ?: 0L
+                  if (lastSignInMs > 0L && (System.currentTimeMillis() - lastSignInMs) > 4 * 60_000L) {
+                    statusMessage = "For your security, please sign out and sign in again before deleting your account."
+                    return@withContext
+                  }
+
+                  // 1. Delete Firestore cloud data
                   val repo = CloudSyncRepository(context)
                   repo.deleteAllUserCloudData()
-                  onClearLocalProgress()
-                  Firebase.auth.currentUser?.delete()?.await()
+
+                  // 2. Clear Room database user data (without re-inserting starter cards)
+                  val db = FarsiDatabase.getInstance(context)
+                  db.farsiDao().clearLessonProgress()
+                  db.farsiDao().clearLeitnerCards()
+                  onAccountDeletedCleanup()
+
+                  // 3. Clear DataStore preferences
+                  val prefsRepo = PreferencesRepository(context)
+                  prefsRepo.resetPreferences()
+
+                  // 4. Delete locally recorded .m4a files and cache files
+                  val recorder = LocalVoiceRecorder(context)
+                  recorder.clearRecording()
+                  runCatching {
+                    context.cacheDir.listFiles()?.forEach { file ->
+                      if (file.name.contains("farsi") || file.name.endsWith(".m4a")) {
+                        file.delete()
+                      }
+                    }
+                  }
+
+                  // 5. Delete Firebase Authentication account
+                  user.delete().await()
+
+                  // 6. Clear Credential Manager state
                   runCatching { credentialManager.clearCredentialState(ClearCredentialStateRequest()) }
-                  statusMessage = "Account and all associated data deleted."
+
+                  statusMessage = "Account and all associated local and cloud data deleted successfully."
+                } catch (e: FirebaseAuthRecentLoginRequiredException) {
+                  statusMessage = "Security policy requires recent sign-in. Please sign out and sign in again before deleting your account."
                 } catch (e: Exception) {
-                  statusMessage = e.localizedMessage ?: "Please sign in again recently to delete your account."
+                  statusMessage = e.localizedMessage ?: "Failed to complete account deletion. Please try again."
                 } finally {
                   isDeleting = false
                 }

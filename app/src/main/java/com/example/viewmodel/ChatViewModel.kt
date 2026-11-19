@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import java.util.UUID
 
 data class ChatMessageItem(
@@ -61,7 +62,9 @@ class ChatViewModel(
   val uiState: StateFlow<ChatUiState> = _uiState.asStateFlow()
 
   private val todayDateKey: String
-    get() = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(Date())
+    get() = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+      timeZone = TimeZone.getTimeZone("UTC")
+    }.format(Date())
 
   init {
     loadDailyQuota()
@@ -90,23 +93,24 @@ class ChatViewModel(
 
   fun sendMessage(rawText: String) {
     val userText = rawText.trim()
-    if (userText.isEmpty() || _uiState.value.isSending) return
+    val snapshot = _uiState.value
+    if (userText.isEmpty() || snapshot.isSending || snapshot.isLoadingQuota) return
 
-    if (_uiState.value.isLimitReached) {
-      _uiState.value = _uiState.value.copy(
+    if (snapshot.isLimitReached) {
+      _uiState.value = snapshot.copy(
         errorMessage = "چت امروز تعطیل است — Daily limit of 10 messages reached."
       )
       return
     }
 
     if (!chatRepo.checkMinuteRateLimit()) {
-      _uiState.value = _uiState.value.copy(
+      _uiState.value = snapshot.copy(
         errorMessage = "Please wait a few seconds before sending another message (minute rate limit)."
       )
       return
     }
 
-    val historyPairs = _uiState.value.messages
+    val historyPairs = snapshot.messages
       .filter { !it.isStreaming }
       .map { (if (it.isUser) "user" else "model") to it.text }
 
@@ -120,8 +124,8 @@ class ChatViewModel(
       userPromptForReport = userText
     )
 
-    _uiState.value = _uiState.value.copy(
-      messages = _uiState.value.messages + userMsg + aiPlaceholder,
+    _uiState.value = snapshot.copy(
+      messages = snapshot.messages + userMsg + aiPlaceholder,
       isSending = true,
       errorMessage = null,
       statusBanner = null
@@ -129,8 +133,8 @@ class ChatViewModel(
 
     viewModelScope.launch {
       try {
-        chatRepo.recordMinuteSend()
         val updatedCount = cloudSyncRepo.incrementDailyChatCount(todayDateKey)
+        chatRepo.recordMinuteSend()
         _uiState.value = _uiState.value.copy(dailyUsed = updatedCount)
 
         var latestText = ""
@@ -149,10 +153,17 @@ class ChatViewModel(
             if (item.id == aiPlaceholderId) item.copy(text = latestText, isStreaming = false) else item
           }
         )
+      } catch (e: CloudSyncRepository.DailyQuotaExceededException) {
+        _uiState.value = _uiState.value.copy(
+          isSending = false,
+          dailyUsed = _uiState.value.dailyLimit,
+          messages = _uiState.value.messages.filterNot { it.id == aiPlaceholderId || it.id == userMsg.id },
+          errorMessage = e.message
+        )
       } catch (e: CancellationException) {
         throw e
       } catch (e: Exception) {
-        Log.e("ChatVM", "Chat send failed for $currentUserId", e)
+        Log.e("ChatVM", "Chat send failed", e)
         _uiState.value = _uiState.value.copy(
           isSending = false,
           messages = _uiState.value.messages.filterNot { it.id == aiPlaceholderId },

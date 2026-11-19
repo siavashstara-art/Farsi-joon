@@ -236,6 +236,13 @@ class LearningViewModel(
     }
   }
 
+  fun clearLocalDataForAccountDeletion() {
+    viewModelScope.launch {
+      progressRepo.clearAllLocalProgress()
+      _accountActionMessage.value = null
+    }
+  }
+
   override fun onCleared() {
     super.onCleared()
     audioPlayer.release()

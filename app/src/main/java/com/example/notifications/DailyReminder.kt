@@ -31,7 +31,7 @@ class DailyReminderReceiver : BroadcastReceiver() {
     )
 
     val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-      .setSmallIcon(R.mipmap.ic_launcher)
+      .setSmallIcon(R.drawable.ic_stat_farsi_joon)
       .setContentTitle("Time for your 10-minute Farsi!")
       .setContentText("سلام! Practice a few words in Farsi-Joon today.")
       .setPriority(NotificationCompat.PRIORITY_DEFAULT)

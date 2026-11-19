@@ -185,33 +185,46 @@ class CloudSyncRepository(
     }
   }
 
+  class DailyQuotaExceededException :
+    IllegalStateException("چت امروز تعطیل است — Daily limit of 10 messages reached.")
+
   suspend fun incrementDailyChatCount(dateKey: String): Int {
     val uid = requireUserId()
     val docRef = db.collection("users").document(uid)
       .collection("daily_usage").document(dateKey)
     try {
-      val snap = docRef.get().await()
-      val nextCount = if (!snap.exists()) {
-        val payload = mapOf(
-          "userId" to uid,
-          "dateKey" to dateKey,
-          "messageCount" to 1L,
-          "updatedAt" to FieldValue.serverTimestamp()
-        )
-        docRef.set(payload).await()
-        1
-      } else {
-        val current = (snap.getLong("messageCount") ?: 0L).toInt()
-        val updated = (current + 1).coerceAtMost(10)
-        docRef.update(
-          mapOf(
-            "messageCount" to updated.toLong(),
+      return db.runTransaction { transaction ->
+        val snapshot = transaction.get(docRef)
+        val currentCount = if (!snapshot.exists()) {
+          0
+        } else {
+          (snapshot.getLong("messageCount") ?: 0L).toInt()
+        }
+        if (currentCount >= 10) {
+          throw DailyQuotaExceededException()
+        }
+        val nextCount = currentCount + 1
+        if (!snapshot.exists()) {
+          val payload = mapOf(
+            "userId" to uid,
+            "dateKey" to dateKey,
+            "messageCount" to 1L,
             "updatedAt" to FieldValue.serverTimestamp()
           )
-        ).await()
-        updated
-      }
-      return nextCount
+          transaction.set(docRef, payload)
+        } else {
+          transaction.update(
+            docRef,
+            mapOf(
+              "messageCount" to nextCount.toLong(),
+              "updatedAt" to FieldValue.serverTimestamp()
+            )
+          )
+        }
+        nextCount
+      }.await()
+    } catch (e: DailyQuotaExceededException) {
+      throw e
     } catch (e: CancellationException) {
       throw e
     } catch (e: Exception) {
