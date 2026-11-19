@@ -44,6 +44,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -81,6 +83,7 @@ fun ReviewTabScreen(
       isFlipped = isFlipped,
       dimFinglish = current.card.lessonId >= 13,
       hideFinglish = uiState.preferences.hideFinglishAfter12 && current.card.lessonId >= 13,
+      reduceMotion = uiState.preferences.calmFocusMode,
       onFlip = { isFlipped = !isFlipped },
       onSpeak = { onSpeak(current.word.farsi, "STANDARD") },
       onAnswer = { isCorrect ->
@@ -194,7 +197,8 @@ fun ReviewTabScreen(
       ) {
         Text(
           text = "Your 5 Leitner Boxes (${uiState.leitnerCards.size} unlocked words)",
-          style = MaterialTheme.typography.titleLarge
+          style = MaterialTheme.typography.titleLarge,
+          modifier = Modifier.semantics { heading() }
         )
 
         (1..5).forEach { box ->
@@ -285,6 +289,7 @@ private fun LeitnerSessionView(
   isFlipped: Boolean,
   dimFinglish: Boolean,
   hideFinglish: Boolean,
+  reduceMotion: Boolean,
   onFlip: () -> Unit,
   onSpeak: () -> Unit,
   onAnswer: (Boolean) -> Unit,
@@ -322,7 +327,10 @@ private fun LeitnerSessionView(
         .fillMaxWidth()
         .widthIn(max = 600.dp)
         .weight(1f)
-        .clickable(onClick = onFlip)
+        .clickable(
+          onClickLabel = if (isFlipped) "Show Persian front" else "Reveal Finglish and English meaning",
+          onClick = onFlip
+        )
         .testTag("leitner_flashcard"),
       shape = RoundedCornerShape(28.dp),
       colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -334,7 +342,7 @@ private fun LeitnerSessionView(
           .padding(24.dp),
         contentAlignment = Alignment.Center
       ) {
-        AnimatedContent(targetState = isFlipped, label = "card_flip") { flipped ->
+        val renderCardFace: @Composable (Boolean) -> Unit = { flipped ->
           Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -394,6 +402,13 @@ private fun LeitnerSessionView(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
               )
             }
+          }
+        }
+        if (reduceMotion) {
+          renderCardFace(isFlipped)
+        } else {
+          AnimatedContent(targetState = isFlipped, label = "card_flip") { flipped ->
+            renderCardFace(flipped)
           }
         }
       }

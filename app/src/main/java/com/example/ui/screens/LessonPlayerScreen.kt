@@ -35,6 +35,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.ArrowBack
 import androidx.compose.material.icons.automirrored.rounded.VolumeUp
+import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Mic
@@ -73,6 +74,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -275,7 +282,8 @@ private fun ListenStepContent(
           Text(
             text = "Step 1 • Ear First",
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            modifier = Modifier.semantics { heading() }
           )
           Spacer(modifier = Modifier.height(4.dp))
           Text(
@@ -421,7 +429,8 @@ private fun UnderstandStepContent(
     item {
       Text(
         text = "Vocabulary (${lesson.words.size} words)",
-        style = MaterialTheme.typography.titleLarge
+        style = MaterialTheme.typography.titleLarge,
+        modifier = Modifier.semantics { heading() }
       )
     }
 
@@ -439,7 +448,8 @@ private fun UnderstandStepContent(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
           text = "Everyday Phrases",
-          style = MaterialTheme.typography.titleLarge
+          style = MaterialTheme.typography.titleLarge,
+          modifier = Modifier.semantics { heading() }
         )
       }
       items(lesson.phrases, key = { it.id }) { phrase ->
@@ -475,7 +485,8 @@ private fun UnderstandStepContent(
         Spacer(modifier = Modifier.height(4.dp))
         Text(
           text = "Real Sentences (${lesson.sentences.size})",
-          style = MaterialTheme.typography.titleLarge
+          style = MaterialTheme.typography.titleLarge,
+          modifier = Modifier.semantics { heading() }
         )
       }
       items(lesson.sentences, key = { it.id }) { sentence ->
@@ -546,7 +557,8 @@ private fun ReadStepContent(
       item {
         Text(
           text = "Letter Shapes (4 Positions)",
-          style = MaterialTheme.typography.titleLarge
+          style = MaterialTheme.typography.titleLarge,
+          modifier = Modifier.semantics { heading() }
         )
         Text(
           text = "Tap any letter card to hear its example word. Persian letters change shape depending on where they connect.",
@@ -563,7 +575,8 @@ private fun ReadStepContent(
       Spacer(modifier = Modifier.height(4.dp))
       Text(
         text = "Script-First Reading Practice",
-        style = MaterialTheme.typography.titleLarge
+        style = MaterialTheme.typography.titleLarge,
+        modifier = Modifier.semantics { heading() }
       )
       Text(
         text = "Try reading the Persian script aloud, then tap to check Finglish & meaning.",
@@ -696,14 +709,18 @@ private fun SpeakStepContent(
   var selectedIdx by remember(lesson.id) { mutableIntStateOf(0) }
   var permissionDenied by remember { mutableStateOf(false) }
   var recordingSeconds by remember { mutableIntStateOf(0) }
+  var reachedMaxDuration by remember { mutableStateOf(false) }
 
   LaunchedEffect(isRecording) {
     if (isRecording) {
       recordingSeconds = 0
-      while (true) {
+      reachedMaxDuration = false
+      while (recordingSeconds < 60) {
         delay(1000L)
         recordingSeconds++
       }
+      reachedMaxDuration = true
+      voiceRecorder.stopRecording()
     } else {
       recordingSeconds = 0
     }
@@ -862,8 +879,18 @@ private fun SpeakStepContent(
           )
           Spacer(modifier = Modifier.width(8.dp))
           Text(
-            if (isRecording) "Stop Recording (00:${recordingSeconds.toString().padStart(2, '0')})"
-            else "2. Record Yourself"
+            if (isRecording) "Stop Recording (00:${recordingSeconds.toString().padStart(2, '0')} / 01:00)"
+            else "2. Record Yourself (max 60s)"
+          )
+        }
+
+        if (reachedMaxDuration && !isRecording) {
+          Text(
+            text = "Recording stopped automatically at the 60-second limit.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.primary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }
           )
         }
 
@@ -872,7 +899,8 @@ private fun SpeakStepContent(
             text = "Microphone permission wasn't granted. You can still skip ahead or tap Record again to allow.",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.tertiary,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }
           )
         }
 
@@ -881,7 +909,8 @@ private fun SpeakStepContent(
             text = recordingError.orEmpty(),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.tertiary,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }
           )
         }
 
@@ -996,6 +1025,14 @@ private fun PracticeStepContent(
       Surface(
         modifier = Modifier
           .fillMaxWidth()
+          .semantics {
+            stateDescription = when {
+              !answered -> "Option ${idx + 1}"
+              isCorrect -> "Correct answer"
+              isSelected -> "Selected, incorrect"
+              else -> "Not selected"
+            }
+          }
           .clip(RoundedCornerShape(16.dp))
           .border(1.5.dp, borderColor, RoundedCornerShape(16.dp))
           .clickable(enabled = !answered) {
@@ -1019,6 +1056,13 @@ private fun PracticeStepContent(
           if (answered && isCorrect) {
             Spacer(modifier = Modifier.width(8.dp))
             Icon(Icons.Rounded.CheckCircle, contentDescription = "Correct", tint = EmeraldSuccess)
+          } else if (answered && isSelected) {
+            Spacer(modifier = Modifier.width(8.dp))
+            Icon(
+              imageVector = Icons.Rounded.Cancel,
+              contentDescription = "Incorrect",
+              tint = MaterialTheme.colorScheme.tertiary
+            )
           }
         }
       }
@@ -1028,7 +1072,9 @@ private fun PracticeStepContent(
       Surface(
         color = MaterialTheme.colorScheme.surfaceVariant,
         shape = RoundedCornerShape(14.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+          .fillMaxWidth()
+          .semantics { liveRegion = LiveRegionMode.Polite }
       ) {
         Text(
           text = q.explanation,
@@ -1091,7 +1137,12 @@ private fun LessonCompleteContent(
       textAlign = TextAlign.Center
     )
     Spacer(modifier = Modifier.height(16.dp))
-    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    Row(
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      modifier = Modifier.semantics(mergeDescendants = true) {
+        contentDescription = "Earned $stars out of 3 stars"
+      }
+    ) {
       repeat(3) { idx ->
         Icon(
           imageVector = Icons.Rounded.Star,

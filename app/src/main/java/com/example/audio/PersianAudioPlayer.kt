@@ -150,8 +150,15 @@ class PersianAudioPlayer(context: Context) {
     onDone: ((String) -> Unit)? = null,
     onError: (() -> Unit)? = null
   ) {
+    val cleanText = farsiText.trim()
+    if (cleanText.isEmpty()) {
+      if (onError != null) {
+        mainHandler.post { onError.invoke() }
+      }
+      return
+    }
     val engine = tts
-    if (engine == null || !isReady || farsiText.isBlank()) {
+    if (engine == null || !isReady) {
       _ttsError.value = "Speech engine is not ready yet."
       if (onError != null) {
         mainHandler.post { onError.invoke() }
@@ -186,7 +193,8 @@ class PersianAudioPlayer(context: Context) {
         engine.setSpeechRate(0.80f)
       }
     }
-    val result = engine.speak(farsiText, TextToSpeech.QUEUE_FLUSH, null, utteranceId)
+    val safeText = cleanText.take(3500)
+    val result = engine.speak(safeText, TextToSpeech.QUEUE_FLUSH, null, utteranceId)
     if (result == TextToSpeech.ERROR) {
       handleTtsError(utteranceId)
     }

@@ -20,6 +20,7 @@ enum class ThemeMode {
 data class UserPreferences(
   val onboardingCompleted: Boolean = false,
   val hideFinglishAfter12: Boolean = false,
+  val calmFocusMode: Boolean = false,
   val themeMode: ThemeMode = ThemeMode.SYSTEM,
   val dailyReminderEnabled: Boolean = false,
   val reminderHour: Int = 19,
@@ -31,6 +32,7 @@ class PreferencesRepository(private val context: Context) {
   private object Keys {
     val ONBOARDING_COMPLETED = booleanPreferencesKey("onboarding_completed")
     val HIDE_FINGLISH_AFTER_12 = booleanPreferencesKey("hide_finglish_after_12")
+    val CALM_FOCUS_MODE = booleanPreferencesKey("calm_focus_mode")
     val THEME_MODE = stringPreferencesKey("theme_mode")
     val DAILY_REMINDER_ENABLED = booleanPreferencesKey("daily_reminder_enabled")
     val REMINDER_HOUR = intPreferencesKey("reminder_hour")
@@ -41,6 +43,7 @@ class PreferencesRepository(private val context: Context) {
     UserPreferences(
       onboardingCompleted = prefs[Keys.ONBOARDING_COMPLETED] ?: false,
       hideFinglishAfter12 = prefs[Keys.HIDE_FINGLISH_AFTER_12] ?: false,
+      calmFocusMode = prefs[Keys.CALM_FOCUS_MODE] ?: false,
       themeMode = runCatching {
         ThemeMode.valueOf(prefs[Keys.THEME_MODE] ?: ThemeMode.SYSTEM.name)
       }.getOrDefault(ThemeMode.SYSTEM),
@@ -56,6 +59,10 @@ class PreferencesRepository(private val context: Context) {
 
   suspend fun setHideFinglishAfter12(hide: Boolean) {
     context.dataStore.edit { it[Keys.HIDE_FINGLISH_AFTER_12] = hide }
+  }
+
+  suspend fun setCalmFocusMode(enabled: Boolean) {
+    context.dataStore.edit { it[Keys.CALM_FOCUS_MODE] = enabled }
   }
 
   suspend fun setThemeMode(mode: ThemeMode) {

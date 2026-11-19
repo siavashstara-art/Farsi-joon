@@ -29,17 +29,25 @@ import androidx.compose.material.icons.rounded.StarOutline
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -64,6 +72,14 @@ fun LessonsTabScreen(
   }
 
   val nextLessonId = uiState.lessons.firstOrNull { uiState.progressMap[it.id]?.completed != true }?.id ?: 1
+  val calmFocus = uiState.preferences.calmFocusMode
+  var expandAllInFocus by remember(calmFocus) { mutableStateOf(false) }
+
+  val visibleLessons = if (calmFocus && !expandAllInFocus) {
+    uiState.lessons.filter { it.id in (nextLessonId - 1)..(nextLessonId + 1) }
+  } else {
+    uiState.lessons
+  }
 
   LazyColumn(
     modifier = modifier.fillMaxSize(),
@@ -83,7 +99,30 @@ fun LessonsTabScreen(
       )
     }
 
-    items(uiState.lessons, key = { it.id }) { lesson ->
+    if (calmFocus) {
+      item {
+        Row(
+          modifier = Modifier
+            .fillMaxWidth()
+            .widthIn(max = 600.dp),
+          horizontalArrangement = Arrangement.SpaceBetween,
+          verticalAlignment = Alignment.CenterVertically
+        ) {
+          Text(
+            text = if (expandAllInFocus) "Showing all ${uiState.lessons.size} lessons" else "Calm Focus: Step-by-step view",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.primary
+          )
+          FilterChip(
+            selected = expandAllInFocus,
+            onClick = { expandAllInFocus = !expandAllInFocus },
+            label = { Text(if (expandAllInFocus) "Focus on Next" else "Show All ${uiState.lessons.size}") }
+          )
+        }
+      }
+    }
+
+    items(visibleLessons, key = { it.id }) { lesson ->
       val progress = uiState.progressMap[lesson.id]
       val isCurrent = lesson.id == nextLessonId
       Column(modifier = Modifier.widthIn(max = 600.dp)) {
@@ -147,9 +186,10 @@ private fun ProgressHeroCard(
         ) {
           Column(modifier = Modifier.weight(1f)) {
             Text(
-              text = "Your 20-Lesson Path",
+              text = "Your $totalCount-Lesson Path",
               style = MaterialTheme.typography.titleLarge,
-              color = MaterialTheme.colorScheme.onPrimary
+              color = MaterialTheme.colorScheme.onPrimary,
+              modifier = Modifier.semantics { heading() }
             )
             Text(
               text = "$completedCount of $totalCount lessons • $completionPercent% complete",
@@ -347,7 +387,12 @@ private fun LessonPathCard(
 
       Spacer(modifier = Modifier.width(8.dp))
 
-      Row(verticalAlignment = Alignment.CenterVertically) {
+      Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.semantics(mergeDescendants = true) {
+          contentDescription = "$stars of 3 stars earned"
+        }
+      ) {
         repeat(3) { index ->
           Icon(
             imageVector = if (index < stars) Icons.Rounded.Star else Icons.Rounded.StarOutline,

@@ -141,6 +141,12 @@ class LearningViewModel(
     }
   }
 
+  fun setCalmFocusMode(enabled: Boolean) {
+    viewModelScope.launch {
+      prefsRepo.setCalmFocusMode(enabled)
+    }
+  }
+
   fun setThemeMode(mode: ThemeMode) {
     viewModelScope.launch {
       prefsRepo.setThemeMode(mode)

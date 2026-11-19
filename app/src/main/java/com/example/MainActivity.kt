@@ -17,8 +17,10 @@ import androidx.compose.material.icons.outlined.AutoStories
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.School
 import androidx.compose.material.icons.outlined.Style
+import androidx.compose.material.icons.rounded.AccountCircle
 import androidx.compose.material.icons.rounded.AutoStories
 import androidx.compose.material.icons.rounded.ChatBubble
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.School
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Style
@@ -56,9 +58,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.compose.material3.TextButton
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 import com.example.data.firebase.attemptAutoSignIn
 import com.example.data.firebase.authStateFlow
 import com.example.data.firebase.configureAppCheck
+import com.example.data.firebase.onGoogleSignInClicked
 import com.example.ui.screens.ChatTabScreen
 import com.example.ui.screens.LessonPlayerScreen
 import com.example.ui.screens.LessonsTabScreen
@@ -178,6 +188,7 @@ fun FarsiJoonApp() {
           StoryReaderScreen(
             story = selectedStory,
             audioPlayer = learningViewModel.audioPlayer,
+            reduceMotion = uiState.preferences.calmFocusMode,
             onBack = { activeStoryId = null }
           )
         } else {
@@ -189,6 +200,17 @@ fun FarsiJoonApp() {
           contentWindowInsets = WindowInsets.safeDrawing,
           topBar = {
             CenterAlignedTopAppBar(
+              navigationIcon = {
+                IconButton(
+                  onClick = { showSettingsSheet = true },
+                  modifier = Modifier.testTag("open_menu_button")
+                ) {
+                  Icon(
+                    imageVector = Icons.Rounded.Menu,
+                    contentDescription = "Open Menu and Settings"
+                  )
+                }
+              },
               title = {
                 Text(
                   text = when (activeTab) {
@@ -202,6 +224,49 @@ fun FarsiJoonApp() {
                 )
               },
               actions = {
+                if (currentUser == null) {
+                  TextButton(
+                    onClick = {
+                      val cm = CredentialManager.create(context)
+                      onGoogleSignInClicked(
+                        context = context,
+                        credentialManager = cm,
+                        onAuthSuccess = {
+                          learningViewModel.syncAllLocalProgressOnSignIn()
+                          scope.launch {
+                            snackbarHostState.showSnackbar("Signed in with Google! Cloud sync & AI Chat unlocked.")
+                          }
+                        },
+                        onAuthError = { err ->
+                          scope.launch { snackbarHostState.showSnackbar(err) }
+                        },
+                        scope = scope
+                      )
+                    },
+                    modifier = Modifier
+                      .heightIn(min = 48.dp)
+                      .testTag("topbar_signin_button")
+                  ) {
+                    Icon(
+                      imageVector = Icons.Rounded.AccountCircle,
+                      contentDescription = null,
+                      modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Sign in")
+                  }
+                } else {
+                  IconButton(
+                    onClick = { showSettingsSheet = true },
+                    modifier = Modifier.testTag("topbar_account_button")
+                  ) {
+                    Icon(
+                      imageVector = Icons.Rounded.AccountCircle,
+                      contentDescription = "Google account signed in",
+                      tint = MaterialTheme.colorScheme.primary
+                    )
+                  }
+                }
                 IconButton(
                   onClick = { showSettingsSheet = true },
                   modifier = Modifier.testTag("open_settings_button")
@@ -297,8 +362,13 @@ fun FarsiJoonApp() {
         SettingsBottomSheet(
           currentUser = currentUser,
           preferences = uiState.preferences,
+          onSelectSection = { tabIndex ->
+            MainTab.entries.getOrNull(tabIndex)?.let { activeTab = it }
+            showSettingsSheet = false
+          },
           onThemeChanged = { learningViewModel.setThemeMode(it) },
           onToggleHideFinglishAfter12 = { learningViewModel.setHideFinglishAfter12(it) },
+          onToggleCalmFocusMode = { learningViewModel.setCalmFocusMode(it) },
           onToggleDailyReminder = { learningViewModel.setDailyReminder(it) },
           onSignedInSync = { learningViewModel.syncAllLocalProgressOnSignIn() },
           onClearLocalProgress = { learningViewModel.resetLocalProgressOnly() },

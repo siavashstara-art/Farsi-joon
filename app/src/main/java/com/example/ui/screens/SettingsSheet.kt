@@ -7,6 +7,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,6 +40,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.credentials.ClearCredentialStateRequest
@@ -60,13 +64,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun SettingsBottomSheet(
   currentUser: FirebaseUser?,
   preferences: UserPreferences,
+  onSelectSection: ((Int) -> Unit)? = null,
   onThemeChanged: (ThemeMode) -> Unit,
   onToggleHideFinglishAfter12: (Boolean) -> Unit,
+  onToggleCalmFocusMode: (Boolean) -> Unit = {},
   onToggleDailyReminder: (Boolean) -> Unit,
   onSignedInSync: () -> Unit,
   onClearLocalProgress: () -> Unit,
@@ -101,9 +107,33 @@ fun SettingsBottomSheet(
       verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
       Text(
-        text = "Settings & Account",
-        style = MaterialTheme.typography.headlineSmall
+        text = "Menu, Account & Settings",
+        style = MaterialTheme.typography.headlineSmall,
+        modifier = Modifier.semantics { heading() }
       )
+
+      if (onSelectSection != null) {
+        Text(
+          text = "Quick Navigation",
+          style = MaterialTheme.typography.titleMedium,
+          modifier = Modifier.semantics { heading() }
+        )
+        FlowRow(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.spacedBy(8.dp),
+          verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+          listOf("Lessons", "Review", "Stories", "Chat").forEachIndexed { idx, label ->
+            FilterChip(
+              selected = false,
+              onClick = { onSelectSection(idx) },
+              label = { Text(label) },
+              modifier = Modifier.testTag("menu_jump_${label.lowercase()}")
+            )
+          }
+        }
+        HorizontalDivider()
+      }
 
       if (statusMessage != null) {
         Surface(
@@ -120,7 +150,11 @@ fun SettingsBottomSheet(
       }
 
       // Theme Selection
-      Text("Appearance", style = MaterialTheme.typography.titleMedium)
+      Text(
+        text = "Appearance",
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier.semantics { heading() }
+      )
       Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         ThemeMode.entries.forEach { mode ->
           FilterChip(
@@ -184,10 +218,35 @@ fun SettingsBottomSheet(
         )
       }
 
+      // Calm Focus & Reduced Motion (ADHD / Vestibular Accessibility)
+      Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+      ) {
+        Column(modifier = Modifier.weight(1f)) {
+          Text("Calm Focus & Reduced Motion", style = MaterialTheme.typography.titleMedium)
+          Text(
+            text = "ADHD-friendly focus view with minimal animations",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+          )
+        }
+        Switch(
+          checked = preferences.calmFocusMode,
+          onCheckedChange = onToggleCalmFocusMode,
+          modifier = Modifier.testTag("settings_calm_focus_switch")
+        )
+      }
+
       HorizontalDivider()
 
       // Account & Cloud Data
-      Text("Account & Data Safety", style = MaterialTheme.typography.titleMedium)
+      Text(
+        text = "Account & Data Safety",
+        style = MaterialTheme.typography.titleMedium,
+        modifier = Modifier.semantics { heading() }
+      )
       if (currentUser == null) {
         Text(
           text = "Not signed in. Offline lessons and Leitner progress are saved locally on this device.",
@@ -200,6 +259,7 @@ fun SettingsBottomSheet(
             statusMessage = "Signed in with Google! Cloud sync & AI Chat unlocked."
           },
           onAuthError = { statusMessage = it },
+          label = "Continue with Google / Gmail",
           modifier = Modifier.fillMaxWidth()
         )
       } else {

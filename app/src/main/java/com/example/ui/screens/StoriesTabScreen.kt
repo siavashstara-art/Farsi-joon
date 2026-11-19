@@ -62,6 +62,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -96,7 +100,8 @@ fun StoriesTabScreen(
       Column(modifier = Modifier.widthIn(max = 600.dp).fillMaxWidth()) {
         Text(
           text = "Bilingual Audio Stories",
-          style = MaterialTheme.typography.headlineSmall
+          style = MaterialTheme.typography.headlineSmall,
+          modifier = Modifier.semantics { heading() }
         )
         Text(
           text = "Listen sentence-by-sentence in spoken Persian, follow along in Finglish & English.",
@@ -190,6 +195,7 @@ fun StoriesTabScreen(
 fun StoryReaderScreen(
   story: Story,
   audioPlayer: PersianAudioPlayer,
+  reduceMotion: Boolean = false,
   onBack: () -> Unit
 ) {
   var activeSentenceIdx by remember(story.id) { mutableIntStateOf(0) }
@@ -199,9 +205,14 @@ fun StoryReaderScreen(
   val persianVoiceAvailable by audioPlayer.persianVoiceAvailable.collectAsStateWithLifecycle()
   val storyListState = rememberLazyListState()
 
-  LaunchedEffect(activeSentenceIdx, isAutoPlaying) {
+  LaunchedEffect(activeSentenceIdx, isAutoPlaying, reduceMotion) {
     if (isAutoPlaying && story.sentences.isNotEmpty()) {
-      storyListState.animateScrollToItem((activeSentenceIdx + 1).coerceAtMost(story.sentences.size))
+      val target = (activeSentenceIdx + 1).coerceAtMost(story.sentences.size)
+      if (reduceMotion) {
+        storyListState.scrollToItem(target)
+      } else {
+        storyListState.animateScrollToItem(target)
+      }
     }
   }
 
@@ -381,12 +392,22 @@ fun StoryReaderScreen(
           modifier = Modifier
             .fillMaxWidth()
             .widthIn(max = 600.dp)
+            .semantics {
+              selected = isActive
+              stateDescription = if (isActive) {
+                "Active sentence ${idx + 1} of ${story.sentences.size}"
+              } else {
+                "Sentence ${idx + 1} of ${story.sentences.size}"
+              }
+            }
             .border(
               width = if (isActive) 2.dp else 0.dp,
               color = if (isActive) MaterialTheme.colorScheme.primary else Color.Transparent,
               shape = RoundedCornerShape(18.dp)
             )
-            .clickable {
+            .clickable(
+              onClickLabel = "Listen to sentence ${idx + 1}"
+            ) {
               isAutoPlaying = false
               playSentenceAt(idx, false)
             },

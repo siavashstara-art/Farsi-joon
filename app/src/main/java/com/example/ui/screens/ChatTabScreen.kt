@@ -163,6 +163,7 @@ private fun ChatSignInGate(
             onAuthSuccess()
           },
           onAuthError = { errorMsg = it },
+          label = "Continue with Google / Gmail",
           modifier = Modifier.fillMaxWidth()
         )
         if (errorMsg != null) {
@@ -280,7 +281,7 @@ private fun ChatAuthenticatedScreen(
       items(uiState.messages, key = { it.id }) { msg ->
         ChatBubble(
           item = msg,
-          onSpeak = { onSpeak(msg.text.lineSequence().firstOrNull().orEmpty(), "STANDARD") },
+          onSpeak = { onSpeak(extractPersianForSpeech(msg.text), "STANDARD") },
           onReport = { reportTarget = msg }
         )
       }
@@ -484,4 +485,14 @@ private fun ChatBubble(
       }
     }
   }
+}
+
+private fun extractPersianForSpeech(text: String): String {
+  val persianLines = text.lineSequence()
+    .map { line ->
+      line.replace(Regex("""\([A-Za-z0-9\s.,!?;:'"âêîôûÂÊÎÔÛ\-/]+\)"""), "").trim()
+    }
+    .filter { line -> line.any { ch -> ch in '\u0600'..'\u06FF' } }
+    .joinToString(". ")
+  return persianLines.ifBlank { text.lineSequence().firstOrNull().orEmpty() }
 }
