@@ -62,12 +62,19 @@ jobs:
           path: app/build/reports/tests/testDebugUnitTest/
           if-no-files-found: ignore
 
-      - name: Build Debug AAB (testing only - never for Google Play production)
-        run: gradle :app:bundleDebug --no-daemon --stacktrace
+      - name: Build Debug AAB & APK (testing only - never for Google Play production)
+        run: gradle :app:bundleDebug :app:assembleDebug --no-daemon --stacktrace
 
       - name: Upload Debug Testing AAB artifact
         uses: actions/upload-artifact@v4
         with:
           name: farsi-joon-debug-testing-aab
           path: app/build/outputs/bundle/debug/*.aab
+          if-no-files-found: error
+
+      - name: Upload Debug Testing APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: farsi-joon-debug-apk
+          path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
