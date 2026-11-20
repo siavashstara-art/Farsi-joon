@@ -106,17 +106,17 @@ jobs:
             --tests "com.example.ExampleRobolectricTest" \
             --tests "com.example.LearningCoreRobolectricTest" \
             --tests "com.example.LearningAudioRobolectricTest" \
-            --no-daemon
+            --no-daemon --stacktrace
 
       - name: Run Android Lint (Release)
-        run: gradle :app:lintRelease --no-daemon
+        run: gradle :app:lintRelease --no-daemon --stacktrace
 
       - name: Build signed Production Release AAB
         env:
           KEYSTORE_PATH: ${{ runner.temp }}/my-upload-key.jks
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: gradle :app:bundleRelease --no-daemon
+        run: gradle :app:bundleRelease --no-daemon --stacktrace
 
       - name: Verify signed AAB integrity and certificate metadata
         run: |
