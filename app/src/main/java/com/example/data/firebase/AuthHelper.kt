@@ -36,6 +36,17 @@ fun FirebaseAuth.authStateFlow(): Flow<FirebaseUser?> = callbackFlow {
   awaitClose { removeAuthStateListener(listener) }
 }
 
+private const val FALLBACK_WEB_CLIENT_ID = "373372102070-aehftqko42d086omp7b9omvnlt9qh0qo.apps.googleusercontent.com"
+
+private fun resolveWebClientId(context: Context): String {
+  val resId = context.resources.getIdentifier("default_web_client_id", "string", context.packageName)
+  if (resId != 0) {
+    val found = runCatching { context.getString(resId) }.getOrNull()
+    if (!found.isNullOrBlank()) return found
+  }
+  return FALLBACK_WEB_CLIENT_ID
+}
+
 fun attemptAutoSignIn(
   context: Context,
   credentialManager: CredentialManager,
@@ -47,12 +58,7 @@ fun attemptAutoSignIn(
     onAuthSuccess()
     return
   }
-  val clientId = try {
-    context.getString(R.string.default_web_client_id)
-  } catch (e: Exception) {
-    onUnauthenticated()
-    return
-  }
+  val clientId = resolveWebClientId(context)
 
   val googleIdOption = GetGoogleIdOption.Builder()
     .setFilterByAuthorizedAccounts(true)
@@ -94,12 +100,7 @@ fun onGoogleSignInClicked(
   scope: CoroutineScope,
   onAuthCancelled: () -> Unit = {}
 ) {
-  val clientId = try {
-    context.getString(R.string.default_web_client_id)
-  } catch (e: Exception) {
-    onAuthError("Google Sign-In configuration missing: default_web_client_id not found.")
-    return
-  }
+  val clientId = resolveWebClientId(context)
 
   val signInOption = GetSignInWithGoogleOption.Builder(serverClientId = clientId).build()
   val request = GetCredentialRequest.Builder()
