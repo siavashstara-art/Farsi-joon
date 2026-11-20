@@ -25,19 +25,23 @@ jobs:
         with:
           gradle-version: "9.3.1"
 
-      - name: Prepare debug keystore if missing
+      - name: Prepare debug keystore at repository root
         run: |
-          if [ ! -f debug.keystore ] && [ -f debug.keystore.base64 ]; then
-            base64 -d debug.keystore.base64 > debug.keystore
-          elif [ ! -f debug.keystore ]; then
+          if [ ! -s "${{ github.workspace }}/debug.keystore" ] && [ -s "${{ github.workspace }}/debug.keystore.base64" ]; then
+            tr -d '[:space:]' < "${{ github.workspace }}/debug.keystore.base64" | base64 -d > "${{ github.workspace }}/debug.keystore" || rm -f "${{ github.workspace }}/debug.keystore"
+          fi
+          if [ ! -s "${{ github.workspace }}/debug.keystore" ] || ! keytool -list -keystore "${{ github.workspace }}/debug.keystore" -storepass android -alias androiddebugkey >/dev/null 2>&1; then
+            rm -f "${{ github.workspace }}/debug.keystore"
             keytool -genkeypair -noprompt \
-              -keystore debug.keystore \
+              -keystore "${{ github.workspace }}/debug.keystore" \
               -storepass android \
               -alias androiddebugkey \
               -keypass android \
               -keyalg RSA -keysize 2048 -validity 10000 \
               -dname "CN=Android Debug,O=Android,C=US"
           fi
+          test -s "${{ github.workspace }}/debug.keystore"
+          ls -lh "${{ github.workspace }}/debug.keystore"
 
       - name: Accept Android SDK licenses if available
         run: |
@@ -64,6 +68,20 @@ jobs:
 
       - name: Build Debug AAB & APK (testing only - never for Google Play production)
         run: gradle :app:bundleDebug :app:assembleDebug --no-daemon --stacktrace
+
+      - name: Verify Debug AAB and APK outputs
+        run: |
+          AAB_PATH="app/build/outputs/bundle/debug/app-debug.aab"
+          APK_PATH="app/build/outputs/apk/debug/app-debug.apk"
+          test -s "$AAB_PATH"
+          test -s "$APK_PATH"
+          ls -lh "$AAB_PATH" "$APK_PATH"
+          sha256sum "$AAB_PATH" "$APK_PATH"
+          jarsigner -verify "$AAB_PATH" | tail -n 5
+          APKSIGNER="$(find "${ANDROID_HOME:-$ANDROID_SDK_ROOT}/build-tools" -name apksigner 2>/dev/null | sort -V | tail -n 1 || true)"
+          if [ -n "$APKSIGNER" ]; then
+            "$APKSIGNER" verify --print-certs "$APK_PATH"
+          fi
 
       - name: Upload Debug Testing AAB artifact
         uses: actions/upload-artifact@v4
