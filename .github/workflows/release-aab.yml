@@ -4,9 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       confirm_release:
-        description: "Type RELEASE to confirm signed Google Play production AAB build"
+        description: "Confirm signed Google Play production AAB build"
         required: true
-        type: string
+        type: choice
+        options:
+          - RELEASE
+        default: RELEASE
   push:
     tags:
       - "v*"
