@@ -11,9 +11,11 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
+import org.junit.Ignore
 import org.junit.Test
 import java.util.UUID
 
+@Ignore("Requires local Firebase Emulator")
 class CloudSyncRepositoryRuleTest : FirestoreEmulatorTestBase() {
 
   @Test
