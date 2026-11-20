@@ -84,6 +84,14 @@ jobs:
             --tests "com.example.LearningAudioRobolectricTest" \
             --no-daemon --stacktrace
 
+      - name: Upload unit test failure report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-failure-report-release
+          path: app/build/reports/tests/testDebugUnitTest/
+          if-no-files-found: ignore
+
       - name: Run Android Lint (Release)
         run: gradle :app:lintRelease --no-daemon --stacktrace
 

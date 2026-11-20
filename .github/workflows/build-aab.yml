@@ -44,10 +44,18 @@ jobs:
             --tests "com.example.ExampleRobolectricTest" \
             --tests "com.example.LearningCoreRobolectricTest" \
             --tests "com.example.LearningAudioRobolectricTest" \
-            --no-daemon
+            --no-daemon --stacktrace
+
+      - name: Upload unit test failure report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-failure-report-debug
+          path: app/build/reports/tests/testDebugUnitTest/
+          if-no-files-found: ignore
 
       - name: Build Debug AAB (testing only - never for Google Play production)
-        run: gradle :app:bundleDebug --no-daemon
+        run: gradle :app:bundleDebug --no-daemon --stacktrace
 
       - name: Upload Debug Testing AAB artifact
         uses: actions/upload-artifact@v4
