@@ -1,14 +1,10 @@
-name: Debug Testing AAB
+name: Release AAB (Farsi-Joon)
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - master
 
 jobs:
-  build-debug-aab:
+  build-release-aab:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -25,128 +21,48 @@ jobs:
         with:
           gradle-version: "9.3.1"
 
-      - name: Prepare debug keystore at repository root
-        run: |
-          if [ ! -s "${{ github.workspace }}/debug.keystore" ] && [ -s "${{ github.workspace }}/debug.keystore.base64" ]; then
-            tr -d '[:space:]' < "${{ github.workspace }}/debug.keystore.base64" | base64 -d > "${{ github.workspace }}/debug.keystore" || rm -f "${{ github.workspace }}/debug.keystore"
-          fi
-          if [ ! -s "${{ github.workspace }}/debug.keystore" ] || ! keytool -list -keystore "${{ github.workspace }}/debug.keystore" -storepass android -alias androiddebugkey >/dev/null 2>&1; then
-            rm -f "${{ github.workspace }}/debug.keystore"
-            keytool -genkeypair -noprompt \
-              -keystore "${{ github.workspace }}/debug.keystore" \
-              -storepass android \
-              -alias androiddebugkey \
-              -keypass android \
-              -keyalg RSA -keysize 2048 -validity 10000 \
-              -dname "CN=Android Debug,O=Android,C=US"
-          fi
-          test -s "${{ github.workspace }}/debug.keystore"
-          ls -lh "${{ github.workspace }}/debug.keystore"
-
       - name: Accept Android SDK licenses if available
         run: |
           if [ -n "$ANDROID_HOME" ] && [ -x "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
             yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
           fi
 
-      - name: Run offline and Robolectric unit tests
-        run: |
-          gradle :app:testDebugUnitTest \
-            --tests "com.example.ExampleUnitTest" \
-            --tests "com.example.ExampleRobolectricTest" \
-            --tests "com.example.LearningCoreRobolectricTest" \
-            --tests "com.example.LearningAudioRobolectricTest" \
-            --no-daemon --stacktrace
-
-      - name: Upload unit test failure report
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-test-failure-report-debug
-          path: app/build/reports/tests/testDebugUnitTest/
-          if-no-files-found: ignore
-
-      - name: Build Debug AAB & APK (testing only - never for Google Play production)
-        run: gradle :app:bundleDebug :app:assembleDebug --no-daemon --stacktrace
-
-      - name: Verify Debug AAB and APK outputs
-        run: |
-          AAB_PATH="app/build/outputs/bundle/debug/app-debug.aab"
-          APK_PATH="app/build/outputs/apk/debug/app-debug.apk"
-          test -s "$AAB_PATH"
-          test -s "$APK_PATH"
-          ls -lh "$AAB_PATH" "$APK_PATH"
-          sha256sum "$AAB_PATH" "$APK_PATH"
-          jarsigner -verify "$AAB_PATH" | tail -n 5
-          APKSIGNER="$(find "${ANDROID_HOME:-$ANDROID_SDK_ROOT}/build-tools" -name apksigner 2>/dev/null | sort -V | tail -n 1 || true)"
-          if [ -n "$APKSIGNER" ]; then
-            "$APKSIGNER" verify --print-certs "$APK_PATH"
-          fi
-
-      - name: Upload Debug Testing AAB artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: farsi-joon-DEBUG-TEST-ONLY-aab
-          path: app/build/outputs/bundle/debug/*.aab
-          if-no-files-found: error
-
-      - name: Upload Debug Testing APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: farsi-joon-DEBUG-TEST-ONLY-apk
-          path: app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
-name: Release AAB (Farsi-Joon)
-
-on:
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 17
-
-      - uses: android-actions/setup-android@v3
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-
-      - name: Build unsigned release bundle
-        run: ./gradlew bundleRelease --no-daemon
+      - name: Build release bundle
+        run: gradle :app:bundleRelease --no-daemon --stacktrace
 
       - name: Create upload keystore
         run: |
           PASS=$(openssl rand -hex 12)
-          keytool -genkeypair -v -keystore upload-keystore.jks \
+          keytool -genkeypair -noprompt -keystore upload-keystore.jks \
             -alias upload -keyalg RSA -keysize 2048 -validity 10000 \
             -storepass "$PASS" -keypass "$PASS" \
             -dname "CN=Farsi Joon, O=Tavana, C=IR"
           echo "$PASS" > keystore-password.txt
 
-      - name: Sign the AAB
+      - name: Sign the AAB with upload key
         run: |
-          AAB=$(find . -name "*.aab" -path "*release*" | head -n 1)
+          AAB=$(find app/build/outputs/bundle -name "*.aab" | head -n 1)
           echo "Found: $AAB"
+          test -s "$AAB"
           cp "$AAB" farsi-joon-release.aab
           jarsigner -sigalg SHA256withRSA -digestalg SHA-256 \
             -keystore upload-keystore.jks \
             -storepass "$(cat keystore-password.txt)" \
             farsi-joon-release.aab upload
 
-      - name: Verify not debug-signed
+      - name: Verify signature is not Android Debug
         run: |
-          jarsigner -verify -verbose -certs farsi-joon-release.aab | grep -i "CN=" | head -3
+          jarsigner -verify -verbose -certs farsi-joon-release.aab | grep "CN=" | head -3
+          if jarsigner -verify -verbose -certs farsi-joon-release.aab | grep -q "CN=Android Debug"; then
+            echo "ERROR still debug-signed"; exit 1
+          fi
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload release AAB and keystore
+        uses: actions/upload-artifact@v4
         with:
           name: farsi-joon-release
           path: |
             farsi-joon-release.aab
             upload-keystore.jks
             keystore-password.txt
+          if-no-files-found: error
