@@ -96,3 +96,57 @@ jobs:
           name: farsi-joon-DEBUG-TEST-ONLY-apk
           path: app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
+name: Release AAB (Farsi-Joon)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
+      - name: Build unsigned release bundle
+        run: ./gradlew bundleRelease --no-daemon
+
+      - name: Create upload keystore
+        run: |
+          PASS=$(openssl rand -hex 12)
+          keytool -genkeypair -v -keystore upload-keystore.jks \
+            -alias upload -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass "$PASS" -keypass "$PASS" \
+            -dname "CN=Farsi Joon, O=Tavana, C=IR"
+          echo "$PASS" > keystore-password.txt
+
+      - name: Sign the AAB
+        run: |
+          AAB=$(find . -name "*.aab" -path "*release*" | head -n 1)
+          echo "Found: $AAB"
+          cp "$AAB" farsi-joon-release.aab
+          jarsigner -sigalg SHA256withRSA -digestalg SHA-256 \
+            -keystore upload-keystore.jks \
+            -storepass "$(cat keystore-password.txt)" \
+            farsi-joon-release.aab upload
+
+      - name: Verify not debug-signed
+        run: |
+          jarsigner -verify -verbose -certs farsi-joon-release.aab | grep -i "CN=" | head -3
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: farsi-joon-release
+          path: |
+            farsi-joon-release.aab
+            upload-keystore.jks
+            keystore-password.txt
