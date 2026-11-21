@@ -325,7 +325,7 @@ fun SettingsBottomSheet(
       }
 
       Text(
-        text = "Farsi-Joon v${BuildConfig.VERSION_NAME} • Support: siavashstara@gmail.com",
+        text = "Farsi Joon v${BuildConfig.VERSION_NAME} • Support: siavashstara@gmail.com",
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
       )

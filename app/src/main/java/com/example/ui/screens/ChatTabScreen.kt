@@ -145,7 +145,7 @@ private fun ChatSignInGate(
         FarsiText(text = "چت فارسی با هوش مصنوعی", fontSize = 22.sp, color = MaterialTheme.colorScheme.primary)
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-          text = "Sign in to chat with Farsi-Joon",
+          text = "Sign in to chat with Farsi Joon",
           style = MaterialTheme.typography.headlineSmall,
           textAlign = TextAlign.Center
         )

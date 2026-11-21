@@ -34,6 +34,17 @@ jobs:
           test -f gradle/wrapper/gradle-wrapper.properties
           grep -q "gradle-9.3.1-bin.zip" gradle/wrapper/gradle-wrapper.properties
 
+      - name: Verify Firebase google-services.json matches com.tavana.farsijoon
+        run: |
+          if [ ! -s "app/google-services.json" ]; then
+            echo "ERROR: Missing app/google-services.json. Download it from Firebase Console for Android app com.tavana.farsijoon and upload it to app/ on GitHub."
+            exit 1
+          fi
+          if ! grep -q '"package_name"[[:space:]]*:[[:space:]]*"com.tavana.farsijoon"' app/google-services.json; then
+            echo "ERROR: app/google-services.json does not contain package_name com.tavana.farsijoon."
+            exit 1
+          fi
+
       - name: Fail closed if required signing secrets are missing
         shell: bash
         env:
@@ -112,7 +123,21 @@ jobs:
           ls -lh "$AAB_PATH"
           unzip -l "$AAB_PATH" | grep -q "base/manifest/AndroidManifest.xml"
           jarsigner -verify "$AAB_PATH" | tail -n 5
-          keytool -printcert -jarfile "$AAB_PATH" | grep -E "Owner:|SHA1:|SHA256:"
+          CERT_LINES="$(keytool -printcert -jarfile "$AAB_PATH" | grep -E "Owner:|SHA1:|SHA256:")"
+          echo "$CERT_LINES"
+
+          APP_ID="$(grep -E 'applicationId[[:space:]]*=' app/build.gradle.kts | head -n 1 | cut -d'"' -f2)"
+          VERSION_CODE="$(grep -E 'versionCode[[:space:]]*=' app/build.gradle.kts | head -n 1 | awk -F'=' '{print $2}' | tr -d '[:space:]')"
+          VERSION_NAME="$(grep -E 'versionName[[:space:]]*=' app/build.gradle.kts | head -n 1 | cut -d'"' -f2)"
+          AAB_BYTES="$(wc -c < "$AAB_PATH" | tr -d '[:space:]')"
+          {
+            echo "Farsi Joon Production Release AAB Summary"
+            echo "applicationId: $APP_ID"
+            echo "versionName: $VERSION_NAME"
+            echo "versionCode: $VERSION_CODE"
+            echo "AAB file size: $AAB_BYTES bytes"
+            echo "$CERT_LINES"
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Clean up temporary keystore from runner
         if: always()

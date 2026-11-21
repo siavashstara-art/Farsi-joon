@@ -214,7 +214,7 @@ fun FarsiJoonApp() {
               title = {
                 Text(
                   text = when (activeTab) {
-                    MainTab.LESSONS -> "Farsi-Joon"
+                    MainTab.LESSONS -> "Farsi Joon"
                     MainTab.REVIEW -> "Leitner Review"
                     MainTab.STORIES -> "Stories"
                     MainTab.CHAT -> "Persian Chat"

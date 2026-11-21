@@ -54,7 +54,7 @@ class ChatViewModel(
       messages = listOf(
         ChatMessageItem(
           isUser = false,
-          text = "سلام $displayName جان! (Salâm $displayName jân!)\nمن فارسی‌جون هستم. امروز با هم فارسی تمرین کنیم؟ چطوری؟\nI'm Farsi-Joon. Shall we practice Persian together today? How are you?"
+          text = "سلام $displayName جان! (Salâm $displayName jân!)\nمن فارسیجون هستم. امروز با هم فارسی تمرین کنیم؟ چطوری؟\nI'm Farsi Joon. Shall we practice Persian together today? How are you?"
         )
       )
     )
@@ -186,7 +186,7 @@ class ChatViewModel(
           messages = _uiState.value.messages.map {
             if (it.id == messageId) it.copy(isReported = true) else it
           },
-          statusBanner = "Report saved. Thank you for helping keep Farsi-Joon safe."
+          statusBanner = "Report saved. Thank you for helping keep Farsi Joon safe."
         )
       } catch (e: CancellationException) {
         throw e

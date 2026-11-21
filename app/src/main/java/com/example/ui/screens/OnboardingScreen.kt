@@ -118,7 +118,7 @@ fun OnboardingScreen(
         verticalAlignment = Alignment.CenterVertically
       ) {
         Text(
-          text = "Farsi-Joon",
+          text = "Farsi Joon",
           style = MaterialTheme.typography.titleLarge,
           color = MaterialTheme.colorScheme.primary,
           fontWeight = FontWeight.Bold
