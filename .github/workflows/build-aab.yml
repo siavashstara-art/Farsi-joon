@@ -21,7 +21,7 @@ jobs:
         run: |
           if [ ! -s app/google-services.json ]; then
             echo "Creating provisioned app/google-services.json for com.tavana.farsijoon..."
-            printf '%s' "ewogICJwcm9qZWN0X2luZm8iOiB7CiAgICAicHJvamVjdF9udW1iZXIiOiAiMzczMzcyMTAyMDcwIiwKICAgICJwcm9qZWN0X2lkIjogImdlbi1sYW5nLWNsaWVudC0wODcyOTE4NTk1IiwKICAgICJzdG9yYWdlX2J1Y2tldCI6ICJnZW4tbGFuZy1jbGllbnQtMDg3MjkxODU5NS5maXJlYmFzZXN0b3JhZ2UuYXBwIgogIH0sCiAgImNsaWVudCI6IFsKICAgIHsKICAgICAgImNsaWVudF9pbmZvIjogewogICAgICAgICJtb2JpbGVzZGtfYXBwX2lkIjogIjE6MzczMzcyMTAyMDcwOmFuZHJvaWQ6M2I4NDYwNjVmMGQ2NmE0YjViMGQxNyIsCiAgICAgICAgImFuZHJvaWRfY2xpZW50X2luZm8iOiB7CiAgICAgICAgICAicGFja2FnZV9uYW1lIjogImNvbS5haXN0dWRpby5jcmVhdGl2ZXN0dWRpby54bXpwcXIiCiAgICAgICAgfQogICAgICB9LAogICAgICAib2F1dGhfY2xpZW50IjogWwogICAgICAgIHsKICAgICAgICAgICJjbGllbnRfaWQiOiAiMzczMzcyMTAyMDcwLWN0MmQxbjhka3ZvYmFkdml0ZTQzdDZzcWJmOHM5aWE3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwKICAgICAgICAgICJjbGllbnRfdHlwZSI6IDEsCiAgICAgICAgICAiYW5kcm9pZF9pbmZvIjogewogICAgICAgICAgICAicGFja2FnZV9uYW1lIjogImNvbS5haXN0dWRpby5jcmVhdGl2ZXN0dWRpby54bXpwcXIiLAogICAgICAgICAgICAiY2VydGlmaWNhdGVfaGFzaCI6ICI2ZWQ3MDRkZTMyZGQxMGU0Y2U5MTZkOGFmN2Q0NzAwZjliMmJkNGUxIgogICAgICAgICAgfQogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgImNsaWVudF9pZCI6ICIzNzMzNzIxMDIwNzAtYWVoZnRxa280MmQwODZvbXA3YjlvbXZubHQ5cWgwcW8uYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLAogICAgICAgICAgImNsaWVudF90eXBlIjogMwogICAgICAgIH0KICAgICAgXSwKICAgICAgImFwaV9rZXkiOiBbCiAgICAgICAgewogICAgICAgICAgImN1cnJlbnRfa2V5IjogIkFJemFTeUJmNDBBRXlrVmNtc2NseG56QTJaYVhHWmRTOUZMWnFnMCIKICAgICAgICB9CiAgICAgIF0sCiAgICAgICJzZXJ2aWNlcyI6IHsKICAgICAgICAiYXBwaW52aXRlX3NlcnZpY2UiOiB7CiAgICAgICAgICAib3RoZXJfcGxhdGZvcm1fb2F1dGhfY2xpZW50IjogWwogICAgICAgICAgICB7CiAgICAgICAgICAgICAgImNsaWVudF9pZCI6ICIzNzMzNzIxMDIwNzAtYWVoZnRxa280MmQwODZvbXA3YjlvbXZubHQ5cWgwcW8uYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLAogICAgICAgICAgICAgICJjbGllbnRfdHlwZSI6IDMKICAgICAgICAgICAgfQogICAgICAgICAgXQogICAgICAgIH0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImNsaWVudF9pbmZvIjogewogICAgICAgICJtb2JpbGVzZGtfYXBwX2lkIjogIjE6MzczMzcyMTAyMDcwOmFuZHJvaWQ6YjNmYWI5YzU3YTc3ZDk3ZjViMGQxNyIsCiAgICAgICAgImFuZHJvaWRfY2xpZW50X2luZm8iOiB7CiAgICAgICAgICAicGFja2FnZV9uYW1lIjogImNvbS5haXN0dWRpby5mYXJzaWpvb24ua3F2dHpyIgogICAgICAgIH0KICAgICAgfSwKICAgICAgIm9hdXRoX2NsaWVudCI6IFsKICAgICAgICB7CiAgICAgICAgICAiY2xpZW50X2lkIjogIjM3MzM3MjEwMjA3MC1mcjkzNnN2b3MxZjR2YTlvZDkzdmozaWxvbm80ZTYxdi5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsCiAgICAgICAgICAiY2xpZW50X3R5cGUiOiAxLAogICAgICAgICAgImFuZHJvaWRfaW5mbyI6IHsKICAgICAgICAgICAgInBhY2thZ2VfbmFtZSI6ICJjb20uYWlzdHVkaW8uZmFyc2lqb29uLmtxdnR6ciIsCiAgICAgICAgICAgICJjZXJ0aWZpY2F0ZV9oYXNoIjogIjA5OWIwNWVmNTdkOWMyOWU5YTUxNTc2MTk3YTM1ZTZmNmEyMjBmNzgiCiAgICAgICAgICB9CiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAiY2xpZW50X2lkIjogIjM3MzM3MjEwMjA3MC1hZWhmdHFrbzQyZDA4Nm9tcDdiOW9tdm5sdDlxaDBxby5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsCiAgICAgICAgICAiY2xpZW50X3R5cGUiOiAzCiAgICAgICAgfQogICAgICBdLAogICAgICAiYXBpX2tleSI6IFsKICAgICAgICB7CiAgICAgICAgICAiY3VycmVudF9rZXkiOiAiQUl6YVN5QmY0MEFFeWtWY21zY2x4bnpBMlphWEdaZFM5RkxacWcwIgogICAgICAgIH0KICAgICAgXSwKICAgICAgInNlcnZpY2VzIjogewogICAgICAgICJhcHBpbnZpdGVfc2VydmljZSI6IHsKICAgICAgICAgICJvdGhlcl9wbGF0Zm9ybV9vYXV0aF9jbGllbnQiOiBbCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAiY2xpZW50X2lkIjogIjM3MzM3MjEwMjA3MC1hZWhmdHFrbzQyZDA4Nm9tcDdiOW9tdm5sdDlxaDBxby5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsCiAgICAgICAgICAgICAgImNsaWVudF9pZCI6IDMKICAgICAgICAgICAgfQogICAgICAgICAgXQogICAgICAgIH0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImNsaWVudF9pbmZvIjogewogICAgICAgICJtb2JpbGVzZGtfYXBwX2lkIjogIjE6MzczMzcyMTAyMDcwOmFuZHJvaWQ6OTJlYmNmNDZmYjdlY2FhYTViMGQxNyIsCiAgICAgICAgImFuZHJvaWRfY2xpZW50X2luZm8iOiB7CiAgICAgICAgICAicGFja2FnZV9uYW1lIjogImNvbS50YXZhbmEuZmFyc2lqb29uIgogICAgICAgIH0KICAgICAgfSwKICAgICAgIm9hdXRoX2NsaWVudCI6IFsKICAgICAgICB7CiAgICAgICAgICAiY2xpZW50X2lkIjogIjM3MzM3MjEwMjA3MC1wZWF0YWJkMHUxNHMzZ3NpYjJpb2E1amFvZXJvbDk2cS5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsCiAgICAgICAgICAiY2xpZW50X3R5cGUiOiAxLAogICAgICAgICAgImFuZHJvaWRfaW5mbyI6IHsKICAgICAgICAgICAgInBhY2thZ2VfbmFtZSI6ICJjb20udGF2YW5hLmZhcnNpam9vbiIsCiAgICAgICAgICAgICJjZXJ0aWZpY2F0ZV9oYXNoIjogIjA5OWIwNWVmNTdkOWMyOWU5YTUxNTc2MTk3YTM1ZTZmNmEyMjBmNzgiCiAgICAgICAgICB9CiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAiY2xpZW50X2lkIjogIjM3MzM3MjEwMjA3MC1hZWhmdHFrbzQyZDA4Nm9tcDdiOW9tdm5sdDlxaDBxby5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsCiAgICAgICAgICAiY2xpZW50X3R5cGUiOiAzCiAgICAgICAgfQogICAgICBdLAogICAgICAiYXBpX2tleSI6IFsKICAgICAgICB7CiAgICAgICAgICAiY3VycmVudF9rZXkiOiAiQUl6YVN5QmY0MEFFeWtWY21zY2x4bnpBMlphWEdaZFM5RkxacWcwIgogICAgICAgIH0KICAgICAgXSwKICAgICAgInNlcnZpY2VzIjogewogICAgICAgICJhcHBpbnZpdGVfc2VydmljZSI6IHsKICAgICAgICAgICJvdGhlcl9wbGF0Zm9ybV9vYXV0aF9jbGllbnQiOiBbCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAiY2xpZW50X2lkIjogIjM3MzM3MjEwMjA3MC1hZWhmdHFrbzQyZDA4Nm9tcDdiOW9tdm5sdDlxaDBxby5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsCiAgICAgICAgICAgICAgImNsaWVudF9pZCI6IDMKICAgICAgICAgICAgfQogICAgICAgICAgXQogICAgICAgIH0KICAgICAgfQogICAgfQogIF0sCiAgImNvbmZpZ3VyYXRpb25fdmVyc2lvbiI6ICIxIgp9" | base64 -d > app/google-services.json
+            printf '%s' "ewogICJwcm9qZWN0X2luZm8iOiB7CiAgICAicHJvamVjdF9udW1iZXIiOiAiMzczMzcyMTAyMDcwIiwKICAgICJwcm9qZWN0X2lkIjogImdlbi1sYW5nLWNsaWVudC0wODcyOTE4NTk1IiwKICAgICJzdG9yYWdlX2J1Y2tldCI6ICJnZW4tbGFuZy1jbGllbnQtMDg3MjkxODU5NS5maXJlYmFzZXN0b3JhZ2UuYXBwIgogIH0sCiAgImNsaWVudCI6IFsKICAgIHsKICAgICAgImNsaWVudF9pbmZvIjogewogICAgICAgICJtb2JpbGVzZGtfYXBwX2lkIjogIjE6MzczMzcyMTAyMDcwOmFuZHJvaWQ6M2I4NDYwNjVmMGQ2NmE0YjViMGQxNyIsCiAgICAgICAgImFuZHJvaWRfY2xpZW50X2luZm8iOiB7CiAgICAgICAgICAicGFja2FnZV9uYW1lIjogImNvbS5haXN0dWRpby5jcmVhdGl2ZXN0dWRpby54bXpwcXIiCiAgICAgICAgfQogICAgICB9LAogICAgICAib2F1dGhfY2xpZW50IjogWwogICAgICAgIHsKICAgICAgICAgICJjbGllbnRfaWQiOiAiMzczMzcyMTAyMDcwLWN0MmQxbjhka3ZvYmFkdml0ZTQzdDZzcWJmOHM5aWE3LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwKICAgICAgICAgICJjbGllbnRfdHlwZSI6IDEsCiAgICAgICAgICAiYW5kcm9pZF9pbmZvIjogewogICAgICAgICAgICAicGFja2FnZV9uYW1lIjogImNvbS5haXN0dWRpby5jcmVhdGl2ZXN0dWRpby54bXpwcXIiLAogICAgICAgICAgICAiY2VydGlmaWNhdGVfaGFzaCI6ICI2ZWQ3MDRkZTMyZGQxMGU0Y2U5MTZkOGFmN2Q0NzAwZjliMmJkNGUxIgogICAgICAgICAgfQogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgImNsaWVudF9pZCI6ICIzNzMzNzIxMDIwNzAtYWVoZnRxa280MmQwODZvbXA3YjlvbXZubHQ5cWgwcW8uYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLAogICAgICAgICAgImNsaWVudF90eXBlIjogMwogICAgICAgIH0KICAgICAgXSwKICAgICAgImFwaV9rZXkiOiBbCiAgICAgICAgewogICAgICAgICAgImN1cnJlbnRfa2V5IjogIkFJemFTeUJmNDBBRXlrVmNtc2NseG56QTJaYVhHWmRTOUZMWnFnMCIKICAgICAgICB9CiAgICAgIF0sCiAgICAgICJzZXJ2aWNlcyI6IHsKICAgICAgICAiYXBwaW52aXRlX3NlcnZpY2UiOiB7CiAgICAgICAgICAib3RoZXJfcGxhdGZvcm1fb2F1dGhfY2xpZW50IjogWwogICAgICAgICAgICB7CiAgICAgICAgICAgICAgImNsaWVudF9pZCI6ICIzNzMzNzIxMDIwNzAtYWVoZnRxa280MmQwODZvbXA3YjlvbXZubHQ5cWgwcW8uYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLAogICAgICAgICAgICAgICJjbGllbnRfdHlwZSI6IDMKICAgICAgICAgICAgfQogICAgICAgICAgXQogICAgICAgIH0KICAgICAgfQogICAgfSwKICAgIHsKICAgICAgImNsaWVudF9pbmZvIjogewogICAgICAgICJtb2JpbGVzZGtfYXBwX2lkIjogIjE6MzczMzcyMTAyMDcwOmFuZHJvaWQ6YjNmYWI5YzU3YTc3ZDk3ZjViMGQxNyIsCiAgICAgICAgImFuZHJvaWRfY2xpZW50X2luZm8iOiB7CiAgICAgICAgICAicGFja2FnZV9uYW1lIjogImNvbS5haXN0dWRpby5mYXJzaWpvb24ua3F2dHpyIgogICAgICAgIH0KICAgICAgfSwKICAgICAgIm9hdXRoX2NsaWVudCI6IFsKICAgICAgICB7CiAgICAgICAgICAiY2xpZW50X2lkIjogIjM3MzM3MjEwMjA3MC1mcjkzNnN2b3MxZjR2YTlvZDkzdmozaWxvbm80ZTYxdi5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsCiAgICAgICAgICAiY2xpZW50X3R5cGUiOiAxLAogICAgICAgICAgImFuZHJvaWRfaW5mbyI6IHsKICAgICAgICAgICAgInBhY2thZ2VfbmFtZSI6ICJjb20uYWlzdHVkaW8uZmFyc2lqb29uLmtxdnR6ciIsCiAgICAgICAgICAgICJjZXJ0aWZpY2F0ZV9oYXNoIjogIjA5OWIwNWVmNTdkOWMyOWU5YTUxNTc2MTk3YTM1ZTZmNmEyMjBmNzgiCiAgICAgICAgICB9CiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAiY2xpZW50X2lkIjogIjM3MzM3MjEwMjA3MC1hZWhmdHFrbzQyZDA4Nm9tcDdiOW9tdm5sdDlxaDBxby5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsCiAgICAgICAgICAiY2xpZW50X3R5cGUiOiAzCiAgICAgICAgfQogICAgICBdLAogICAgICAiYXBpX2tleSI6IFsKICAgICAgICB7CiAgICAgICAgICAiY3VycmVudF9rZXkiOiAiQUl6YVN5QmY0MEFFeWtWY21zY2x4bnpBMlphWEdaZFM5RkxacWcwIgogICAgICAgIH0KICAgICAgXSwKICAgICAgInNlcnZpY2VzIjogewogICAgICAgICJhcHBpbnZpdGVfc2VydmljZSI6IHsKICAgICAgICAgICJvdGhlcl9wbGF0Zm9ybV9vYXV0aF9jbGllbnQiOiBbCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAiY2xpZW50X2lkIjogIjM3MzM3MjEwMjA3MC1hZWhmdHFrbzQyZDA4Nm9tcDdiOW9tdm5sdDlxaDBxby5hcHBzLmdvb2dsZXVzZXJjb250ZW50LmNvbSIsCiAgICAgICAgICAgICAgImNsaWVudF90eXBlIjogMwogICAgICAgICAgICB9CiAgICAgICAgICBdCiAgICAgICAgfQogICAgICB9CiAgICB9LAogICAgewogICAgICAiY2xpZW50X2luZm8iOiB7CiAgICAgICAgIm1vYmlsZXNka19hcHBfaWQiOiAiMTozNzMzNzIxMDIwNzA6YW5kcm9pZDo5MmViY2Y0NmZiN2VjYWFhNWIwZDE3IiwKICAgICAgICAiYW5kcm9pZF9jbGllbnRfaW5mbyI6IHsKICAgICAgICAgICJwYWNrYWdlX25hbWUiOiAiY29tLnRhdmFuYS5mYXJzaWpvb24iCiAgICAgICAgfQogICAgICB9LAogICAgICAib2F1dGhfY2xpZW50IjogWwogICAgICAgIHsKICAgICAgICAgICJjbGllbnRfaWQiOiAiMzczMzcyMTAyMDcwLXBlYXRhYmQwdTE0czNnc2liMmlvYTVqYW9lcm9sOTZxLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwKICAgICAgICAgICJjbGllbnRfdHlwZSI6IDEsCiAgICAgICAgICAiYW5kcm9pZF9pbmZvIjogewogICAgICAgICAgICAicGFja2FnZV9uYW1lIjogImNvbS50YXZhbmEuZmFyc2lqb29uIiwKICAgICAgICAgICAgImNlcnRpZmljYXRlX2hhc2giOiAiMDk5YjA1ZWY1N2Q5YzI5ZTlhNTE1NzYxOTdhMzVlNmY2YTIyMGY3OCIKICAgICAgICAgIH0KICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICJjbGllbnRfaWQiOiAiMzczMzcyMTAyMDcwLWFlaGZ0cWtvNDJkMDg2b21wN2I5b212bmx0OXFoMHFvLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwKICAgICAgICAgICJjbGllbnRfdHlwZSI6IDMKICAgICAgICB9CiAgICAgIF0sCiAgICAgICJhcGlfa2V5IjogWwogICAgICAgIHsKICAgICAgICAgICJjdXJyZW50X2tleSI6ICJBSXphU3lCZjQwQUV5a1ZjbXNjbHhuekEyWmFYR1pkUzlGTFpxZzAiCiAgICAgICAgfQogICAgICBdLAogICAgICAic2VydmljZXMiOiB7CiAgICAgICAgImFwcGludml0ZV9zZXJ2aWNlIjogewogICAgICAgICAgIm90aGVyX3BsYXRmb3JtX29hdXRoX2NsaWVudCI6IFsKICAgICAgICAgICAgewogICAgICAgICAgICAgICJjbGllbnRfaWQiOiAiMzczMzcyMTAyMDcwLWFlaGZ0cWtvNDJkMDg2b21wN2I5b212bmx0OXFoMHFvLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwKICAgICAgICAgICAgICAiY2xpZW50X3R5cGUiOiAzCiAgICAgICAgICAgIH0KICAgICAgICAgIF0KICAgICAgICB9CiAgICAgIH0KICAgIH0KICBdLAogICJjb25maWd1cmF0aW9uX3ZlcnNpb24iOiAiMSIKfQ==" | base64 -d > app/google-services.json
           fi
           test -s app/google-services.json
           grep -q "com.tavana.farsijoon" app/google-services.json
@@ -74,8 +74,9 @@ jobs:
             printf '%s' "$SECRET_KEYSTORE_B64" | tr -d '[:space:]' | base64 -d > "$KEYSTORE_FILE"
             STORE_PASS="$SECRET_STORE_PASS"
             KEY_PASS="$SECRET_KEY_PASS"
+            KEY_SOURCE="Repository Secrets (permanent upload key)"
           else
-            echo "Generating fresh upload keystore for first-release publication..."
+            echo "Generating ephemeral upload keystore (secrets KEYSTORE_BASE64 not configured)..."
             STORE_PASS="$(openssl rand -hex 20)"
             KEY_PASS="$(openssl rand -hex 20)"
             keytool -genkeypair -noprompt \
@@ -88,26 +89,32 @@ jobs:
               -storepass "$STORE_PASS" \
               -keypass "$KEY_PASS" \
               -dname "CN=Farsi-Joon Release, O=Farsi-Joon"
+            KEY_SOURCE="One-time runner keystore (use Google Play App Signing upload-key reset for future updates, or configure KEYSTORE_BASE64 via One-Tap Release Keystore Setup)"
           fi
 
           test -s "$KEYSTORE_FILE"
           keytool -list -keystore "$KEYSTORE_FILE" -storepass "$STORE_PASS" -alias upload > /dev/null
 
-          # Build signed Production Release AAB (and debug APK for test installs)
-          KEYSTORE_PATH="$KEYSTORE_FILE" STORE_PASSWORD="$STORE_PASS" KEY_PASSWORD="$KEY_PASS" \
-            gradle :app:bundleRelease :app:assembleDebug --no-daemon --stacktrace
+          # Ensure debug.keystore exists at workspace root so AGP signingConfigs evaluation never fails
+          if [ ! -s "${{ github.workspace }}/debug.keystore" ]; then
+            keytool -genkeypair -noprompt \
+              -keystore "${{ github.workspace }}/debug.keystore" \
+              -storepass android \
+              -alias androiddebugkey \
+              -keypass android \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
+          fi
 
-          # Copy keystore and passwords into release package for preservation
-          cp "$KEYSTORE_FILE" "$RELEASE_PKG_DIR/my-upload-key.jks"
-          KEYSTORE_B64="$(base64 -w 0 "$KEYSTORE_FILE")"
-          printf "KEYSTORE_BASE64: %s\nSTORE_PASSWORD: %s\nKEY_PASSWORD: %s\nALIAS: upload\n" \
-            "$KEYSTORE_B64" "$STORE_PASS" "$KEY_PASS" > "$RELEASE_PKG_DIR/keystore-passwords.txt"
+          # Build signed Production Release AAB exclusively
+          KEYSTORE_PATH="$KEYSTORE_FILE" STORE_PASSWORD="$STORE_PASS" KEY_PASSWORD="$KEY_PASS" \
+            gradle :app:bundleRelease --no-daemon --stacktrace
 
           CERT_FINGERPRINTS="$(keytool -list -v -keystore "$KEYSTORE_FILE" -storepass "$STORE_PASS" -alias upload | grep -E 'SHA1:|SHA256:')"
-          printf "Farsi Joon (com.tavana.farsijoon) Google Play Production Release\n-----------------------------------------------------------------\nFile for Google Play Console: app-release.aab\nUpload Keystore: my-upload-key.jks\nUpload Certificate Fingerprints:\n%s\n\nAdd fingerprints to Firebase and Play Integrity.\n" \
-            "$CERT_FINGERPRINTS" > "$RELEASE_PKG_DIR/release-info.txt"
+          printf "Farsi Joon (com.tavana.farsijoon) Google Play Production Release\n-----------------------------------------------------------------\nFile for Google Play Console: app-release.aab\nKey Source: %s\nUpload Certificate Fingerprints:\n%s\n\nAdd the Play Console App Signing SHA-1 and SHA-256 certificates to Firebase (com.tavana.farsijoon) and enable Play Integrity in App Check.\n" \
+            "$KEY_SOURCE" "$CERT_FINGERPRINTS" > "$RELEASE_PKG_DIR/release-info.txt"
 
-          echo "KEYSTORE_FILE_PATH=$KEYSTORE_FILE" >> "$GITHUB_ENV"
+          echo "KEY_SOURCE=$KEY_SOURCE" >> "$GITHUB_ENV"
           echo "RELEASE_PKG_DIR_PATH=$RELEASE_PKG_DIR" >> "$GITHUB_ENV"
 
       - name: Verify this is a real release AAB
@@ -201,7 +208,6 @@ jobs:
           VERSION_CODE="$(python3 -c 'import xml.etree.ElementTree as ET; r=ET.parse("'"$MANIFEST_XML"'").getroot(); print(r.attrib["{http://schemas.android.com/apk/res/android}versionCode"])')"
           VERSION_NAME="$(python3 -c 'import xml.etree.ElementTree as ET; r=ET.parse("'"$MANIFEST_XML"'").getroot(); print(r.attrib["{http://schemas.android.com/apk/res/android}versionName"])')"
 
-          # Copy verified AAB into release package directory
           cp "$AAB_PATH" "$RELEASE_PKG_DIR_PATH/app-release.aab"
 
           {
@@ -210,6 +216,7 @@ jobs:
             echo "- **versionName**: $VERSION_NAME"
             echo "- **versionCode**: $VERSION_CODE"
             echo "- **AAB size**: $AAB_BYTES bytes"
+            echo "- **Key Source**: $KEY_SOURCE"
             echo "- **$SHA1_LINE**"
             echo "- **$SHA256_LINE**"
             echo "- **Status**: Ready for Google Play Console"
@@ -222,9 +229,10 @@ jobs:
           path: ${{ runner.temp }}/release-package/
           if-no-files-found: error
 
-      - name: Upload Debug Testing APK artifact (for direct phone install test)
-        uses: actions/upload-artifact@v4
-        with:
-          name: farsi-joon-DEBUG-TEST-ONLY-apk
-          path: app/build/outputs/apk/debug/*.apk
-          if-no-files-found: ignore
+      - name: Shred temporary keystore from runner
+        if: always()
+        run: |
+          if [ -f "${{ runner.temp }}/my-upload-key.jks" ]; then
+            shred -u "${{ runner.temp }}/my-upload-key.jks" || rm -f "${{ runner.temp }}/my-upload-key.jks"
+          fi
+
