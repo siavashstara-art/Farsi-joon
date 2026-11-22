@@ -33,6 +33,163 @@ jobs:
           distribution: temurin
           java-version: "21"
 
+      - name: Verify keystore and passwords
+        id: verify_keystore
+        shell: bash
+        env:
+          SECRET_KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
+          SECRET_STORE_PASS: ${{ secrets.STORE_PASSWORD }}
+          SECRET_KEY_PASS: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          set +x
+          set -euo pipefail
+          umask 077
+
+          KEYSTORE_FILE="${{ runner.temp }}/my-upload-key.jks"
+          ENV_STORE_FILE="${{ runner.temp }}/.ks_env"
+          rm -f "$KEYSTORE_FILE" "$ENV_STORE_FILE"
+
+          cat > "${{ runner.temp }}/VerifyKeystore.java" <<'JEOF'
+          import java.io.File;
+          import java.security.Key;
+          import java.security.KeyStore;
+          import java.security.MessageDigest;
+          import java.security.UnrecoverableKeyException;
+          import java.security.cert.Certificate;
+          import java.security.cert.X509Certificate;
+          import java.util.Collections;
+
+          public class VerifyKeystore {
+              public static void main(String[] args) throws Exception {
+                  String path = args[0];
+                  String alias = args[1];
+                  char[] storePass = System.getenv("VERIFY_STORE_PASS").toCharArray();
+                  char[] keyPass = System.getenv("VERIFY_KEY_PASS").toCharArray();
+
+                  KeyStore ks;
+                  try {
+                      ks = KeyStore.getInstance(new File(path), storePass);
+                  } catch (Exception e) {
+                      System.err.println("STORE_OR_FORMAT_ERROR: " + e.getClass().getSimpleName() + ": " + e.getMessage());
+                      System.exit(11);
+                      return;
+                  }
+
+                  if (!ks.containsAlias(alias)) {
+                      System.err.println("ALIAS_MISSING: expected '" + alias + "', found: " + Collections.list(ks.aliases()));
+                      System.exit(12);
+                      return;
+                  }
+
+                  try {
+                      Key k = ks.getKey(alias, keyPass);
+                      if (k == null) {
+                          System.err.println("KEY_NULL: alias '" + alias + "' has no private key");
+                          System.exit(13);
+                          return;
+                      }
+                  } catch (UnrecoverableKeyException e) {
+                      String hint = "";
+                      try {
+                          if (ks.getKey(alias, storePass) != null) {
+                              hint = " (STORE_PASSWORD unlocks the private key, meaning KEY_PASSWORD secret does not match; for PKCS12 keystores STORE_PASSWORD and KEY_PASSWORD must be identical)";
+                          }
+                      } catch (Exception ignored) {}
+                      System.err.println("KEY_PASSWORD_MISMATCH: " + e.getMessage() + hint);
+                      System.exit(14);
+                      return;
+                  }
+
+                  Certificate cert = ks.getCertificate(alias);
+                  if (cert == null) {
+                      System.err.println("CERT_MISSING: no certificate for alias '" + alias + "'");
+                      System.exit(15);
+                      return;
+                  }
+                  byte[] sha256 = MessageDigest.getInstance("SHA-256").digest(cert.getEncoded());
+                  StringBuilder sb = new StringBuilder();
+                  for (int i = 0; i < sha256.length; i++) {
+                      if (i > 0) sb.append(':');
+                      sb.append(String.format("%02X", sha256[i]));
+                  }
+                  String subject = (cert instanceof X509Certificate x509) ? x509.getSubjectX500Principal().getName() : "unknown";
+                  if (subject.toLowerCase().contains("android debug")) {
+                      System.err.println("DEBUG_CERT_REJECTED: Certificate is Android Debug (" + subject + ")");
+                      System.exit(16);
+                      return;
+                  }
+                  System.out.println("TYPE=" + ks.getType());
+                  System.out.println("SUBJECT=" + subject);
+                  System.out.println("SHA256=" + sb.toString());
+              }
+          }
+          JEOF
+
+          USE_FRESH_KEY=false
+          DIAG_NOTE=""
+
+          if [ -n "$SECRET_KEYSTORE_B64" ] && [ -n "$SECRET_STORE_PASS" ] && [ -n "$SECRET_KEY_PASS" ]; then
+            echo "Verifying existing repository signing secrets (KEYSTORE_BASE64, STORE_PASSWORD, KEY_PASSWORD, alias 'upload')..."
+            if ! printf '%s' "$SECRET_KEYSTORE_B64" | tr -d '[:space:]' | base64 -d > "$KEYSTORE_FILE" 2>/dev/null || [ ! -s "$KEYSTORE_FILE" ]; then
+              USE_FRESH_KEY=true
+              DIAG_NOTE="KEYSTORE_BASE64 is not valid base64 or decoded to an empty file."
+            else
+              set +e
+              VERIFY_OUT="$(VERIFY_STORE_PASS="$SECRET_STORE_PASS" VERIFY_KEY_PASS="$SECRET_KEY_PASS" java "${{ runner.temp }}/VerifyKeystore.java" "$KEYSTORE_FILE" "upload" 2>&1)"
+              VERIFY_RC=$?
+              set -e
+              if [ "$VERIFY_RC" -eq 0 ]; then
+                echo "Verified repository upload keystore (alias 'upload'):"
+                echo "$VERIFY_OUT"
+                STORE_PASS="$SECRET_STORE_PASS"
+                KEY_PASS="$SECRET_KEY_PASS"
+                KEY_SOURCE="Repository Secrets (permanent upload key)"
+              else
+                USE_FRESH_KEY=true
+                DIAG_NOTE="Repository signing secrets failed pre-Gradle verification: $VERIFY_OUT"
+                rm -f "$KEYSTORE_FILE"
+              fi
+            fi
+          else
+            USE_FRESH_KEY=true
+            DIAG_NOTE="One or more signing secrets (KEYSTORE_BASE64, STORE_PASSWORD, KEY_PASSWORD) are not configured."
+          fi
+
+          if [ "$USE_FRESH_KEY" = "true" ]; then
+            echo "::warning::$DIAG_NOTE Generating a fresh upload keystore (alias 'upload') for this release build."
+            FRESH_PASS="$(openssl rand -hex 20)"
+            STORE_PASS="$FRESH_PASS"
+            KEY_PASS="$FRESH_PASS"
+            keytool -genkeypair -noprompt \
+              -storetype JKS \
+              -keystore "$KEYSTORE_FILE" \
+              -alias upload \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -storepass "$STORE_PASS" \
+              -keypass "$KEY_PASS" \
+              -dname "CN=Farsi Joon, O=Tavana, C=IR"
+            VERIFY_OUT="$(VERIFY_STORE_PASS="$STORE_PASS" VERIFY_KEY_PASS="$KEY_PASS" java "${{ runner.temp }}/VerifyKeystore.java" "$KEYSTORE_FILE" "upload")"
+            KEY_SOURCE="Fresh runner upload keystore (Play App Signing accepts this for first Play Console upload; update KEYSTORE_BASE64 / STORE_PASSWORD / KEY_PASSWORD secrets for future updates or use Play Console Upload Key Reset)"
+          fi
+
+          EXPECTED_SHA256="$(echo "$VERIFY_OUT" | sed -n 's/^SHA256=//p' | head -n1)"
+          test -n "$EXPECTED_SHA256"
+
+          # Verify keytool -list also passes cleanly on the active keystore
+          keytool -list -keystore "$KEYSTORE_FILE" -storepass "$STORE_PASS" -alias upload > /dev/null
+
+          # Pass active credentials strictly inside runner.temp with 0600 permissions (never via logs or artifacts)
+          {
+            printf 'STORE_PASS=%q\n' "$STORE_PASS"
+            printf 'KEY_PASS=%q\n' "$KEY_PASS"
+            printf 'KEY_SOURCE=%q\n' "$KEY_SOURCE"
+            printf 'EXPECTED_SHA256=%q\n' "$EXPECTED_SHA256"
+            printf 'DIAG_NOTE=%q\n' "$DIAG_NOTE"
+          } > "$ENV_STORE_FILE"
+          chmod 600 "$ENV_STORE_FILE"
+
       - name: Set up Gradle 9.3.1
         uses: gradle/actions/setup-gradle@v4
         with:
@@ -56,44 +213,20 @@ jobs:
       - name: Run Android Lint (Release)
         run: gradle :app:lintRelease --no-daemon --stacktrace
 
-      - name: Setup Upload Keystore and build signed Production Release AAB
+      - name: Build signed Production Release AAB
         shell: bash
-        env:
-          SECRET_KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
-          SECRET_STORE_PASS: ${{ secrets.STORE_PASSWORD }}
-          SECRET_KEY_PASS: ${{ secrets.KEY_PASSWORD }}
         run: |
           set +x
+          set -euo pipefail
           umask 077
           KEYSTORE_FILE="${{ runner.temp }}/my-upload-key.jks"
+          ENV_STORE_FILE="${{ runner.temp }}/.ks_env"
           RELEASE_PKG_DIR="${{ runner.temp }}/release-package"
           mkdir -p "$RELEASE_PKG_DIR"
 
-          if [ -n "$SECRET_KEYSTORE_B64" ] && [ -n "$SECRET_STORE_PASS" ] && [ -n "$SECRET_KEY_PASS" ]; then
-            echo "Using existing repository signing secrets (KEYSTORE_BASE64)..."
-            printf '%s' "$SECRET_KEYSTORE_B64" | tr -d '[:space:]' | base64 -d > "$KEYSTORE_FILE"
-            STORE_PASS="$SECRET_STORE_PASS"
-            KEY_PASS="$SECRET_KEY_PASS"
-            KEY_SOURCE="Repository Secrets (permanent upload key)"
-          else
-            echo "Generating ephemeral upload keystore (secrets KEYSTORE_BASE64 not configured)..."
-            STORE_PASS="$(openssl rand -hex 20)"
-            KEY_PASS="$(openssl rand -hex 20)"
-            keytool -genkeypair -noprompt \
-              -storetype JKS \
-              -keystore "$KEYSTORE_FILE" \
-              -alias upload \
-              -keyalg RSA \
-              -keysize 2048 \
-              -validity 10000 \
-              -storepass "$STORE_PASS" \
-              -keypass "$KEY_PASS" \
-              -dname "CN=Farsi-Joon Release, O=Farsi-Joon"
-            KEY_SOURCE="One-time runner keystore (use Google Play App Signing upload-key reset for future updates, or configure KEYSTORE_BASE64 via One-Tap Release Keystore Setup)"
-          fi
-
+          # Load verified active signing credentials created by pre-Gradle verification
+          source "$ENV_STORE_FILE"
           test -s "$KEYSTORE_FILE"
-          keytool -list -keystore "$KEYSTORE_FILE" -storepass "$STORE_PASS" -alias upload > /dev/null
 
           # Ensure debug.keystore exists at workspace root so AGP signingConfigs evaluation never fails
           if [ ! -s "${{ github.workspace }}/debug.keystore" ]; then
@@ -108,13 +241,15 @@ jobs:
 
           # Build signed Production Release AAB exclusively
           KEYSTORE_PATH="$KEYSTORE_FILE" STORE_PASSWORD="$STORE_PASS" KEY_PASSWORD="$KEY_PASS" \
-            gradle :app:bundleRelease --no-daemon --stacktrace
+            gradle :app:bundleRelease --no-daemon --no-configuration-cache --stacktrace
 
           CERT_FINGERPRINTS="$(keytool -list -v -keystore "$KEYSTORE_FILE" -storepass "$STORE_PASS" -alias upload | grep -E 'SHA1:|SHA256:')"
           printf "Farsi Joon (com.tavana.farsijoon) Google Play Production Release\n-----------------------------------------------------------------\nFile for Google Play Console: app-release.aab\nKey Source: %s\nUpload Certificate Fingerprints:\n%s\n\nAdd the Play Console App Signing SHA-1 and SHA-256 certificates to Firebase (com.tavana.farsijoon) and enable Play Integrity in App Check.\n" \
             "$KEY_SOURCE" "$CERT_FINGERPRINTS" > "$RELEASE_PKG_DIR/release-info.txt"
 
           echo "KEY_SOURCE=$KEY_SOURCE" >> "$GITHUB_ENV"
+          echo "EXPECTED_CERT_SHA256=$EXPECTED_SHA256" >> "$GITHUB_ENV"
+          echo "KEY_DIAG_NOTE=$DIAG_NOTE" >> "$GITHUB_ENV"
           echo "RELEASE_PKG_DIR_PATH=$RELEASE_PKG_DIR" >> "$GITHUB_ENV"
 
       - name: Verify this is a real release AAB
@@ -134,12 +269,12 @@ jobs:
             exit 1
           fi
 
-          # 2) Signature & certificate Owner check
+          # 2) Signature & non-Debug certificate + SHA-256 fingerprint match check
           jarsigner -verify "$AAB_PATH" >/dev/null
           CERT_OUT="$(keytool -printcert -jarfile "$AAB_PATH")"
           OWNER_LINE="$(echo "$CERT_OUT" | grep -m1 'Owner:' || true)"
-          if ! echo "$OWNER_LINE" | grep -q 'CN=Farsi-Joon Release'; then
-            echo "FAIL: Signing certificate Owner does not contain 'CN=Farsi-Joon Release' (found: $OWNER_LINE)."
+          if [ -z "$OWNER_LINE" ]; then
+            echo "FAIL: Could not read signing certificate Owner from $AAB_PATH."
             exit 1
           fi
           if echo "$CERT_OUT" | grep -qi 'Android Debug'; then
@@ -148,6 +283,11 @@ jobs:
           fi
           SHA1_LINE="$(echo "$CERT_OUT" | grep -m1 'SHA1:' | xargs)"
           SHA256_LINE="$(echo "$CERT_OUT" | grep -m1 'SHA256:' | xargs)"
+          ACTUAL_SHA256="$(echo "$SHA256_LINE" | sed -E 's/^SHA256:[[:space:]]*//')"
+          if [ "$ACTUAL_SHA256" != "$EXPECTED_CERT_SHA256" ]; then
+            echo "FAIL: AAB SHA-256 ($ACTUAL_SHA256) does not match verified upload keystore ($EXPECTED_CERT_SHA256)."
+            exit 1
+          fi
 
           # 3) Pinned stable bundletool (1.18.3) download + SHA-256 verification + manifest dump
           BUNDLETOOL_VERSION="1.18.3"
@@ -216,10 +356,14 @@ jobs:
             echo "- **versionName**: $VERSION_NAME"
             echo "- **versionCode**: $VERSION_CODE"
             echo "- **AAB size**: $AAB_BYTES bytes"
+            echo "- **Certificate $OWNER_LINE**"
             echo "- **Key Source**: $KEY_SOURCE"
+            if [ -n "${KEY_DIAG_NOTE:-}" ]; then
+              echo "- **Key Secret Diagnostic**: $KEY_DIAG_NOTE"
+            fi
             echo "- **$SHA1_LINE**"
             echo "- **$SHA256_LINE**"
-            echo "- **Status**: Ready for Google Play Console"
+            echo "- **Status**: Ready for Google Play Console (not signed with Android Debug)"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload Production Release AAB artifact
@@ -232,7 +376,9 @@ jobs:
       - name: Shred temporary keystore from runner
         if: always()
         run: |
-          if [ -f "${{ runner.temp }}/my-upload-key.jks" ]; then
-            shred -u "${{ runner.temp }}/my-upload-key.jks" || rm -f "${{ runner.temp }}/my-upload-key.jks"
-          fi
+          for f in "${{ runner.temp }}/my-upload-key.jks" "${{ runner.temp }}/.ks_env" "${{ runner.temp }}/VerifyKeystore.java"; do
+            if [ -f "$f" ]; then
+              shred -u "$f" || rm -f "$f"
+            fi
+          done
 

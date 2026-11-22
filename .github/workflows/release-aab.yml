@@ -53,7 +53,7 @@ jobs:
           distribution: temurin
           java-version: "21"
 
-      - name: Decode and validate upload keystore and alias
+      - name: Verify keystore and passwords
         shell: bash
         env:
           KEYSTORE_B64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -61,11 +61,88 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           set +x
+          set -euo pipefail
+          umask 077
           KEYSTORE_FILE="${{ runner.temp }}/my-upload-key.jks"
-          printf '%s' "$KEYSTORE_B64" | tr -d '[:space:]' | base64 -d > "$KEYSTORE_FILE"
-          test -s "$KEYSTORE_FILE"
+          if ! printf '%s' "$KEYSTORE_B64" | tr -d '[:space:]' | base64 -d > "$KEYSTORE_FILE" 2>/dev/null || [ ! -s "$KEYSTORE_FILE" ]; then
+            echo "ERROR: KEYSTORE_BASE64 is invalid base64 or decoded to an empty file."
+            exit 1
+          fi
+
+          cat > "${{ runner.temp }}/VerifyKeystore.java" <<'JEOF'
+          import java.io.File;
+          import java.security.Key;
+          import java.security.KeyStore;
+          import java.security.MessageDigest;
+          import java.security.UnrecoverableKeyException;
+          import java.security.cert.Certificate;
+          import java.security.cert.X509Certificate;
+          import java.util.Collections;
+
+          public class VerifyKeystore {
+              public static void main(String[] args) throws Exception {
+                  String path = args[0];
+                  String alias = args[1];
+                  char[] storePass = System.getenv("STORE_PASSWORD").toCharArray();
+                  char[] keyPass = System.getenv("KEY_PASSWORD").toCharArray();
+                  KeyStore ks;
+                  try {
+                      ks = KeyStore.getInstance(new File(path), storePass);
+                  } catch (Exception e) {
+                      System.err.println("STORE_OR_FORMAT_ERROR: " + e.getClass().getSimpleName() + ": " + e.getMessage());
+                      System.exit(11);
+                      return;
+                  }
+                  if (!ks.containsAlias(alias)) {
+                      System.err.println("ALIAS_MISSING: expected '" + alias + "', found: " + Collections.list(ks.aliases()));
+                      System.exit(12);
+                      return;
+                  }
+                  try {
+                      Key k = ks.getKey(alias, keyPass);
+                      if (k == null) {
+                          System.err.println("KEY_NULL: alias '" + alias + "' has no private key");
+                          System.exit(13);
+                          return;
+                      }
+                  } catch (UnrecoverableKeyException e) {
+                      String hint = "";
+                      try {
+                          if (ks.getKey(alias, storePass) != null) {
+                              hint = " (STORE_PASSWORD unlocks the private key; KEY_PASSWORD secret is mismatched)";
+                          }
+                      } catch (Exception ignored) {}
+                      System.err.println("KEY_PASSWORD_MISMATCH: " + e.getMessage() + hint);
+                      System.exit(14);
+                      return;
+                  }
+                  Certificate cert = ks.getCertificate(alias);
+                  byte[] sha256 = MessageDigest.getInstance("SHA-256").digest(cert.getEncoded());
+                  StringBuilder sb = new StringBuilder();
+                  for (int i = 0; i < sha256.length; i++) {
+                      if (i > 0) sb.append(':');
+                      sb.append(String.format("%02X", sha256[i]));
+                  }
+                  String subject = (cert instanceof X509Certificate x509) ? x509.getSubjectX500Principal().getName() : "unknown";
+                  if (subject.toLowerCase().contains("android debug")) {
+                      System.err.println("DEBUG_CERT_REJECTED: Certificate is Android Debug");
+                      System.exit(16);
+                      return;
+                  }
+                  System.out.println("TYPE=" + ks.getType());
+                  System.out.println("SUBJECT=" + subject);
+                  System.out.println("SHA256=" + sb.toString());
+              }
+          }
+          JEOF
+
+          VERIFY_OUT="$(java "${{ runner.temp }}/VerifyKeystore.java" "$KEYSTORE_FILE" "upload")"
+          echo "$VERIFY_OUT"
+          EXPECTED_SHA256="$(echo "$VERIFY_OUT" | sed -n 's/^SHA256=//p' | head -n1)"
+          test -n "$EXPECTED_SHA256"
           keytool -list -keystore "$KEYSTORE_FILE" -storepass:env STORE_PASSWORD -alias upload > /dev/null
-          echo "Upload keystore and 'upload' alias validated."
+          echo "EXPECTED_CERT_SHA256=$EXPECTED_SHA256" >> "$GITHUB_ENV"
+          echo "Upload keystore, STORE_PASSWORD, KEY_PASSWORD, and 'upload' alias validated."
 
       - name: Set up Gradle 9.3.1
         uses: gradle/actions/setup-gradle@v4
@@ -103,7 +180,7 @@ jobs:
           KEYSTORE_PATH: ${{ runner.temp }}/my-upload-key.jks
           STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
-        run: gradle :app:bundleRelease --no-daemon --stacktrace
+        run: gradle :app:bundleRelease --no-daemon --no-configuration-cache --stacktrace
 
       - name: Verify this is a real release AAB
         shell: bash
@@ -122,12 +199,12 @@ jobs:
             exit 1
           fi
 
-          # 2) Signature & certificate Owner check
+          # 2) Signature & non-Debug certificate + SHA-256 fingerprint match check
           jarsigner -verify "$AAB_PATH" >/dev/null
           CERT_OUT="$(keytool -printcert -jarfile "$AAB_PATH")"
           OWNER_LINE="$(echo "$CERT_OUT" | grep -m1 'Owner:' || true)"
-          if ! echo "$OWNER_LINE" | grep -q 'CN=Farsi-Joon Release'; then
-            echo "FAIL: Signing certificate Owner does not contain 'CN=Farsi-Joon Release' (found: $OWNER_LINE)."
+          if [ -z "$OWNER_LINE" ]; then
+            echo "FAIL: Could not read signing certificate Owner from $AAB_PATH."
             exit 1
           fi
           if echo "$CERT_OUT" | grep -qi 'Android Debug'; then
@@ -136,6 +213,11 @@ jobs:
           fi
           SHA1_LINE="$(echo "$CERT_OUT" | grep -m1 'SHA1:' | xargs)"
           SHA256_LINE="$(echo "$CERT_OUT" | grep -m1 'SHA256:' | xargs)"
+          ACTUAL_SHA256="$(echo "$SHA256_LINE" | sed -E 's/^SHA256:[[:space:]]*//')"
+          if [ "$ACTUAL_SHA256" != "$EXPECTED_CERT_SHA256" ]; then
+            echo "FAIL: AAB SHA-256 ($ACTUAL_SHA256) does not match verified upload keystore ($EXPECTED_CERT_SHA256)."
+            exit 1
+          fi
 
           # 3) Pinned stable bundletool (1.18.3) download + SHA-256 verification + manifest dump
           BUNDLETOOL_VERSION="1.18.3"
@@ -227,7 +309,7 @@ jobs:
 
       - name: Clean up temporary keystore from runner
         if: always()
-        run: rm -f "${{ runner.temp }}/my-upload-key.jks"
+        run: rm -f "${{ runner.temp }}/my-upload-key.jks" "${{ runner.temp }}/VerifyKeystore.java"
 
       - name: Upload Production Release AAB artifact
         uses: actions/upload-artifact@v4
