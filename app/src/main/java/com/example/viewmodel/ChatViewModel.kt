@@ -54,7 +54,7 @@ class ChatViewModel(
       messages = listOf(
         ChatMessageItem(
           isUser = false,
-          text = "سلام $displayName جان! (Salâm $displayName jân!)\nمن فارسیجون هستم. امروز با هم فارسی تمرین کنیم؟ چطوری؟\nI'm Farsi Joon. Shall we practice Persian together today? How are you?"
+          text = "سلام $displayName جان! (Salâm $displayName jân!)\nمن فارسی جون هستم. امروز با هم فارسی تمرین کنیم؟ چطوری؟\nI'm Farsi Joon. Shall we practice Persian together today? How are you?"
         )
       )
     )
